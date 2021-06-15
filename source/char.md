@@ -86,7 +86,7 @@ int main()
     int i;
     for (i=0; str[i]!=0; i++)
         if(isalpha(str[i])) 
-            printf(“%c is an alphanumeric character\n”, str[i]);
+            printf("%c is an alphanumeric character\n", str[i]);
     
     return 0;
 }
