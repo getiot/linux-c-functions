@@ -143,7 +143,7 @@ gcvt
 char *gcvt(double number, size_t ndigits, char *buf);
 ```
 
-- 说明：gcvt() 用来将参数 number 转换成 ASCII 码字符串，参数 ndigits 表示显示的位数。gcvt() 与 ecvt() 和 fcvt() 不同的地方在于，gcvt() 所转换后的字符串包含小数点或正负符号。若转换陈宫，转换后的字符串会放在参数 buf 指针所指的空间。
+- 说明：gcvt() 用来将参数 number 转换成 ASCII 码字符串，参数 ndigits 表示显示的位数。gcvt() 与 ecvt() 和 fcvt() 不同的地方在于，gcvt() 所转换后的字符串包含小数点或正负符号。若转换成功，转换后的字符串会放在参数 buf 指针所指的空间。
 - 返回值：返回一字符串指针，此地址即为 buf 指针。
 - 相关函数：ecvt, fcvt, sprintf
 
