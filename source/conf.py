@@ -17,9 +17,9 @@
 
 # -- Project information -----------------------------------------------------
 
-project = 'Linux C Functions'
-copyright = '2021, GetIoT'
-author = 'GetIoT'
+project = 'Linux 常用 C 函数'
+copyright = '2021, 人人都懂物联网'
+author = 'GetIoT.tech'
 
 # The full version, including alpha/beta/rc tags
 release = 'v1.0'
