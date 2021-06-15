@@ -291,7 +291,7 @@ rand
 int rand(void);
 ```
 
-- 说明：rand() 会返回一随机数值，范围在 0 至 RAND_MAX 之间。在调用此函数产生随机数前，必须先利用 srand() 设好随机数种子，如果未设随机数种子，rand() 在调用时会自动设随机数种子为 1。关于随机数粽子请参考 srand()。
+- 说明：rand() 会返回一随机数值，范围在 0 至 RAND_MAX 之间。在调用此函数产生随机数前，必须先利用 srand() 设好随机数种子，如果未设随机数种子，rand() 在调用时会自动设随机数种子为 1。关于随机数种子请参考 srand()。
 - 返回值：返回 0 至 RAND_MAX 之间的随机数值，RAND_MAX 定义在 stdlib.h，其值为 2147483647。
 - 相关函数：srand，random，srandom
 
@@ -333,7 +333,7 @@ srand
 void srand (unsigned int seed);
 ```
 
-- 说明：srand()用來設置rand()產生隨機數時的隨機數種子。參數seed必須是個整數，通常可以利用geypid()或time(0)的返回值來當做seed。如果每次seed都設相同值，rand()所產生的隨機數值每次就會一樣。
+- 说明：srand() 用来设置 rand() 产生随机数时的随机数种子。参数 seed 必须是个整数，通常可以利用 getpid() 或 time() 的返回值来当做 seed。如果每次 seed 都设相同值，rand() 所产生的随机数值每次就会一样。
 - 返回值：无
 - 相关函数：rand，random srandom
 
