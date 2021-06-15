@@ -124,13 +124,13 @@ int select(int n, fd_set *readfds, fd_set *writefds, fd_set *exceptfds, struct t
 常见的程序片段
 
 ```c
-fs_set readset；
+fs_set readset;
 
 FD_ZERO(&readset);
 FD_SET(fd, &readset);
 select(fd+1, &readset, NULL, NULL, NULL);
 
-if (FD_ISSET(fd,readset) {
+if (FD_ISSET(fd, readset) {
     ...
 }
 ```
