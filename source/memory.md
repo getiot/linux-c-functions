@@ -11,7 +11,7 @@ calloc
 函数原型
 
 ```c
-void *calloc(size_t nmemb，size_t size);
+void *calloc(size_t nmemb, size_t size);
 ```
 
 - 说明：calloc() 用来配置 nmemb 个相邻的内存单位，每一单位的大小为 size，并返回指向第一个元素的指针。这和使用 `malloc(nmemb*size)` 的方式效果相同，不过，在 calloc() 配置内存时会将内存内容初始化为 0。
@@ -124,19 +124,19 @@ mmap
 函数原型
 
 ```c
-void *mmap(void *start, size_t length, int prot, int flags, int fd, off_t offsize);
+void *mmap(void *start, size_t length, int prot, int flags, int fd, off_t offset);
 ```
 
 - 说明：mmap() 用来将某个文件内容映射到内存中，对该内存区域的存取即是直接对该文件内容的读写。
 - 参数：
-  - 参数 start 指向欲对应的内存起始地址，通常设为 NULL，代表让系统自动选定地址，对应成功后该地址会返回。
-  - 参数 length 代表将文件中多大的部分对应到内存。
-  - 参数 prot 代表映射区域的保护方式，有下列组合：
+  - 参数 **start** 指向欲对应的内存起始地址，通常设为 NULL，代表让系统自动选定地址，对应成功后该地址会返回。
+  - 参数 **length** 代表将文件中多大的部分对应到内存。
+  - 参数 **prot** 代表映射区域的保护方式，有下列组合：
     - `PROT_EXEC` 映射区域可被执行
     - `PROT_READ` 映射区域可被读取
     - `PROT_WRITE` 映射区域可被写入
     - `PROT_NONE` 映射区域不能存取
-  - 参数 flags 会影响映射区域的各种特性
+  - 参数 **flags** 会影响映射区域的各种特性
     - `MAP_FIXED` 如果参数 start 所指的地址无法成功建立映射时，则放弃映射，不对地址做修正。通常不鼓励用此标志。
     - `MAP_SHARED` 对映射区域的写入数据会复制回文件内，而且允许其他映射该文件的进程共享。
     - `MAP_PRIVATE` 对映射区域的写入操作会产生一个映射文件的复制，即私人的“写入时复制”（copy on write），对此区域作的任何修改都不会写回原来的文件内容。
@@ -144,8 +144,8 @@ void *mmap(void *start, size_t length, int prot, int flags, int fd, off_t offsiz
     - `MAP_DENYWRITE` 只允许对映射区域的写入操作，其他对文件直接写入的操作将会被拒绝。
     - `MAP_LOCKED` 将映射区域锁定住，这表示该区域不会被置换（swap）。
     - 在调用 mmap() 时必须要指定 `MAP_SHARED` 或 `MAP_PRIVATE`。
-  - 参数 fd 为 open() 返回的文件描述符，代表欲映射到内存的文件。
-  - 参数 offset 为文件映射的偏移量，通常设置为 0，代表从文件最前方开始对应，offset 必须是分页大小的整数倍。
+  - 参数 **fd** 为 open() 返回的文件描述符，代表欲映射到内存的文件。
+  - 参数 **offset** 为文件映射的偏移量，通常设置为 0，代表从文件最前方开始对应，offset 必须是分页大小的整数倍。
 - 返回值：若映射成功则返回映射区域的内存起始地址，否则返回 `MAP_FAILED` (-1)，错误原因存于 errno 中。错误代码可能如下：
   - `EBADF` 参数 fd 不是有效的文件描述符。
   - `EACCES` 存取权限有误。如果是 `MAP_PRIVATE` 情況下文件必须可读，使用 `MAP_SHARED` 则要有 `PROT_WRITE` 以及该文件要能写入。
