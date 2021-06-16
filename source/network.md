@@ -736,457 +736,310 @@ send
 函数原型
 
 ```c
-
+ssize_t send(int sockfd, const void *buf, size_t len, int flags);
 ```
 
-- 说明：
-- 返回值：
-- 附加说明：
+- 说明：send() 用来将数据由指定的 socket 传给对方主机。参数 sockfd 为已建立好连接的 socket，参数 buf 指向要发送的数据内容，参数 len 为数据长度，参数 flags 一般设为 0。flags 的其他含义如下：
+  - `MSG_OOB` 传送的数据以 out-of-band 送出；
+  - `MSG_DONTROUTE` 取消路由表查询；
+  - `MSG_DONTWAIT` 设置为不可阻断运作；
+  - `MSG_NOSIGNAL` 此动作不愿被 SIGPIPE 信号中断。
+- 返回值：成功则返回实际传送出去的字节数，失败返回 -1，错误原因存于 errno。错误代码如下：
+  - `EBADF` 参数 sockfd 非合法的 socket 处理代码
+  - `EFAULT` 参数中有一指针指向无法存取的内存空间
+  - `ENOTSOCK` 参数 sockfd 为一文件描述符，非 socket
+  - `EINTR` 被信号所中断
+  - `EAGAIN` 此动作会令进程阻断，但参数 sockfd 的 socket 为不可阻断
+  - `ENOBUFS` 系统的缓冲内存不足
+  - `ENOMEM` 系统内存不足
+  - `EINVAL` 传给系统调用的参数不正确
 - 相关函数：sendto，sendmsg，recv，recvfrom，socket
 
 示例
 
-```c
-
-```
-
-执行
-
-```shell
-send（經socket傳送數據）
-相關函數
-
-表頭文件
-
-定義函數
-int send(int s,const void * msg,int len,unsigned int falgs);
-函數說明
-send()用來將數據由指定的socket 傳給對方主機。參數s為已建立好連接的socket。參數msg指向欲連線的數據內容，參數len則為數據長度。參數flags一般設0，其他數值定義如下
-MSG_OOB 傳送的數據以out-of-band 送出。
-MSG_DONTROUTE 取消路由表查詢
-MSG_DONTWAIT 設置為不可阻斷運作
-MSG_NOSIGNAL 此動作不願被SIGPIPE 信號中斷。
-返回值
-成功則返回實際傳送出去的字符數，失敗返回-1。錯誤原因存於errno
-錯誤代碼
-EBADF 參數s 非合法的socket處理代碼。
-EFAULT 參數中有一指針指向無法存取的內存空間
-ENOTSOCK 參數s為一文件描述詞，非socket。
-EINTR 被信號所中斷。
-EAGAIN 此操作會令進程阻斷，但參數s的socket為不可阻斷。
-ENOBUFS 系統的緩衝內存不足
-ENOMEM 核心內存不足
-EINVAL 傳給系統調用的參數不正確。
-範例
-參考connect()
-```
+参考 [connect()](#connect)
 
 
 sendmsg
 ---------------------------------------------
 
-简介
+经 socket 传送数据
 
-头文件 `#include <.h>`
+头文件 
+
+```c
+#include <sys/types.h>
+#include <sys/socket.h>
+```
 
 函数原型
 
 ```c
-
+ssize_t sendmsg(int sockfd, const struct msghdr *msg, int flags);
 ```
 
-- 说明：
-- 返回值：
-- 附加说明：
-- 相关函数：
+- 说明：sendmsg() 用来将数据由指定的 socket 传给对方主机。参数 sockfd 为已建立好连接的 socket，如果使用 UDP 协议则不需要经过连接操作。参数 msg 为要发送的数据结构内容，参数 flags 一般设为 0，详细描述请参考 send()。结构体 msghdr 的定义如下：
+
+  ```c
+  struct msghdr {
+      void         *msg_name;       /* Optional address */
+      socklen_t     msg_namelen;    /* Size of address */
+      struct iovec *msg_iov;        /* Scatter/gather array */
+      size_t        msg_iovlen;     /* # elements in msg_iov */
+      void         *msg_control;    /* Ancillary data, see below */
+      size_t        msg_controllen; /* Ancillary data buffer len */
+      int           msg_flags;      /* Flags (unused) */
+  };
+  ```
+
+- 返回值：成功则返回实际传送出去的字节数，失败返回 -1，错误原因存于 errno。错误代码如下：
+
+  - `EBADF` 参数 sockfd 非合法的 socket 处理代码
+  - `EFAULT` 参数中有一指针指向无法存取的内存空间
+  - `ENOTSOCK` 参数 sockfd 为一文件描述符，非 socket
+  - `EINTR` 被信号所中断
+  - `EAGAIN` 此动作会令进程阻断，但参数 sockfd 的 socket 为不可阻断
+  - `ENOBUFS` 系统的缓冲内存不足
+  - `ENOMEM` 系统内存不足
+  - `EINVAL` 传给系统调用的参数不正确
+
+- 相关函数：send，sendto，recv，recvfrom，recvmsg，socket
 
 示例
 
-```c
-
-```
-
-执行
-
-```shell
-sendmsg（經socket傳送數據）
-相關函數
-send，sendto，recv，recvfrom，recvmsg，socket
-表頭文件
-#include<sys/types.h>
-#include<sys/socket.h>
-定義函數
-int sendmsg(int s,const strcut msghdr *msg,unsigned int flags);
-函數說明
-sendmsg()用來將數據由指定的socket傳給對方主機。參數s為已建立好連線的socket，如果利用UDP協議則不需經過連線操作。參數msg 指向欲連線的數據結構內容，參數flags一般默認為0，詳細描述請參考send()。
-結構msghdr定義如下
-struct msghdr
-{
-void *msg_name; /*Address to send to /receive from . */
-socklen_t msg_namelen; /* Length of addres data */
-strcut iovec * msg_iov; /* Vector of data to send/receive into */
-size_t msg_iovlen; /* Number of elements in the vector */
-void * msg_control; /* Ancillary dat */
-size_t msg_controllen; /* Ancillary data buffer length */
-int msg_flags; /* Flags on received message */
-};
-返回值
-成功則返回實際傳送出去的字符數，失敗返回-1，錯誤原因存於errno
-錯誤代碼
-EBADF 參數s 非合法的socket處理代碼。
-EFAULT 參數中有一指針指向無法存取的內存空間
-ENOTSOCK 參數s為一文件描述詞，非socket。
-EINTR 被信號所中斷。
-EAGAIN 此操作會令進程阻斷，但參數s的socket為不可阻斷。
-ENOBUFS 系統的緩衝內存不足
-ENOMEM 核心內存不足
-EINVAL 傳給系統調用的參數不正確。
-範例
-參考sendto()。
-```
+参考 [sendto()](#sendto)
 
 
 sendto
 ---------------------------------------------
 
-简介
+经 socket 传送数据
 
-头文件 `#include <.h>`
+头文件
+
+```c
+#include <sys/types.h>
+#include <sys/socket.h>
+```
 
 函数原型
 
 ```c
-
+ssize_t sendto(int sockfd, const void *buf, size_t len, int flags,
+               const struct sockaddr *dest_addr, socklen_t addrlen);
 ```
 
-- 说明：
-- 返回值：
-- 附加说明：
-- 相关函数：
+- 说明：sendto() 用来将数据由指定的 socket 传给对方主机。参数 sockfd 为已建立好连接的 socket，如果使用 UDP 协议则不需要经过连接操作。参数 buf 指向要发送的数据内容，参数 len 为数据长度，参数 flags 一般设为 0，详细描述请参考 send()。参数 dest_addr 用来指定欲传送的网络地址，结构体 sockaddr 请参考 bind()。参数 addrlen 为 sockaddr 的结构长度。
+- 返回值：成功则返回实际传送出去的字节数，失败返回 -1，错误原因存于 errno。错误代码如下：
+  - `EBADF` 参数 sockfd 非合法的 socket 处理代码
+  - `EFAULT` 参数中有一指针指向无法存取的内存空间
+  - `ENOTSOCK` 参数 sockfd 为一文件描述符，非 socket
+  - `EINTR` 被信号所中断
+  - `EAGAIN` 此动作会令进程阻断，但参数 sockfd 的 socket 为不可阻断
+  - `ENOBUFS` 系统的缓冲内存不足
+  - `ENOMEM` 系统内存不足
+  - `EINVAL` 传给系统调用的参数不正确
+- 相关函数：send , sendmsg,recv , recvfrom , socket
 
 示例
 
 ```c
-
-```
-
-执行
-
-```shell
-sendto（經socket傳送數據）
-相關函數
-send , sendmsg,recv , recvfrom , socket
-表頭文件
-#include < sys/types.h >
-#include < sys/socket.h >
-定義函數
-int sendto ( int s , const void * msg, int len, unsigned int flags, const
-struct sockaddr * to , int tolen ) ;
-函數說明
-sendto() 用來將數據由指定的socket傳給對方主機。參數s為已建好連線的socket,如果利用UDP協議則不需經過連線操作。參數msg指向欲連線的數據內容，參數flags 一般設0，詳細描述請參考send()。參數to用來指定欲傳送的網絡地址，結構sockaddr請參考bind()。參數tolen為sockaddr的結果長度。
-返回值
-成功則返回實際傳送出去的字符數，失敗返回－1，錯誤原因存於errno 中。
-錯誤代碼
-EBADF 參數s非法的socket處理代碼。
-EFAULT 參數中有一指針指向無法存取的內存空間。
-WNOTSOCK canshu s為一文件描述詞，非socket。
-EINTR 被信號所中斷。
-EAGAIN 此動作會令進程阻斷，但參數s的soket為補課阻斷的。
-ENOBUFS 系統的緩衝內存不足。
-EINVAL 傳給系統調用的參數不正確。
-範例
-#include < sys/types.h >
-#include < sys/socket.h >
-# include <netinet.in.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet.in.h>
 #include <arpa.inet.h>
-#define PORT 2345 /*使用的port*/
-main(){
-int sockfd,len;
-struct sockaddr_in addr;
-char buffer[256];
-/*建立socket*/
-if(sockfd=socket (AF_INET,SOCK_DGRAM,0))<0){
-perror (“socket”);
-exit(1);
+
+#define PORT 2345
+
+int main()
+{
+    int sockfd,len;
+    struct sockaddr_in addr;
+    char buffer[256];
+    
+    /* 建立 socket */
+    if(sockfd = socket(AF_INET, SOCK_DGRAM, 0)) < 0) {
+        perror("socket");
+        exit(1);
+    }
+    /* 填写 sockaddr_in 结构体 */
+    bzero(&addr, sizeof(addr));
+    addr.sin_family = AF_INET;
+    addr.sin_port = htons(PORT);
+    addr.sin_addr = hton1(INADDR_ANY);
+    if (bind(sockfd, &addr, sizeof(addr)) < 0) {
+        perror("connect");
+        exit(1);
+    }
+    while(1) {
+        bezro(buffer, sizeof(buffer));
+        len = recvfrom(socket, buffer, sizeof(buffer), 0 , &addr, &addr_len);
+        /* 显示 client 端的网络地址 */
+        printf("receive from %s\n", inet_ntoa(addr.sin_addr));
+        /* 将字串返回给 client 端 */
+        sendto(sockfd, buffer, len, 0, &addr, addr_len);
+    }
 }
-/*填寫sockaddr_in 結構*/
-bzero ( &addr, sizeof(addr) );
-addr.sin_family=AF_INET;
-addr.sin_port=htons(PORT);
-addr.sin_addr=hton1(INADDR_ANY) ;
-if (bind(sockfd, &addr, sizeof(addr))<0){
-perror(“connect”);
-exit(1);
-}
-while(1){
-bezro(buffer,sizeof(buffer));
-len = recvfrom(socket,buffer,sizeof(buffer), 0 , &addr &addr_len);
-/*顯示client端的網絡地址*/
-printf(“receive from %s\n “ , inet_ntoa( addr.sin_addr));
-/*將字串返回給client端*/
-sendto(sockfd,buffer,len,0,&addr,addr_len);”
-}
-}
-執行
-請參考recvfrom()
 ```
 
 
 setprotoent
 ---------------------------------------------
 
-简介
+打开网络协议的数据文件
 
-头文件 `#include <.h>`
+头文件 `#include <netdb.h>`
 
 函数原型
 
 ```c
-
+void setprotoent(int stayopen);
 ```
 
-- 说明：
-- 返回值：
-- 附加说明：
-- 相关函数：
-
-示例
-
-```c
-
-```
-
-执行
-
-```shell
-setprotoent（打開網絡協議的數據文件）
-相關函數
-getprotobyname, getprotobynumber, endprotoent
-表頭文件
-#include <netdb.h>
-定義函數
-void setprotoent (int stayopen);
-函數說明
-setprotoent()用來打開/etc/protocols， 如果參數stayopen值為1，則接下來的getprotobyname()或getprotobynumber()將不會自動關閉此文件。
-```
+- 说明：setprotoent() 用来打开 /etc/protocols， 如果参数 stayopen 值为 1，则接下来的 getprotobyname() 或 getprotobynumber() 将不会自动关闭此文件。
+- 返回值：无
+- 相关函数：getprotobyname, getprotobynumber, endprotoent
 
 
 setservent
 ---------------------------------------------
 
-简介
+打开主机网络服务的数据文件
 
-头文件 `#include <.h>`
+头文件 `#include <netdb.h>`
 
 函数原型
 
 ```c
-
+void setservent(int stayopen);
 ```
 
-- 说明：
-- 返回值：
-- 附加说明：
-- 相关函数：
-
-示例
-
-```c
-
-```
-
-执行
-
-```shell
-setservent（打開主機網絡服務的數據文件）
-相關函數
-getservent, getservbyname, getservbyport, endservent
-表頭文件
-#include < netdb.h >
-定義函數
-void setservent (int stayopen);
-函數說明
-setservent()用來打開/etc/services，如果參數stayopen值為1，則接下來的getservbyname()或getservbyport()將補回自動關閉文件。
-```
+- 说明：setservent() 用来打开 /etc/services，如果参数 stayopen 值为1，则接下来的 getservbyname() 或 getservbyport() 将不会自动关闭文件。
+- 返回值：无
+- 相关函数：getservent, getservbyname, getservbyport, endservent
 
 
 setsockopt
 ---------------------------------------------
 
-简介
+设置 socket 状态
 
-头文件 `#include <.h>`
+头文件
+
+```c
+#include <sys/types.h>
+#include <sys/socket.h>
+```
 
 函数原型
 
 ```c
-
+int setsockopt(int sockfd, int level, int optname,
+               const void *optval, socklen_t optlen);
 ```
 
-- 说明：
-- 返回值：
-- 附加说明：
-- 相关函数：
+- 说明：setsockopt() 用来设置参数 sockfd 所指定的 socket 状态；参数 level 代表欲设置的网络层；一般设成 `SOL_SOCKET` 以存取 socket 层；参数 optname 代表欲设置的选项；参数 optval 代表欲设置的值，参数 optlen 则为 optval 的长度。其中， optname 有下列几种数值：
+  - `SO_DEBUG` 打开或关闭排错模式；
+  - `SO_REUSEADDR` 允许在 bind() 过程中本地地址可重复使用；
+  - `SO_TYPE` 返回 socket 类型；
+  - `SO_ERROR` 返回 socket 已发生的错误原因；
+  - `SO_DONTROUTE` 送出的数据包不要利用路由设备来传输；
+  - `SO_BROADCAST` 使用广播方式传送；
+  - `SO_SNDBUF` 设置发送的暂存区大小；
+  - `SO_RCVBUF` 设置接收的暂存区大小；
+  - `SO_KEEPALIVE` 定期确定连线是否已终止；
+  - `SO_OOBINLINE` 当接收到 OOB 数据时会马上送至标准输入设备；
+  - `SO_LINGER` 确保数据安全且可靠地传送出去。
+- 返回值：成功则返回 0，失败返回 -1，错误原因存于 errno。错误代码如下：
+  - `EBADF` 参数 sockfd 并非合法的 socket 处理代码；
+  - `ENOTSOCK` 参数 sockfd 为一文件描述符，非 socket；
+  - `ENOPROTOOPT` 参数 optname 指定的选项不正确；
+  - `EFAULT` 参数 optval 指针指向无法存取的内存空间。
+- 相关函数：getsockopt
 
 示例
 
-```c
-
-```
-
-执行
-
-```shell
-setsockopt（設置socket狀態）
-相關函數
-getsockopt
-表頭文件
-#include<sys/types.h>
-#include<sys/socket.h>
-定義函數
-int setsockopt(int s,int level,int optname,const void * optval,,socklen_toptlen);
-函數說明
-setsockopt()用來設置參數s所指定的socket狀態。參數level代表欲設置的網絡層，一般設成SOL_SOCKET以存取socket層。參數optname代表欲設置的選項，有下列幾種數值:
-SO_DEBUG 打開或關閉排錯模式
-SO_REUSEADDR 允許在bind（）過程中本地地址可重複使用
-SO_TYPE 返回socket形態。
-SO_ERROR 返回socket已發生的錯誤原因
-SO_DONTROUTE 送出的數據包不要利用路由設備來傳輸。
-SO_BROADCAST 使用廣播方式傳送
-SO_SNDBUF 設置送出的暫存區大小
-SO_RCVBUF 設置接收的暫存區大小
-SO_KEEPALIVE 定期確定連線是否已終止。
-SO_OOBINLINE 當接收到OOB 數據時會馬上送至標準輸入設備
-SO_LINGER 確保數據安全且可靠的傳送出去。
-參數
-optval代表欲設置的值，參數optlen則為optval的長度。
-返回值
-成功則返回0，若有錯誤則返回-1，錯誤原因存於errno。
-附加說明
-EBADF 參數s並非合法的socket處理代碼
-ENOTSOCK 參數s為一文件描述詞，非socket
-ENOPROTOOPT 參數optname指定的選項不正確。
-EFAULT 參數optval指針指向無法存取的內存空間。
-範例
-參考getsockopt()。
-```
+参考 [getsockopt()](#getsockopt)
 
 
 shutdown
 ---------------------------------------------
 
-简介
+终止 socket 通信
 
-头文件 `#include <.h>`
+头文件 `#include <sys/socket.h>`
 
 函数原型
 
 ```c
-
+int shutdown(int sockfd, int how);
 ```
 
-- 说明：
-- 返回值：
-- 附加说明：
-- 相关函数：
-
-示例
-
-```c
-
-```
-
-执行
-
-```shell
-shutdown（終止socket通信）
-相關函數
-socket，connect
-表頭文件
-#include<sys/socket.h>
-定義函數
-int shutdown(int s,int how);
-函數說明
-shutdown()用來終止參數s所指定的socket連線。參數s是連線中的socket處理代碼，參數how有下列幾種情況:
-how=0 終止讀取操作。
-how=1 終止傳送操作
-how=2 終止讀取及傳送操作
-返回值
-成功則返回0，失敗返回-1，錯誤原因存於errno。
-錯誤代碼
-EBADF 參數s不是有效的socket處理代碼
-ENOTSOCK 參數s為一文件描述詞，非socket
-ENOTCONN 參數s指定的socket並未連線
-```
+- 说明：shutdown() 用来终止参数 sockfd 所指定的 socket 连接；参数 how 有下列几种情况：
+  - how=0 终止读取操作；
+  - how=1 终止传送操作；
+  - how=2 终止读取及传送操作。
+- 返回值：成功则返回 0，失败返回 -1，错误原因存于 errno。错误代码如下：
+  - `EBADF` 参数 sockfd 并非合法的 socket 处理代码；
+  - `ENOTSOCK` 参数 sockfd 为一文件描述符，非 socket；
+  - `ENOTCONN` 参数 sockfd 指定的 socket 并未连接。
+- 相关函数：socket，connect
 
 
 socket
 ---------------------------------------------
 
-简介
+建立一个 socket 通信
 
-头文件 `#include <.h>`
+头文件
+
+```c
+#include <sys/types.h>
+#include <sys/socket.h>
+```
 
 函数原型
 
 ```c
-
+int socket(int domain, int type, int protocol);
 ```
 
-- 说明：
-- 返回值：
-- 附加说明：
-- 相关函数：
+- 说明：socket() 用来建立一个新的 socket，也就是向系统注册，通知系统建立一通信端口。参数 domain 指定使用何种地址类型，完整的定义在 /usr/include/bits/socket.h 中，下面是常见的协议：
+
+  - `PF_UNIX` / `PF_LOCAL` / `AF_UNIX` / `AF_LOCAL` UNIX 进程通信协议
+  - `PF_INET` / `AF_INET` IPv4 网络协议
+  - `PF_INET6` / `AF_INET6` IPv6 网络协议
+  - `PF_IPX` / `AF_IPX` IPX-Novell 协议
+  - `PF_NETLINK` / `AF_NETLINK` 核心用户接口装置
+  - `PF_X25` / `AF_X25` ITU-T X.25/ISO-8208 协议
+  - `PF_AX25` / `AF_AX25` 业余无线 AX.25 协议
+  - `PF_ATMPVC` / `AF_ATMPVC` 存取原始 ATM PVCs
+  - `PF_APPLETALK` / `AF_APPLETALK` appletalk（DDP）协议
+  - `PF_PACKET` / `AF_PACKET` 初级封包接口
+
+  参数 type 有下列几种数值：
+
+  - `SOCK_STREAM` 提供双向连续且可信赖的数据流，即 TCP。支持 OOB 机制，在所有数据传送前必须使用 connect() 来建立连接状态。
+  - `SOCK_DGRAM` 使用不连续不可信赖的数据包连接，即 UDP。
+  - `SOCK_SEQPACKET` 提供连续可信赖的数据包连接。
+  - `SOCK_RAW` 提供原始网络协议存取。
+  - `SOCK_RDM` 提供可信赖的数据包连接。
+  - `SOCK_PACKET` 提供和网络驱动程序直接通信。
+
+  参数 protocol 用来指定 socket 所使用的传输协议编号，通常不用管它，设为 0 即可。
+
+- 返回值：成功则返回 0，失败返回 -1，错误原因存于 errno。错误代码如下：
+
+  - `EPROTONOSUPPORT` 参数 domain 指定的类型不支持参数 type 或 protocol 指定的协议；
+  - `ENFILE` 系统内存不足，无法建立新的 socket 结构；
+  - `EMFILE` 进程文件表溢出，无法再建立新的 socket；
+  - `EACCESS` 权限不足，无法建立 type 或 protocol 指定的协议；
+  - `ENOBUFS` / `ENOMEM` 内存不足；
+  - `EINVAL` 参数 domain/type/protocol 不合法。
+
+- 相关函数：accept，bind，connect，listen
 
 示例
 
-```c
-
-```
-
-执行
-
-```shell
-socket（建立一個socket通信）
-相關函數
-accept，bind，connect，listen
-表頭文件
-#include<sys/types.h>
-#include<sys/socket.h>
-定義函數
-int socket(int domain,int type,int protocol);
-函數說明
-socket()用來建立一個新的socket，也就是向系統註冊，通知系統建立一通信端口。參數domain 指定使用何種的地址類型，完整的定義在/usr/include/bits/socket.h 內，底下是常見的協議:
-PF_UNIX/PF_LOCAL/AF_UNIX/AF_LOCAL UNIX 進程通信協議
-PF_INET?AF_INET Ipv4網絡協議
-PF_INET6/AF_INET6 Ipv6 網絡協議
-PF_IPX/AF_IPX IPX-Novell協議
-PF_NETLINK/AF_NETLINK 核心用戶接口裝置
-PF_X25/AF_X25 ITU-T X.25/ISO-8208 協議
-PF_AX25/AF_AX25 業餘無線AX.25協議
-PF_ATMPVC/AF_ATMPVC 存取原始ATM PVCs
-PF_APPLETALK/AF_APPLETALK appletalk（DDP）協議
-PF_PACKET/AF_PACKET 初級封包接口
-參數
-type有下列幾種數值:
-SOCK_STREAM 提供雙向連續且可信賴的數據流，即TCP。支持
-OOB 機制，在所有數據傳送前必須使用connect()來建立連線狀態。
-SOCK_DGRAM 使用不連續不可信賴的數據包連接
-SOCK_SEQPACKET 提供連續可信賴的數據包連接
-SOCK_RAW 提供原始網絡協議存取
-SOCK_RDM 提供可信賴的數據包連接
-SOCK_PACKET 提供和網絡驅動程序直接通信。
-protocol用來指定socket所使用的傳輸協議編號，通常此參考不用管它，設為0即可。
-返回值
-成功則返回socket處理代碼，失敗返回-1。
-錯誤代碼
-EPROTONOSUPPORT 參數domain指定的類型不支持參數type或protocol指定的協議
-ENFILE 核心內存不足，無法建立新的socket結構
-EMFILE 進程文件表溢出，無法再建立新的socket
-EACCESS 權限不足，無法建立type或protocol指定的協議
-ENOBUFS/ENOMEM 內存不足
-EINVAL 參數domain/type/protocol不合法
-範例
-參考connect()。
-```
+参考 [connect()](#connect)
 
