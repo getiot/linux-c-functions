@@ -16,17 +16,17 @@ accept
 函数原型
 
 ```c
-int accept(int s, struct sockaddr *addr, int *addrlen);
+int accept(int sockfd, struct sockaddr *addr, int *addrlen);
 ```
 
-- 说明：accept() 用来接受参数 s 的 socket 连线。参数 s 的 socket 必须先经 bind()、listen() 函数处理过，当有连线进来时 accept() 会返回一个新的 socket 处理代码，往后的数据传送与读取就是经由新的 socket 处理，而原来参数 s 的 socket 能继续使用 accept() 来接受新的连线要求。连线成功时，参数 addr 所指的结构体会被系统填入远程主机的地址数据，参数 addrlen 为 scokaddr 的结构体长度。关于结构体 sockaddr 的定义请参考 bind()。
+- 说明：accept() 用来接受参数 sockfd 的 socket 连线。参数 sockfd 的 socket 必须先经 bind()、listen() 函数处理过，当有连线进来时 accept() 会返回一个新的 socket 处理代码，往后的数据传送与读取就是经由新的 socket 处理，而原来参数 sockfd 的 socket 能继续使用 accept() 来接受新的连线要求。连线成功时，参数 addr 所指的结构体会被系统填入远程主机的地址数据，参数 addrlen 为 scokaddr 的结构体长度。关于结构体 sockaddr 的定义请参考 bind()。
 - 返回值：成功则返回新的 socket 处理代码，失败返回 -1，错误原因存于 errno 中。错误代码如下：
-  - `EBADF` 参数 s 非合法 socket 处理代码。
-  - `EFAULT` 参数 addr 指针指向无法存取的内存空间。
-  - `ENOTSOCK` 参数 s 为一文件描述符，非 socket。
-  - `EOPNOTSUPP` 指定的 socket 并非 `SOCK_STREAM`。
-  - `EPERM` 防火墙拒绝此连线。
-  - `ENOBUFS` 系统的缓冲内存不足。
+  - `EBADF` 参数 sockfd 非合法 socket 处理代码；
+  - `EFAULT` 参数 addr 指针指向无法存取的内存空间；
+  - `ENOTSOCK` 参数 sockfd 为一文件描述符，非 socket；
+  - `EOPNOTSUPP` 指定的 socket 并非 `SOCK_STREAM`；
+  - `EPERM` 防火墙拒绝此连接；
+  - `ENOBUFS` 系统的缓冲内存不足；
   - `ENOMEM` 核心内存不足。
 - 相关函数：socket, bind, listen, connect
 
@@ -40,648 +40,475 @@ bind
 
 绑定 socket
 
-头文件 `#include <.h>`
+头文件
+
+```c
+#include <sys/types.h>
+#include <sys/socket.h>
+```
 
 函数原型
 
 ```c
-
+int bind(int sockfd, const struct sockaddr *addr, socklen_t addrlen);
 ```
 
-- 说明：
-- 返回值：
-- 附加说明：
-- 相关函数：
+- 说明：bind() 用来给参数 sockfd 的 socket 绑定一个 IP 地址，该地址由参数 addr 指向一 sockaddr 结构体，对于不同的 socket domain 定义了一个通用的数据结构。参数 addrlen 为 sockaddr 的结构长度。
+
+  ```c
+  struct sockaddr
+  {
+      unsigned short int sa_family;
+      char sa_data[14];
+  };
+  ```
+
+  sa_family 为调用 socket() 时的 domain 参数，即 AF_XXX 值；sa_data 最多使用 14 个字符长度。
+
+  此 sockaddr 结构体会因为使用不同的 socket domain 而有不同结构定义，例如使用 AF_INET domain，其 socketaddr 结构体定义如下：
+
+  ```c
+  struct socketaddr_in
+  {
+      unsigned short int sin_family;
+      uint16_t sin_port;
+      struct in_addr sin_addr;
+      unsigned char sin_zero[8];
+  };
+  struct in_addr
+  {
+      uint32_t s_addr;
+  };
+  ```
+
+  其中，sin_family 即为 sa_family，sin_port 为使用的 port 编号，sin_addr.s_addr 为 IP 地址，sin_zero 未使用。
+
+- 返回值：成功则返回 0，失败返回 -1，错误原因存于 errno 中。错误代码如下：
+
+  - `EBADF` 参数 sockfd 非合法 socket 处理代码；
+  - `EACCESS` 权限不足；
+  - `ENOTSOCK` 参数 sockfd 为一文件描述符，非 socket。
+
+- 相关函数：socket, accept, connect, listen
 
 示例
 
-```c
-
-```
-
-执行
-
-```shell
-bind（對socket定位）
-相關函數
-socket，accept，connect，listen
-表頭文件
-#include<sys/types.h>
-#include<sys/socket.h>
-定義函數
-int bind(int sockfd,struct sockaddr * my_addr,int addrlen);
-函數說明
-bind()用來設置給參數sockfd的socket一個名稱。此名稱由參數my_addr指向一sockaddr結構，對於不同的socket domain定義了一個通用的數據結構
-struct sockaddr
-{
-unsigned short int sa_family;
-char sa_data[14];
-};
-sa_family 為調用socket（）時的domain參數，即AF_xxxx值。
-sa_data 最多使用14個字符長度。
-此sockaddr結構會因使用不同的socket domain而有不同結構定義，例如使用AF_INET domain，其socketaddr結構定義便為
-struct socketaddr_in
-{
-unsigned short int sin_family;
-uint16_t sin_port;
-struct in_addr sin_addr;
-unsigned char sin_zero[8];
-};
-struct in_addr
-{
-uint32_t s_addr;
-};
-sin_family 即為sa_family
-sin_port 為使用的port編號
-sin_addr.s_addr 為IP 地址
-sin_zero 未使用。
-參數
-addrlen為sockaddr的結構長度。
-返回值
-成功則返回0，失敗返回-1，錯誤原因存於errno中。
-錯誤代碼
-EBADF 參數sockfd 非合法socket處理代碼。
-EACCESS 權限不足
-ENOTSOCK 參數sockfd為一文件描述詞，非socket。
-範例
-參考listen()
-```
+参考 [listen()](#listen)
 
 
 connect
 ---------------------------------------------
 
-简介
+建立 socket 连接
 
-头文件 `#include <.h>`
+头文件
+
+```c
+#include <sys/types.h>
+#include <sys/socket.h>
+```
 
 函数原型
 
 ```c
-
+int connect(int sockfd, const struct sockaddr *addr, socklen_t addrlen);
 ```
 
-- 说明：
-- 返回值：
-- 附加说明：
-- 相关函数：
+- 说明：connect() 用来将参数 sockfd 对应的 socket 连接到参数 addr 指定的网络地址。结构体 sockaddr 请参考 bind()，参数 addrlen 为 sockaddr 的结构长度。
+- 返回值：成功则返回 0，失败返回 -1，错误原因存于 errno 中。错误代码如下：
+  - `EBADF` 参数 sockfd 非合法 socket 处理代码；
+  - `EFAULT` 参数 serv_addr 指针指向无法存取的内存空间；
+  - `ENOTSOCK` 参数 sockfd 为一文件描述符，非 socket；
+  - `EISCONN` 参数 sockfd 的 socket 已是连接状态；
+  - `ECONNREFUSED` 连接要求被 server 端拒绝；
+  - `ETIMEDOUT` 企图连接的操作超过限定时间仍未有响应；
+  - `ENETUNREACH` 无法传送数据包至指定的主机；
+  - `EAFNOSUPPORT` sockaddr 结构的 sa_family 不正确；
+  - `EALREADY` socket 为不可阻断且先前的连接操作还未完成。
+- 相关函数：socket, bind, listen
 
 示例
 
 ```c
+/* 
+ * 此程序将创建 TCP client，连接 TCP server，并将键盘输入的字符串传送给 server
+ * TCP server 示例请参考 listen()
+ */
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
 
+#define PORT 12345
+#define SERVER_IP "127.0.0.1"
+
+int main()
+{
+    int s;
+    struct sockaddr_in addr;
+    char buffer[256];
+    if((s = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
+        perror("socket");
+        exit(1);
+    }
+    /* 填写sockaddr_in结构*/
+    bzero(&addr, sizeof(addr));
+    addr.sin_family = AF_INET;
+    addr.sin_port = htons(PORT);
+    addr.sin_addr.s_addr = inet_addr(SERVER_IP);
+    /* 尝试连接 */
+    if(connect(s, &addr, sizeof(addr)) < 0) {
+        perror("connect");
+        exit(1);
+    }
+    /* 接收由server端传来的信息*/
+    recv(s, buffer, sizeof(buffer), 0);
+    printf("%s\n", buffer);
+    while(1) {
+        bzero(buffer, sizeof(buffer));
+        /* 从标准输入设备获取字符串 */
+        read(STDIN_FILENO, buffer, sizeof(buffer));
+        /* 将字符串传给server端 */
+        if(send(s, buffer, sizeof(buffer), 0) < 0) {
+            perror("send");
+            exit(1);
+        }
+    }
+}
 ```
 
 执行
 
 ```shell
-connect（建立socket連線）
-相關函數
-socket，bind，listen
-表頭文件
-#include<sys/types.h>
-#include<sys/socket.h>
-定義函數
-int connect (int sockfd,struct sockaddr * serv_addr,int addrlen);
-函數說明
-connect()用來將參數sockfd 的socket 連至參數serv_addr 指定的網絡地址。結構sockaddr請參考bind()。參數addrlen為sockaddr的結構長度。
-返回值
-成功則返回0，失敗返回-1，錯誤原因存於errno中。
-錯誤代碼
-EBADF 參數sockfd 非合法socket處理代碼
-EFAULT 參數serv_addr指針指向無法存取的內存空間
-ENOTSOCK 參數sockfd為一文件描述詞，非socket。
-EISCONN 參數sockfd的socket已是連線狀態
-ECONNREFUSED 連線要求被server端拒絕。
-ETIMEDOUT 企圖連線的操作超過限定時間仍未有響應。
-ENETUNREACH 無法傳送數據包至指定的主機。
-EAFNOSUPPORT sockaddr結構的sa_family不正確。
-EALREADY socket為不可阻斷且先前的連線操作還未完成。
-範例
-/* 利用socket的TCP client
-此程序會連線TCP server，並將鍵盤輸入的字符串傳送給server。
-TCP server範例請參考listen（）。
-*/
-#include<sys/stat.h>
-#include<fcntl.h>
-#include<unistd.h>
-#include<sys/types.h>
-#include<sys/socket.h>
-#include<netinet/in.h>
-#include<arpa/inet.h>
-#define PORT 1234
-#define SERVER_IP “127.0.0.1”
-main()
-{
-int s;
-struct sockaddr_in addr;
-char buffer[256];
-if((s = socket(AF_INET,SOCK_STREAM,0))<0){
-perror(“socket”);
-exit(1);
-}
-/* 填寫sockaddr_in結構*/
-bzero(&addr,sizeof(addr));
-addr.sin_family = AF_INET;
-addr.sin_port=htons(PORT);
-addr.sin_addr.s_addr = inet_addr(SERVER_IP);
-/* 嘗試連線*/
-if(connect(s,&addr,sizeof(addr))<0){
-perror(“connect”);
-exit(1);
-}
-/* 接收由server端傳來的信息*/
-recv(s,buffer,sizeof(buffer),0);
-printf(“%s\n”,buffer);
-while(1){
-bzero(buffer,sizeof(buffer));
-/* 從標準輸入設備取得字符串*/
-read(STDIN_FILENO,buffer,sizeof(buffer));
-/* 將字符串傳給server端*/
-if(send(s,buffer,sizeof(buffer),0)<0){
-perror(“send”);
-exit(1);
-}
-}
-}
-執行
 $ ./connect
 Welcome to server!
-hi I am client! /*鍵盤輸入*/
-/*<Ctrl+C>中斷程序*/
+hi I am client! # 键盘输入
+# 按<Ctrl+C>中断程序
 ```
 
 
 endprotoent
 ---------------------------------------------
 
-简介
+结束网络协议数据的读取
 
-头文件 `#include <.h>`
+头文件 `#include <netdb.h>`
 
 函数原型
 
 ```c
-
+void endprotoent(void);
 ```
 
-- 说明：
-- 返回值：
+- 说明：endprotoent() 用来关闭由 getprotoent() 打开的文件。
+- 返回值：无
 - 附加说明：
-- 相关函数：
+- 相关函数：getprotoent，getprotobyname，getprotobynumber，setprotoent
 
 示例
 
-```c
-
-```
-
-执行
-
-```shell
-endprotoent（結束網絡協議數據的讀取）
-相關函數
-getprotoent，getprotobyname，getprotobynumber，setprotoent
-表頭文件
-#include<netdb.h>
-定義函數
-void endprotoent(void);
-函數說明
-endprotoent()用來關閉由getprotoent()打開的文件。
-返回值
-
-範例
-參考getprotoent()
-```
+参考 [getprotoent()](#getprotoent)
 
 
 endservent
 ---------------------------------------------
 
-简介
+结束网络服务数据的读取
 
-头文件 `#include <.h>`
+头文件 `#include <netdb.h>`
 
 函数原型
 
 ```c
-
+void endservent(void);
 ```
 
-- 说明：
-- 返回值：
-- 附加说明：
-- 相关函数：
+- 说明：endservent() 用来关闭由 getservent() 所打开的文件。
+- 返回值：无
+- 相关函数：getservent，getservbyname，getservbyport，setservent
 
 示例
 
-```c
-
-```
-
-执行
-
-```shell
-endservent（結束網絡服務數據的讀取）
-相關函數
-getservent，getservbyname，getservbyport，setservent
-表頭文件
-#include<netdb.h>
-定義函數
-void endservent(void);
-函數說明
-endservent()用來關閉由getservent()所打開的文件。
-返回值
-
-範例
-參考getservent()。
-```
+参考 [getservent()](#getservent)
 
 
 getsockopt
 ---------------------------------------------
 
-简介
+获取 socket 状态
 
-头文件 `#include <.h>`
+头文件
+
+```c
+#include <sys/types.h>
+#include <sys/socket.h>
+```
 
 函数原型
 
 ```c
-
+int getsockopt(int sockfd, int level, int optname, void *optval, socklen_t *optlen);
 ```
 
-- 说明：
-- 返回值：
-- 附加说明：
-- 相关函数：
+- 说明：getsockopt() 会将参数 sockfd 所指定的 socket 状态返回。参数 optname 代表欲获取何种选项状态，而参数 optval 则指向欲保存结果的內存地址，参数 optlen 则为该空间的大小。参数 level、optname 请参考 setsockopt()。
+- 返回值：成功则返回0，出错返回 -1，错误原因存于 errno。错误代码如下：
+  - `EBADF` 参数 sockfd 并非合法的 socket 处理代码；
+  - `ENOTSOCK` 参数 sockfd 为一文件描述符，非 socket；
+  - `ENOPROTOOPT` 参数 optname 指定的选项不正确；
+  - `EFAULT` 参数 optval 指针指向无法存取的内存空间。
+- 相关函数：setsockopt
 
 示例
 
 ```c
+#include<sys/types.h>
+#include<sys/socket.h>
 
+int main()
+{
+    int s, optval, optlen = sizeof(int);
+    if ((s = socket(AF_INET, SOCK_STREAM, 0)) < 0)
+        perror("socket");
+    getsockopt(s, SOL_SOCKET, SO_TYPE, &optval, &optlen);
+    printf("optval = %d\n", optval);
+    close(s);
+    return 0;
+}
 ```
 
 执行
 
 ```shell
-getsockopt（取得socket狀態）
-相關函數
-setsockopt
-表頭文件
-#include<sys/types.h>
-#include<sys/socket.h>
-定義函數
-int getsockopt(int s,int level,int optname,void* optval,socklen_t* optlen);
-函數說明
-getsockopt()會將參數s所指定的socket狀態返回。參數optname代表欲取得何種選項狀態，而參數optval則指向欲保存結果的內存地址，參數optlen則為該空間的大小。參數level、optname請參考setsockopt()。
-返回值
-成功則返回0，若有錯誤則返回-1，錯誤原因存於errno
-錯誤代碼
-EBADF 參數s 並非合法的socket處理代碼
-ENOTSOCK 參數s為一文件描述詞，非socket
-ENOPROTOOPT 參數optname指定的選項不正確
-EFAULT 參數optval指針指向無法存取的內存空間
-範例
-#include<sys/types.h>
-#include<sys/socket.h>
-main()
-{
-int s,optval,optlen = sizeof(int);
-if((s = socket(AF_INET,SOCK_STREAM,0))<0) perror(“socket”);
-getsockopt(s,SOL_SOCKET,SO_TYPE,&optval,&optlen);
-printf(“optval = %d\n”,optval);
-close(s);}
-執行
-optval = 1 /*SOCK_STREAM的定義正是此值*/
+optval = 1 # SOCK_STREAM 的定义正是此值
 ```
 
 
 htonl
 ---------------------------------------------
 
-简介
+将32位主机字节序转换成网络字节序
 
-头文件 `#include <.h>`
+头文件 `#include <netinet/in.h>`
 
 函数原型
 
 ```c
-
+unsigned long int htonl(unsigned long int hostlong);
 ```
 
-- 说明：
-- 返回值：
-- 附加说明：
-- 相关函数：
+- 说明：htonl() 用来将参数指定的32位 hostlong 转换成网络字节序。
+- 返回值：返回对应的网络字节序。
+- 相关函数：htons，ntohl，ntohs
 
 示例
 
-```c
-
-```
-
-执行
-
-```shell
-htonl（將32位主機字符順序轉換成網絡字符順序）
-相關函數
-htons，ntohl，ntohs
-表頭文件
-#include<netinet/in.h>
-定義函數
-unsigned long int htonl(unsigned long int hostlong);
-函數說明
-htonl（）用來將參數指定的32位hostlong 轉換成網絡字符順序。
-返回值
-返回對應的網絡字符順序。
-範例
-參考getservbyport()或connect()。
-```
+参考 [getservbyport()](#getservbyport) 或 [connect()](#connect)。
 
 
 htons
 ---------------------------------------------
 
-简介
+将16位主机字节序转换成网络字节序
 
-头文件 `#include <.h>`
+头文件 `#include <netinet/in.h>`
 
 函数原型
 
 ```c
-
+unsigned short int htons(unsigned short int hostshort);
 ```
 
-- 说明：
-- 返回值：
-- 附加说明：
-- 相关函数：
+- 说明：htons() 用来将参数指定的16位 hostshort 转换成网络字节序。
+- 返回值：返回对应的网络字节序。
+- 相关函数：htonl，ntohl，ntohs
 
 示例
 
-```c
-
-```
-
-执行
-
-```shell
-htons（將16位主機字符順序轉換成網絡字符順序）
-相關函數
-htonl，ntohl，ntohs
-表頭文件
-#include<netinet/in.h>
-定義函數
-unsigned short int htons(unsigned short int hostshort);
-函數說明
-htons()用來將參數指定的16位hostshort轉換成網絡字符順序。
-返回值
-返回對應的網絡字符順序。
-範例
-參考connect()。
-```
+参考 [connect()](#connect)
 
 
 inet_addr
 ---------------------------------------------
 
-简介
+将网络地址转成二进制的数字
 
-头文件 `#include <.h>`
+头文件
+
+```c
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+```
 
 函数原型
 
 ```c
-
-```
-
-- 说明：
-- 返回值：
-- 附加说明：
-- 相关函数：
-
-示例
-
-```c
-
-```
-
-执行
-
-```shell
-inet_addr（將網絡地址轉成二進制的數字）
-相關函數
-inet_aton，inet_ntoa
-表頭文件
-#include<sys/socket.h>
-#include<netinet/in.h>
-#include<arpa/inet.h>
-定義函數
 unsigned long int inet_addr(const char *cp);
-函數說明
-inet_addr()用來將參數cp所指的網絡地址字符串轉換成網絡所使用的二進制數字。網絡地址字符串是以數字和點組成的字符串，例如:“163.13.132.68”。
-返回值
-成功則返回對應的網絡二進制的數字，失敗返回-1。
 ```
+
+- 说明：inet_addr() 用来将参数 cp 所指的网络地址字符串转换成网络所使用的二进制数字。网络地址字符串是以数字和点组成的字符串，例如 "42.192.64.149"。
+- 返回值：成功则返回对应的网络二进制的数字，失败返回 -1。
+- 附加说明：
+- 相关函数：inet_aton，inet_ntoa
 
 
 inet_aton
 ---------------------------------------------
 
-简介
+将网络地址转成网络二进制的数字
 
-头文件 `#include <.h>`
+头文件
+
+```c
+#include <sys/scoket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+```
 
 函数原型
 
 ```c
-
+int inet_aton(const char *cp, struct in_addr *inp);
 ```
 
-- 说明：
-- 返回值：
-- 附加说明：
-- 相关函数：
+- 说明：inet_aton() 用来将参数 cp 所指的网络地址字符串转换成网络使用的二进制的数字，然后存于参数 inp 所指的 in_addr 结构中。结构 in_addr 定义如下：
 
-示例
+  ```c
+  struct in_addr
+  {
+      unsigned long int s_addr;
+  };
+  ```
 
-```c
+- 返回值：成功则返回非 0 值，失败返回 0。
 
-```
-
-执行
-
-```shell
-inet_aton（將網絡地址轉成網絡二進制的數字）
-相關函數
-inet_addr，inet_ntoa
-表頭文件
-#include<sys/scoket.h>
-#include<netinet/in.h>
-#include<arpa/inet.h>
-定義函數
-int inet_aton(const char * cp,struct in_addr *inp);
-函數說明
-inet_aton()用來將參數cp所指的網絡地址字符串轉換成網絡使用的二進制的數字，然後存於參數inp所指的in_addr結構中。
-結構in_addr定義如下
-struct in_addr
-{
-unsigned long int s_addr;
-};
-返回值
-成功則返回非0值，失敗則返回0。
-```
+- 相关函数：inet_addr，inet_ntoa
 
 
 inet_ntoa
 ---------------------------------------------
 
-简介
+将网络二进制的数字转换成网络地址
 
-头文件 `#include <.h>`
+头文件
+
+```c
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+```
 
 函数原型
 
 ```c
-
+char *inet_ntoa(struct in_addr in);
 ```
 
-- 说明：
-- 返回值：
-- 附加说明：
-- 相关函数：
-
-示例
-
-```c
-
-```
-
-执行
-
-```shell
-inet_ntoa（將網絡二進制的數字轉換成網絡地址）
-相關函數
-inet_addr，inet_aton
-表頭文件
-#include<sys/socket.h>
-#include<netinet/in.h>
-#include<arpa/inet.h>
-定義函數
-char * inet_ntoa(struct in_addr in);
-函數說明
-inet_ntoa()用來將參數in所指的網絡二進制的數字轉換成網絡地址，然後將指向此網絡地址字符串的指針返回。
-返回值
-成功則返回字符串指針，失敗則返回NULL。
-```
+- 说明：inet_ntoa() 用来将参数 in 所指的网络二进制的数字转换成网络地址，然后将指向此网络地址字符串的指针返回。
+- 返回值：成功则返回字符串指针，失败则返回 NULL。
+- 相关函数：inet_addr，inet_aton
 
 
 listen
 ---------------------------------------------
 
-简介
+等待 socket 连接
 
-头文件 `#include <.h>`
+头文件 `#include <sys/socket.h>`
 
 函数原型
 
 ```c
-
+int listen(int sockfd, int backlog);
 ```
 
-- 说明：
-- 返回值：
-- 附加说明：
-- 相关函数：
+- 说明：listen() 用来等待参数 sockfd 的 socket 连接。参数 backlog 指定同时能处理的最大连接要求，如果连接数目达此上限则 client 端将收到 `ECONNREFUSED` 的错误。listen() 并未开始接收连接，只是设置 socket 为 listen 模式，真正接收 client 端连接的是 accept()。通常 listen() 会在 socket()、bind() 之后调用，接着才调用 accept()。
+- 返回值：成功则返回 0，失败返回 -1，错误原因存于 errno。错误代码如下：
+  - `EBADF` 参数 sockfd 非合法 socket 处理代码；
+  - `EACCESS` 权限不足；
+  - `EOPNOTSUPP` 指定的 socket 并未支持 listen 模式。
+- 附加说明：listen() 只适用 `SOCK_STREAM` 或 `SOCK_SEQPACKET` 的 socket 类型。如果 socket 为 `AF_INET` 则参数 backlog 最大值可设至 128。
+- 相关函数：socket，bind，accept，connect
 
 示例
 
 ```c
-
-```
-
-执行
-
-```shell
-listen（等待連接）
-相關函數
-socket，bind，accept，connect
-表頭文件
-#include<sys/socket.h>
-定義函數
-int listen(int s,int backlog);
-函數說明
-listen()用來等待參數s 的socket連線。參數backlog指定同時能處理的最大連接要求，如果連接數目達此上限則client端將收到ECONNREFUSED的錯誤。Listen()並未開始接收連線，只是設置socket為listen模式，真正接收client端連線的是accept()。通常listen()會在socket()，bind()之後調用，接著才調用accept()。
-返回值
-成功則返回0，失敗返回-1，錯誤原因存於errno
-附加說明
-listen()只適用SOCK_STREAM或SOCK_SEQPACKET的socket類型。如果socket為AF_INET則參數backlog 最大值可設至128。
-錯誤代碼
-EBADF 參數sockfd非合法socket處理代碼
-EACCESS 權限不足
-EOPNOTSUPP 指定的socket並未支援listen模式。
-範例
 #include<sys/types.h>
 #include<sys/socket.h>
 #include<netinet/in.h>
 #include<arpa/inet.h>
 #include<unistd.h>
-#define PORT 1234
+
+#define PORT      12345
 #define MAXSOCKFD 10
-main()
+
+int main()
 {
-int sockfd,newsockfd,is_connected[MAXSOCKFD],fd;
-struct sockaddr_in addr;
-int addr_len = sizeof(struct sockaddr_in);
-fd_set readfds;
-char buffer[256];
-char msg[ ] =”Welcome to server!”;
-if ((sockfd = socket(AF_INET,SOCK_STREAM,0))<0){
-perror(“socket”);
-exit(1);
+    int sockfd, newsockfd, is_connected[MAXSOCKFD], fd;
+    struct sockaddr_in addr;
+    int addr_len = sizeof(struct sockaddr_in);
+    fd_set readfds;
+    char buffer[256];
+    char msg[] = "Welcome to server!";
+    if ((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
+        perror("socket");
+        exit(1);
+    }
+    bzero(&addr, sizeof(addr));
+    addr.sin_family = AF_INET;
+    addr.sin_port = htons(PORT);
+    addr.sin_addr.s_addr = htonl(INADDR_ANY);
+    if (bind(sockfd, &addr, sizeof(addr)) < 0) {
+        perror("connect");
+        exit(1);
+    }
+    if (listen(sockfd, 3) < 0) {
+        perror("listen");
+        exit(1);
+    }
+    for (fd=0; fd<MAXSOCKFD; fd++)
+        is_connected[fd] = 0;
+    
+    while (1) {
+        FD_ZERO(&readfds);
+        FD_SET(sockfd, &readfds);
+        for(fd=0; fd<MAXSOCKFD; fd++) {
+            if (is_connected[fd])
+                FD_SET(fd, &readfds);
+        }
+        if (!select(MAXSOCKFD, &readfds, NULL, NULL, NULL))
+            continue;
+        
+        for (fd=0; fd<MAXSOCKFD; fd++)
+        {
+            if (FD_ISSET(fd, &readfds)) {
+                if (sockfd == fd){
+                    if ((newsockfd = accept(sockfd, &addr, &addr_len)) < 0)
+                        perror("accept");
+                    write(newsockfd, msg, sizeof(msg));
+                    is_connected[newsockfd] = 1;
+                    printf("connect from %s\n", inet_ntoa(addr.sin_addr));
+                } else {
+                    bzero(buffer, sizeof(buffer));
+                    if (read(fd, buffer, sizeof(buffer)) <= 0) {
+                        printf("connect closed.\n");
+                        is_connected[fd] = 0;
+                        close(fd);
+                    } else
+                        printf("%s", buffer);
+                }
+            }
+        }
+    }
 }
-bzero(&addr,sizeof(addr));
-addr.sin_family =AF_INET;
-addr.sin_port = htons(PORT);
-addr.sin_addr.s_addr = htonl(INADDR_ANY);
-if(bind(sockfd,&addr,sizeof(addr))<0){
-perror(“connect”);
-exit(1);
-}
-if(listen(sockfd,3)<0){
-perror(“listen”);
-exit(1);
-}
-for(fd=0;fd<MAXSOCKFD;fd++)
-is_connected[fd]=0;
-while(1){
-FD_ZERO(&readfds);
-FD_SET(sockfd,&readfds);
-for(fd=0;fd<MAXSOCKFD;fd++)
-if(is_connected[fd]) FD_SET(fd,&readfds);
-if(!select(MAXSOCKFD,&readfds,NULL,NULL,NULL))continue;
-for(fd=0;fd<MAXSOCKFD;fd++)
-if(FD_ISSET(fd,&readfds)){
-if(sockfd = =fd){
-if((newsockfd = accept (sockfd,&addr,&addr_len))<0)
-perror(“accept”);
-write(newsockfd,msg,sizeof(msg));
-is_connected[newsockfd] =1;
-printf(“cnnect from %s\n”,inet_ntoa(addr.sin_addr));
-}else{
-bzero(buffer,sizeof(buffer));
-if(read(fd,buffer,sizeof(buffer))<=0){
-printf(“connect closed.\n”);
-is_connected[fd]=0;
-close(fd);
-}else
-printf(“%s”,buffer);
-}
-}
-}
-}
-執行
+```
+
+执行
+
+```shell
 $ ./listen
 connect from 127.0.0.1
 hi I am client
@@ -692,198 +519,124 @@ connected closed.
 ntohl
 ---------------------------------------------
 
-简介
+将32位网络字节序转换成主机字节序
 
-头文件 `#include <.h>`
+头文件 `#include <netinet/in.h>`
 
 函数原型
 
 ```c
-
+unsigned long int ntohl(unsigned long int netlong);
 ```
 
-- 说明：
-- 返回值：
-- 附加说明：
-- 相关函数：
+- 说明：ntohl() 用来将参数指定的32位 netlong 转换成主机字节序。
+- 返回值：返回对应的主机字节序。
+- 相关函数：htonl，htons，ntohs
 
 示例
 
-```c
-
-```
-
-执行
-
-```shell
-ntohl（將32位網絡字符順序轉換成主機字符順序）
-相關函數
-htonl，htons，ntohs
-表頭文件
-#include<netinet/in.h>
-定義函數
-unsigned long int ntohl(unsigned long int netlong);
-函數說明
-ntohl()用來將參數指定的32位netlong轉換成主機字符順序。
-返回值
-返回對應的主機字符順序。
-範例
-參考getservent()。
-```
+参考 [getservent()](#getservent)
 
 
 ntohs
 ---------------------------------------------
 
-简介
+将16位网络字节序转换成主机字节序
 
-头文件 `#include <.h>`
+头文件 `#include <netinet/in.h>`
 
 函数原型
 
 ```c
-
+unsigned short int ntohs(unsigned short int netshort);
 ```
 
-- 说明：
-- 返回值：
-- 附加说明：
-- 相关函数：
+- 说明：ntohs() 用来将参数指定的16位 netshort 转换成主机字节序。
+- 返回值：返回对应的主机字节序。
+- 相关函数：htonl，htons，ntohl
 
 示例
 
-```c
-
-```
-
-执行
-
-```shell
-ntohs（將16位網絡字符順序轉換成主機字符順序）
-相關函數
-htonl，htons，ntohl
-表頭文件
-#include<netinet/in.h>
-定義函數
-unsigned short int ntohs(unsigned short int netshort);
-函數說明
-ntohs()用來將參數指定的16位netshort轉換成主機字符順序。
-返回值
-返回對應的主機順序。
-範例
-參考getservent()。
-```
+参考 [getservent()](#getservent)
 
 
 recv
 ---------------------------------------------
 
-简介
+经 socket 接收数据
 
-头文件 `#include <.h>`
+头文件
+
+```c
+#include<sys/types.h>
+#include<sys/socket.h>
+```
 
 函数原型
 
 ```c
-
+ssize_t recv(int sockfd, void *buf, size_t len, int flags);
 ```
 
-- 说明：
-- 返回值：
-- 附加说明：
-- 相关函数：
+- 说明：recv() 用来接收远端主机经指定的 socket 传来的数据，并把数据存到由参数 buf 指向的内存空间，参数 len 为可接收数据的最大长度。参数 flags 一般设为 0，其可用定义如下：
+  - `MSG_OOB` 接收以 out-of-band 送出的数据；
+  - `MSG_PEEK` 返回来的数据并不会在系统内删除，如果再调用 recv() 会返回相同的数据内容；
+  - `MSG_WAITALL` 强迫接收到 len 大小的数据后才能返回，除非有错误或信号产生；
+  - `MSG_NOSIGNAL` 此操作不愿被 SIGPIPE 信号中断。
+- 返回值：成功则返回接收到的字符数，失败返回 -1，错误原因存于 errno 中。错误代码如下：
+  - `EBADF` 参数 sockfd 非合法的 socket 处理代码
+  - `EFAULT` 参数中有一指针指向无法存取的内存空间
+  - `ENOTSOCK` 参数 sockfd 为一文件描述符，非 socket
+  - `EINTR` 被信号所中断
+  - `EAGAIN` 此动作会令进程阻断，但参数 sockfd 为不可阻断
+  - `ENOBUFS` 系统的缓冲内存不足
+  - `ENOMEM` 系统内存不足
+  - `EINVAL` 传给系统调用的参数不正确
+- 相关函数：recvfrom，recvmsg，send，sendto，socket
 
 示例
 
-```c
-
-```
-
-执行
-
-```shell
-recv（經socket接收數據）
-相關函數
-recvfrom，recvmsg，send，sendto，socket
-表頭文件
-#include<sys/types.h>
-#include<sys/socket.h>
-定義函數
-int recv(int s,void *buf,int len,unsigned int flags);
-函數說明
-recv()用來接收遠端主機經指定的socket傳來的數據，並把數據存到由參數buf 指向的內存空間，參數len為可接收數據的最大長度。
-參數
-flags一般設0。其他數值定義如下:
-MSG_OOB 接收以out-of-band 送出的數據。
-MSG_PEEK 返回來的數據並不會在系統內刪除，如果再調用recv()會返回相同的數據內容。
-MSG_WAITALL強迫接收到len大小的數據後才能返回，除非有錯誤或信號產生。
-MSG_NOSIGNAL此操作不願被SIGPIPE信號中斷返回值成功則返回接收到的字符數，失敗返回-1，錯誤原因存於errno中。
-錯誤代碼
-EBADF 參數s非合法的socket處理代碼
-EFAULT 參數中有一指針指向無法存取的內存空間
-ENOTSOCK 參數s為一文件描述詞，非socket。
-EINTR 被信號所中斷
-EAGAIN 此動作會令進程阻斷，但參數s的socket為不可阻斷
-ENOBUFS 系統的緩衝內存不足。
-ENOMEM 核心內存不足
-EINVAL 傳給系統調用的參數不正確。
-範例
-參考listen()。
-```
+参考 [listen()](#listen)
 
 
 recvfrom
 ---------------------------------------------
 
-简介
+经 socket 接收数据
 
-头文件 `#include <.h>`
+头文件
+
+```c
+#include <sys/types.h>
+#include <sys/socket.h>
+```
 
 函数原型
 
 ```c
-
+ssize_t recvfrom(int sockfd, void *buf, size_t len, int flags,
+                 struct sockaddr *src_addr, socklen_t *addrlen);
 ```
 
-- 说明：
-- 返回值：
+- 说明：recv()用來接收遠程主機經指定的socket 傳來的數據，並把數據存到由參數buf 指向的內存空間，參數len 為可接收數據的最大長度。參數flags 一般設0，其他數值定義請參考recv()。參數from用來指定欲傳送的網絡地址，結構sockaddr 請參考bind()。參數fromlen為sockaddr的結構長度。
+- 返回值：成功則返回接收到的字符數，失敗則返回-1，錯誤原因存於errno中。错误代码如下：
+  - `EBADF` 参数 sockfd 非合法的 socket 处理代码
+  - `EFAULT` 参数中有一指针指向无法存取的内存空间
+  - `ENOTSOCK` 参数 sockfd 为一文件描述符，非 socket
+  - `EINTR` 被信号所中断
+  - `EAGAIN` 此动作会令进程阻断，但参数 sockfd 为不可阻断
+  - `ENOBUFS` 系统的缓冲内存不足
+  - `ENOMEM` 系统内存不足
+  - `EINVAL` 传给系统调用的参数不正确
 - 附加说明：
-- 相关函数：
+- 相关函数：recv，recvmsg，send，sendto，socket
 
 示例
 
 ```c
-
-```
-
-执行
-
-```shell
-recvfrom（經socket接收數據）
-相關函數
-recv，recvmsg，send，sendto，socket
-表頭文件
-#include<sys/types.h>
-#include<sys/socket.h>
-定義函數
-int recvfrom(int s,void *buf,int len,unsigned int flags ,struct sockaddr *from ,int *fromlen);
-函數說明
-recv()用來接收遠程主機經指定的socket 傳來的數據，並把數據存到由參數buf 指向的內存空間，參數len 為可接收數據的最大長度。參數flags 一般設0，其他數值定義請參考recv()。參數from用來指定欲傳送的網絡地址，結構sockaddr 請參考bind()。參數fromlen為sockaddr的結構長度。
-返回值
-成功則返回接收到的字符數，失敗則返回-1，錯誤原因存於errno中。
-錯誤代碼
-EBADF 參數s非合法的socket處理代碼
-EFAULT 參數中有一指針指向無法存取的內存空間。
-ENOTSOCK 參數s為一文件描述詞，非socket。
-EINTR 被信號所中斷。
-EAGAIN 此動作會令進程阻斷，但參數s的socket為不可阻斷。
-ENOBUFS 系統的緩衝內存不足
-ENOMEM 核心內存不足
-EINVAL 傳給系統調用的參數不正確。
-範例
-/*利用socket的UDP client
-此程序會連線UDP server，並將鍵盤輸入的字符串傳給server。
-UDP server 範例請參考sendto（）。
+/*
+ * 此程序创建UDP client，连接UDP server，并将键盘输入的字符串传给server
+ * UDP server 示例请参考 sendto()
 */
 #include<sys/stat.h>
 #include<fcntl.h>
@@ -892,101 +645,93 @@ UDP server 範例請參考sendto（）。
 #include<sys/socket.h>
 #include<netinet/in.h>
 #include<arpa/inet.h>
-#define PORT 2345
-#define SERVER_IP “127.0.0.1”
-main()
+
+#define PORT      23456
+#define SERVER_IP "127.0.0.1"
+
+int main()
 {
-int s,len;
-struct sockaddr_in addr;
-int addr_len =sizeof(struct sockaddr_in);
-char buffer[256];
-/* 建立socket*/
-if((s = socket(AF_INET,SOCK_DGRAM,0))<0){
-perror(“socket”);
-exit(1);
+    int s,len;
+    struct sockaddr_in addr;
+    int addr_len =sizeof(struct sockaddr_in);
+    char buffer[256];
+    /* 建立socket*/
+    if((s = socket(AF_INET,SOCK_DGRAM,0))<0){
+        perror("socket");
+        exit(1);
+    }
+    /* 填写sockaddr_in*/
+    bzero(&addr,sizeof(addr));
+    addr.sin_family = AF_INET;
+    addr.sin_port = htons(PORT);
+    addr.sin_addr.s_addr = inet_addr(SERVER_IP);
+    while(1){
+        bzero(buffer,sizeof(buffer));
+        /* 从标准输入设备获取字符串 */
+        len =read(STDIN_FILENO,buffer,sizeof(buffer));
+        /* 将字符串传送给server端 */
+        sendto(s,buffer,len,0,&addr,addr_len);
+        /* 接收server端返回的字符串 */
+        len = recvfrom(s,buffer,sizeof(buffer),0,&addr,&addr_len);
+        printf("receive: %s", buffer);
+    }
 }
-/* 填寫sockaddr_in*/
-bzero(&addr,sizeof(addr));
-addr.sin_family = AF_INET;
-addr.sin_port = htons(PORT);
-addr.sin_addr.s_addr = inet_addr(SERVER_IP);
-while(1){
-bzero(buffer,sizeof(buffer));
-/* 從標準輸入設備取得字符串*/
-len =read(STDIN_FILENO,buffer,sizeof(buffer));
-/* 將字符串傳送給server端*/
-sendto(s,buffer,len,0,&addr,addr_len);
-/* 接收server端返回的字符串*/
-len = recvfrom(s,buffer,sizeof(buffer),0,&addr,&addr_len);
-printf(“receive: %s”,buffer);
-}
-}
-執行
-(先執行udp server 再執行udp client)
-hello /*從鍵盤輸入字符串*/
-receive: hello /*server端返回來的字符串*/
+```
+
+执行（先执行 udp server，再执行 udp client）
+
+```shell
+hello # 从键盘输入字符串
+receive: hello # server端返回来的字符串
 ```
 
 
 recvmsg
 ---------------------------------------------
 
-简介
+经 socket 接收数据
 
-头文件 `#include <.h>`
+头文件
+
+```c
+#include <sys/types.h>
+#include <sys/socktet.h>
+```
 
 函数原型
 
 ```c
-
+ssize_t recvmsg(int sockfd, struct msghdr *msg, int flags);
 ```
 
-- 说明：
-- 返回值：
-- 附加说明：
-- 相关函数：
+- 说明：recvmsg() 用于接收远程主机经指定的 socket 传来的数据。参数 sockfd 为已建立好连接的 socket，如果利用 UDP 协议则不需经过连接操作。参数 msg 指向欲连接的数据结构内容，参数 flags 一般设为 0，详细描述请参考 send()。关于结构 msghdr 的定义请参考 sendmsg()。
+- 返回值：成功则返回接收到的字节数，失败则返回 -1，错误原因存于 errno 中。错误代码如下：
+  - `EBADF` 参数 sockfd 非合法的 socket 处理代码
+  - `EFAULT` 参数中有一指针指向无法存取的内存空间
+  - `ENOTSOCK` 参数 sockfd 为一文件描述符，非 socket
+  - `EINTR` 被信号所中断
+  - `EAGAIN` 此动作会令进程阻断，但参数 sockfd 为不可阻断
+  - `ENOBUFS` 系统的缓冲内存不足
+  - `ENOMEM` 系统内存不足
+  - `EINVAL` 传给系统调用的参数不正确
+- 相关函数：recv，recvfrom，send，sendto，sendmsg，socket
 
 示例
 
-```c
-
-```
-
-执行
-
-```shell
-recvmsg（經socket接收數據）
-相關函數
-recv，recvfrom，send，sendto，sendmsg，socket
-表頭文件
-#include<sys/types.h>
-#include<sys/socktet.h>
-定義函數
-int recvmsg(int s,struct msghdr *msg,unsigned int flags);
-函數說明
-recvmsg()用來接收遠程主機經指定的socket傳來的數據。參數s為已建立好連線的socket，如果利用UDP協議則不需經過連線操作。參數msg指向欲連線的數據結構內容，參數flags一般設0，詳細描述請參考send()。關於結構msghdr的定義請參考sendmsg()。
-返回值
-成功則返回接收到的字符數，失敗則返回-1，錯誤原因存於errno中。
-錯誤代碼
-EBADF 參數s非合法的socket處理代碼。
-EFAULT 參數中有一指針指向無法存取的內存空間
-ENOTSOCK 參數s為一文件描述詞，非socket。
-EINTR 被信號所中斷。
-EAGAIN 此操作會令進程阻斷，但參數s的socket為不可阻斷。
-ENOBUFS 系統的緩衝內存不足
-ENOMEM 核心內存不足
-EINVAL 傳給系統調用的參數不正確。
-範例
-參考recvfrom()。
-```
+参考 [recvfrom()](#recvfrom)
 
 
 send
 ---------------------------------------------
 
-简介
+经 socket 发送数据
 
-头文件 `#include <.h>`
+头文件
+
+```c
+#include <sys/types.h>
+#include <sys/socket.h>
+```
 
 函数原型
 
@@ -997,7 +742,7 @@ send
 - 说明：
 - 返回值：
 - 附加说明：
-- 相关函数：
+- 相关函数：sendto，sendmsg，recv，recvfrom，socket
 
 示例
 
@@ -1010,10 +755,9 @@ send
 ```shell
 send（經socket傳送數據）
 相關函數
-sendto，sendmsg，recv，recvfrom，socket
+
 表頭文件
-#include<sys/types.h>
-#include<sys/socket.h>
+
 定義函數
 int send(int s,const void * msg,int len,unsigned int falgs);
 函數說明
