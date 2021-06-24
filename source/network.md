@@ -235,6 +235,23 @@ void endservent(void);
 参考 [getservent()](#getservent)
 
 
+gethostbyname
+---------------------------------------------
+
+```c
+The hostent structure is defined in <netdb.h> as follows:
+
+           struct hostent {
+               char  *h_name;            /* official name of host */
+               char **h_aliases;         /* alias list */
+               int    h_addrtype;        /* host address type */
+               int    h_length;          /* length of address */
+               char **h_addr_list;       /* list of addresses */
+           }
+
+```
+
+
 getsockopt
 ---------------------------------------------
 
