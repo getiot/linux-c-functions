@@ -40,6 +40,44 @@ Sun Jun 20 05:01:21 2021
 ```
 
 
+clock_gettime
+---------------------------------------------
+
+将时间和日期以字符串格式表示
+
+头文件 `#include <time.h>`
+
+函数原型
+
+```c
+int clock_gettime(clockid_t clk_id, struct timespec *tp);
+```
+
+- 说明：
+- 返回值：
+- 相关函数：time, date, gettimeofday
+
+示例
+
+```c
+#include <stdio.h>
+#include <time.h>
+
+struct timespec ts;
+if (clock_gettime(CLOCK_REALTIME, &ts) == -1)
+{
+    /* handle error */
+    return -1;
+}
+```
+
+执行
+
+```shell
+
+```
+
+
 ctime
 ---------------------------------------------
 

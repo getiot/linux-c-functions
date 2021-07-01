@@ -20,6 +20,8 @@ Linux 常用 C 函数
    file
    file-content
    process
+   ipcs
+   pthreads
    permission
    signal
    network
