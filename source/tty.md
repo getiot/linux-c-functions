@@ -88,6 +88,10 @@ I/O 多工机制
 头文件
 
 ```c
+/* According to POSIX.1-2001, POSIX.1-2008 */
+#include <sys/select.h>
+
+/* According to earlier standards */
 #include <sys/time.h>
 #include <sys/types.h>
 #include <unistd.h>
@@ -96,20 +100,20 @@ I/O 多工机制
 函数原型
 
 ```c
-int select(int n, fd_set *readfds, fd_set *writefds, fd_set *exceptfds, struct timeval *timeout);
+int select(int nfds, fd_set *readfds, fd_set *writefds,
+           fd_set *exceptfds, struct timeval *timeout);
 ```
 
-- 说明：select() 用来等待文件描述符状态的改变。参数 n 代表最大的文件描述符加 1，参数 readfds、writefds 和 exceptfds 称为描述符集，是用来回传该描述符的读、写或例外的状况。底下的宏提供了处理这三种描述符集的方式:
-  - `FD_CLR(inr fd, fd_set* set);` 用来清除描述符集 set 中相关 fd 的位
-  - `FD_ISSET(int fd, fd_set *set);` 用来测试描述符集 set 中相关 fd 的位是否为真
-  - `FD_SET(int fd, fd_set*set);` 用来设置描述符集 set 中相关 fd 的位
-  - `FD_ZERO(fd_set *set);` 用来清除描述符集 set 的全部位
-- 参数：timeout 为结构体 timeval，用来设置 select() 的等待时间，其结构定义如下
+- 说明：select() 用来等待文件描述符状态的改变。参数 nfds 代表最大的文件描述符加 1，参数 readfds、writefds 和 exceptfds 称为描述符集，是用来回传该描述符的读、写或例外的状况。底下的宏提供了处理这三种描述符集的方式：
+  - `FD_CLR(inr fd, fd_set* set);` 用来清除描述符集 set 中相关 fd 的位；
+  - `FD_ISSET(int fd, fd_set *set);` 用来测试描述符集 set 中相关 fd 的位是否为真；
+  - `FD_SET(int fd, fd_set*set);` 用来设置描述符集 set 中相关 fd 的位；
+  - `FD_ZERO(fd_set *set);` 用来清除描述符集 set 的全部位。
+- 参数：timeout 为结构体 timeval，用来设置 select() 的等待时间。其结构定义如下：
   ```c
-  struct timeval
-  {
-      time_t tv_sec;
-      time_t tv_usec;
+  struct timeval {
+      time_t tv_sec;     /* seconds */
+      time_t tv_usec;    /* microseconds */
   };
   ```
   如果参数 timeout 设为 NULL 则表示 select() 没有 timeout。

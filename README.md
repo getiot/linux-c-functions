@@ -2,6 +2,10 @@
 
 Linux 常用 C 函数手册
 
+![](https://static.getiot.tech/The_C_Programming_Language_logo.png)
+
+
+
 ## 参考
 
 - <https://people.cs.nctu.edu.tw/~yslin/library/linuxc/main.htm>
