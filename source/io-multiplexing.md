@@ -142,28 +142,21 @@ epoll_create
 int epoll_create(int size);
 ```
 
-- 说明：创建一个新的 epoll 实例
-- 返回值：
-- 相关函数：close, epoll_ctl, epoll_wait, epoll
+| 参数     | 描述                                                         |
+| :------- | :----------------------------------------------------------- |
+| size     | 用来告诉内核要监听的 socket 数目一共有多少个，<br/>但从 Linux 2.6.8 开始，size 参数就被忽略，只要大于零即可。 |
+| **返回** |                                                              |
+| ≥0       | 执行成功返回一个非负整数的文件描述符，作为创建好的 epoll 句柄。 |
+| -1       | 执行失败，返回 -1，错误信息可以通过 errno 获得。             |
 
-示例
-
-```c
-
-```
-
-执行
-
-```shell
-
-```
+- 相关函数：epoll_create1, close, epoll_ctl, epoll_wait, epoll
 
 
 
 epoll_create1
 ---------------------------------------------
 
-获取环境变量内容
+创建一个新的 epoll 实例
 
 头文件 `#include <sys/epoll.h>`
 
@@ -173,20 +166,31 @@ epoll_create1
 int epoll_create1(int flags);
 ```
 
-- 说明：
-- 返回值：
-- 相关函数：close, epoll_ctl, epoll_wait, epoll
+| 参数     | 描述                                                         |
+| :------- | :----------------------------------------------------------- |
+| flags    | `EPOLL_CLOEXEC` ：在新文件描述符上设置 close-on-exec (`FD_CLOEXEC`) 标志。 |
+| **返回** |                                                              |
+| ≥0       | 执行成功返回一个非负整数的文件描述符，作为创建好的 epoll 句柄。 |
+| -1       | 执行失败，返回 -1，错误信息可以通过 errno 获得。             |
+
+- 说明：当其参数 flags 为 0 时，除了丢弃过时的 size 参数之外，它的效果与 `epoll_create` 一样。
+- 相关函数：epoll_create, close, epoll_ctl, epoll_wait, epoll
 
 示例
 
 ```c
-
-```
-
-执行
-
-```shell
-
+int main (int argc, char *argv[])
+{
+    int efd;
+    
+    efd = epoll_create1 (0);
+    if (efd == -1) {
+        perror ("epoll_create");
+        abort ();
+    }
+    
+    return 0;
+}
 ```
 
 
@@ -194,7 +198,7 @@ int epoll_create1(int flags);
 epoll_ctl
 ---------------------------------------------
 
-获取环境变量内容
+这个系统调用用于操作 epoll 函数所生成的实例（该实例由 epfd 指向），向 fd 实施 op 操作。
 
 头文件 `#include <sys/epoll.h>`
 
@@ -204,20 +208,51 @@ epoll_ctl
 int epoll_ctl(int epfd, int op, int fd, struct epoll_event *event);
 ```
 
-- 说明：
-- 返回值：
-- 相关函数：restart_syscall, select, select_tut, epoll, time
+| 参数     | 描述                                                         |
+| -------- | ------------------------------------------------------------ |
+| epfd     | 由 epoll 调用产生的文件描述符                                |
+| op       | 操作的类型，具体包含：<br/>- `EPOLL_CTL_ADD` ：注册新的 fd 到 epfd 中；<br/>- `EPOLL_CTL_MOD` ：修改已经注册的 fd 的监听事件；<br/>- `EPOLL_CTL_DEL` ：从 epfd 中删除一个 fd。 |
+| fd       | op 实施的对象（需要监听的 fd）                               |
+| event    | event 可以是以下几个宏的集合：<br/>- `EPOLLIN` ：表示对应的文件描述符可以读（包括对端 socket 正常关闭）；<br/>- `EPOLLOUT` ：表示对应的文件描述符可以写；<br/>- `EPOLLPRI` ：表示对应的文件描述符有紧急的数据可读（这里应该表示有带外数据到来）；<br/>- `EPOLLERR` ：表示对应的文件描述符发生错误；<br/>- `EPOLLHUP` ：表示对应的文件描述符被挂断；<br/>- `EPOLLET` ：将 epoll 设为边缘触发（ET）模式，这是相对于水平触发（LT）模式来说的；<br/>- `EPOLLONESHOT` ：只监听一次事件，当监听完这次事件之后，如果还需要继续监听这个 socket 的话，需要再次把这个 socket 加入到 epoll 队列里。 |
+| **返回** |                                                              |
+| 0        | 成功                                                         |
+| -1       | 失败，错误信息可以通过 errno 获得                            |
+
+epoll_event 结构体
+
+```c
+typedef union epoll_data {
+    void        *ptr;
+    int          fd;
+    uint32_t     u32;
+    uint64_t     u64;
+} epoll_data_t;
+
+struct epoll_event {
+    uint32_t     events;      /* Epoll events */
+    epoll_data_t data;        /* User data variable */
+};
+```
+
+- 相关函数：epoll_create, epoll_wait, poll, epoll
 
 示例
 
 ```c
-
-```
-
-执行
-
-```shell
-
+int example(int sfd, int efd)
+{
+    int ret;
+    struct epoll_event event;
+    
+    event.data.fd = sfd;
+    event.events = EPOLLIN | EPOLLET;
+    ret = epoll_ctl (efd, EPOLL_CTL_ADD, sfd, &event);
+    if (ret == -1) {
+        perror ("epoll_ctl");
+        return -1;
+    }
+    return 0;
+}
 ```
 
 
@@ -252,6 +287,7 @@ int epoll_wait(int epfd, struct epoll_event *events, int maxevents, int timeout)
 ```
 
 
+
 epoll_pwait
 ---------------------------------------------
 
@@ -281,5 +317,4 @@ int epoll_pwait(int epfd, struct epoll_event *events, int maxevents,
 ```shell
 
 ```
-
 
