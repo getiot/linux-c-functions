@@ -63,6 +63,9 @@ html_theme = 'sphinx_rtd_theme'
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
 
+html_logo = '_static/images/GetIoT_Logo_150px.png'
+#html_favicon = '_static/images/GetIoT_Logo_32px.png'
+
 html_js_files = [
     'js/baidutongji.js'
 ]
