@@ -3,6 +3,8 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
+这是一份开源的《Linux 常用 C 函数手册》，你可以在 `GitHub <https://github.com/getiot/linux-c-functions>`_ 找到它并参与维护。文档托管在 `GetIoT.tech <https://getiot.tech>`_ 网站。
+
 Linux 常用 C 函数
 =============================================
 
