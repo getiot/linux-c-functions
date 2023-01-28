@@ -6,9 +6,13 @@ asctime
 
 将时间和日期以字符串格式表示
 
-头文件 `#include <time.h>`
+**头文件**
 
-函数原型
+```c
+#include <time.h>
+```
+
+**函数原型**
 
 ```c
 char *asctime(const struct tm *tm);
@@ -18,7 +22,7 @@ char *asctime(const struct tm *tm);
 - 返回值：返回一字符串表示目前当地的时间日期。
 - 相关函数：time，ctime，gmtime，localtime
 
-示例
+**示例**
 
 ```c
 #include <stdio.h>
@@ -45,9 +49,13 @@ clock_gettime
 
 将时间和日期以字符串格式表示
 
-头文件 `#include <time.h>`
+**头文件**
 
-函数原型
+```c
+#include <time.h>
+```
+
+**函数原型**
 
 ```c
 int clock_gettime(clockid_t clk_id, struct timespec *tp);
@@ -57,7 +65,7 @@ int clock_gettime(clockid_t clk_id, struct timespec *tp);
 - 返回值：
 - 相关函数：time, date, gettimeofday
 
-示例
+**示例**
 
 ```c
 #include <stdio.h>
@@ -77,9 +85,13 @@ ctime
 
 将时间和日期以字符串格式表示
 
-头文件 `#include <time.h>`
+**头文件**
 
-函数原型
+```c
+#include <time.h>
+```
+
+**函数原型**
 
 ```c
 char *ctime(const time_t *timep);
@@ -89,7 +101,7 @@ char *ctime(const time_t *timep);
 - 返回值：返回一字符串表示目前当地的时间日期。
 - 相关函数：time，asctime，gmtime，localtime
 
-示例
+**示例**
 
 ```c
 #include <stdio.h>
@@ -116,9 +128,13 @@ gettimeofday
 
 获取目前的时间
 
-头文件 `#include <sys/time.h>`
+**头文件**
 
-函数原型
+```c
+#include <sys/time.h>
+```
+
+**函数原型**
 
 ```c
 int gettimeofday(struct timeval *tv, struct timezone *tz);
@@ -166,7 +182,7 @@ int gettimeofday(struct timeval *tv, struct timezone *tz);
 
 - 相关函数：time，ctime，ftime，settimeofday
 
-示例
+**示例**
 
 ```c
 #include <stdio.h>
@@ -200,9 +216,13 @@ gmtime
 
 获取目前的时间和日期
 
-头文件 `#include <time.h>`
+**头文件**
 
-函数原型
+```c
+#include <time.h>
+```
+
+**函数原型**
 
 ```c
 struct tm *gmtime(const time_t *timep);
@@ -233,7 +253,7 @@ struct tm *gmtime(const time_t *timep);
 
 - 相关函数：time,asctime,ctime,localtime
 
-示例
+**示例**
 
 ```c
 #include <stdio.h>
@@ -264,9 +284,13 @@ localtime
 
 获取当地目前时间和日期
 
-头文件 `#include <time.h>`
+**头文件**
 
-函数原型
+```c
+#include <time.h>
+```
+
+**函数原型**
 
 ```c
 struct tm *localtime(const time_t *timep);
@@ -276,7 +300,7 @@ struct tm *localtime(const time_t *timep);
 - 返回值：返回结构体 tm 代表目前的当地时间。
 - 相关函数：time, asctime, ctime, gmtime
 
-示例
+**示例**
 
 ```c
 #include <stdio.h>
@@ -307,9 +331,13 @@ mktime
 
 将时间结构数据转换成经过的秒数
 
-头文件 `#include <time.h>`
+**头文件**
 
-函数原型
+```c
+#include <time.h>
+```
+
+**函数原型**
 
 ```c
 time_t mktime(struct tm *tm);
@@ -319,7 +347,7 @@ time_t mktime(struct tm *tm);
 - 返回值：返回经过的秒数。
 - 相关函数：time，asctime，gmtime，localtime
 
-示例
+**示例**
 
 ```c
 /* 用 time()取得时间（秒数），利用 localtime() 转换成 struct tm 
@@ -354,9 +382,13 @@ settimeofday
 
 设置目前时间
 
-头文件 `#include <sys/time.h>`
+**头文件**
 
-函数原型
+```c
+#include <sys/time.h>
+```
+
+**函数原型**
 
 ```c
 int settimeofday(const struct timeval *tv, const struct timezone *tz);
@@ -375,9 +407,13 @@ time
 
 获取目前的时间
 
-头文件 `#include <time.h>`
+**头文件**
 
-函数原型
+```c
+#include <time.h>
+```
+
+**函数原型**
 
 ```c
 time_t time(time_t *tloc);
@@ -387,7 +423,7 @@ time_t time(time_t *tloc);
 - 返回值：成功则返回描述，失败则返回 ((time_t)-1) 值，错误原因存于 errno 中。
 - 相关函数：ctime，ftime，gettimeofday
 
-示例
+**示例**
 
 ```c
 #include <stdio.h>

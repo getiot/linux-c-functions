@@ -6,9 +6,13 @@ calloc
 
 配置内存空间
 
-头文件 `#include <stdlib.h>`
+**头文件**
 
-函数原型
+```c
+#include <stdlib.h>
+```
+
+**函数原型**
 
 ```c
 void *calloc(size_t nmemb, size_t size);
@@ -18,7 +22,7 @@ void *calloc(size_t nmemb, size_t size);
 - 返回值：若配置成功则返回一指针，失败则返回 NULL。
 - 相关函数：malloc, free, realloc, brk
 
-示例
+**示例**
 
 ```c
 /* 动态配置 10 个 struct test 空间 */
@@ -42,9 +46,13 @@ free
 
 释放原先配置的内存
 
-头文件 `#include <stdlib.h>`
+**头文件**
 
-函数原型
+```c
+#include <stdlib.h>
+```
+
+**函数原型**
 
 ```c
 void free(void *ptr);
@@ -60,9 +68,13 @@ getpagesize
 
 取得内存分页大小
 
-头文件 `#include <unistd.h>`
+**头文件**
 
-函数原型
+```c
+#include <unistd.h>
+```
+
+**函数原型**
 
 ```c
 size_t getpagesize(void);
@@ -73,7 +85,7 @@ size_t getpagesize(void);
 - 附加说明：在 Intel x86 上其返回值应为 4096 bytes。
 - 相关函数：sbrk
 
-示例
+**示例**
 
 ```c
 #include <unistd.h>
@@ -90,9 +102,13 @@ malloc
 
 配置内存空间
 
-头文件 `#include <stdlib.h>`
+**头文件**
 
-函数原型
+```c
+#include <stdlib.h>
+```
+
+**函数原型**
 
 ```c
 void * malloc(size_t size);
@@ -102,7 +118,7 @@ void * malloc(size_t size);
 - 返回值：若配置成功则返回一指针，失败则返回 NULL。
 - 相关函数：calloc, free, realloc, brk
 
-示例
+**示例**
 
 ```c
 void p = malloc(1024); /* 配置 1k 的内存 */
@@ -114,14 +130,14 @@ mmap
 
 建立内存映射
 
-头文件
+**头文件**
 
 ```c
 #include <unistd.h>
 #include <sys/mman.h>
 ```
 
-函数原型
+**函数原型**
 
 ```c
 void *mmap(void *start, size_t length, int prot, int flags, int fd, off_t offset);
@@ -154,7 +170,7 @@ void *mmap(void *start, size_t length, int prot, int flags, int fd, off_t offset
   - `ENOMEM` 内存不足。
 - 相关函数：munmap, open
 
-示例
+**示例**
 
 ```c
 /* 利用 mmap() 来读取 /etc/passwd 文件内容 */
@@ -211,14 +227,14 @@ munmap
 
 解除内存映射
 
-头文件
+**头文件**
 
 ```c
 #include <unistd.h>
 #include <sys/mman.h>
 ```
 
-函数原型
+**函数原型**
 
 ```c
 int munmap(void *start, size_t length);
@@ -228,7 +244,7 @@ int munmap(void *start, size_t length);
 - 返回值：如果解除映射成功则返回 0，否则返回 -1，错误原因存于 errno 中（错误代码 EINVAL）。
 - 相关函数：mmap
 
-示例
+**示例**
 
 参考 [mmap()](#mmap)
 

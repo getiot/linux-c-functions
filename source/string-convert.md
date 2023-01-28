@@ -6,9 +6,13 @@ atof
 
 将字符串转换成浮点型数
 
-头文件 `#include <stdlib.h>`
+**头文件**
 
-函数原型
+```c
+#include <stdlib.h>
+```
+
+**函数原型**
 
 ```c
 double atof(const char *nptr);
@@ -19,7 +23,7 @@ double atof(const char *nptr);
 - 附加说明：atof() 与使用 `strtod(nptr, (char**)NULL)` 结果相同。
 - 相关函数：atoi, atol, strtod, strtol, strtoul
 
-示例
+**示例**
 
 ```c
 /* 将字符串 a 与字符串 b 转换成数字后相加 */
@@ -49,9 +53,13 @@ atoi
 
 将字符串转换成整型数
 
-头文件 `#include <stdlib.h>`
+**头文件**
 
-函数原型
+```c
+#include <stdlib.h>
+```
+
+**函数原型**
 
 ```c
 int atoi(const char *nptr);
@@ -62,7 +70,7 @@ int atoi(const char *nptr);
 - 附加说明：atoi() 与使用 `strtol(nptr, (char**)NULL, 10)` 结果相同。
 - 相关函数：atof, atol, atrtod, strtol, strtoul
 
-示例
+**示例**
 
 ```c
 /* 将字符串 a 与字符串 b 转换成数字后相加 */
@@ -92,9 +100,13 @@ atol
 
 将字符串转换成长整型数
 
-头文件 `#include <stdlib.h>`
+**头文件**
 
-函数原型
+```c
+#include <stdlib.h>
+```
+
+**函数原型**
 
 ```c
 long atol(const char *nptr);
@@ -105,7 +117,7 @@ long atol(const char *nptr);
 - 附加说明：atol() 与使用 `strtol(nptr, (char**)NULL, 10)` 结果相同。
 - 相关函数：atof, atoi, strtod, strtol, strtoul
 
-示例
+**示例**
 
 ```c
 /* 将字符串 a 与字符串 b 转换成数字后相加 */
@@ -135,9 +147,13 @@ gcvt
 
 将浮点型数转换为字符串，取四舍五入
 
-头文件 `#include <stdlib.h>`
+**头文件**
 
-函数原型
+```c
+#include <stdlib.h>
+```
+
+**函数原型**
 
 ```c
 char *gcvt(double number, size_t ndigits, char *buf);
@@ -147,7 +163,7 @@ char *gcvt(double number, size_t ndigits, char *buf);
 - 返回值：返回一字符串指针，此地址即为 buf 指针。
 - 相关函数：ecvt, fcvt, sprintf
 
-示例
+**示例**
 
 ```c
 #include <stdio.h>
@@ -182,9 +198,13 @@ strtod
 
 将字符串转换成浮点数
 
-头文件 `#include <stdlib.h>`
+**头文件**
 
-函数原型
+```c
+#include <stdlib.h>
+```
+
+**函数原型**
 
 ```c
 double strtod(const char *nptr, char **endptr);
@@ -195,7 +215,7 @@ double strtod(const char *nptr, char **endptr);
 - 附加说明：参考 [atof()](#atof)。
 - 相关函数：atoi, atol, strtod, strtol, strtoul
 
-示例
+**示例**
 
 ```c
 /* 将字符串 a、b、c 分別转换成浮点型数字 */
@@ -228,9 +248,13 @@ strtol
 
 将字符串转换成长整型数
 
-头文件 `#include <stdlib.h>`
+**头文件**
 
-函数原型
+```c
+#include <stdlib.h>
+```
+
+**函数原型**
 
 ```c
 long int strtol(const char *nptr, char **endptr, int base);
@@ -241,7 +265,7 @@ long int strtol(const char *nptr, char **endptr, int base);
 - 附加说明：ERANGE 指定的转换字符串超出合法范围。
 - 相关函数：atof, atoi, atol, strtod, strtoul
 
-示例
+**示例**
 
 ```c
 /* 将字符串 a、b、c 分別采用 10、2、16 进制转换成数字 */
@@ -274,9 +298,13 @@ strtoul
 
 将字符串转换成无符号长整型数
 
-头文件 `#include <stdlib.h>`
+**头文件**
 
-函数原型
+```c
+#include <stdlib.h>
+```
+
+**函数原型**
 
 ```c
 unsigned long int strtoul(const char *nptr, char **endptr, int base);
@@ -287,7 +315,7 @@ unsigned long int strtoul(const char *nptr, char **endptr, int base);
 - 附加说明：ERANGE 指定的转换字符串超出合法范围。
 - 相关函数：atof, atoi, atol, strtod, strtol
 
-示例
+**示例**
 
 參考 [strtol()](#strtol)
 
@@ -297,9 +325,13 @@ toascii
 
 将整型数转换成合法的 ASCII 码字符
 
-头文件 `#include <ctype.h>`
+**头文件**
 
-函数原型
+```c
+#include <ctype.h>
+```
+
+**函数原型**
 
 ```c
 int toascii(int c);
@@ -309,7 +341,7 @@ int toascii(int c);
 - 返回值：将转换成功的 ASCII 码字符值返回。
 - 相关函数：isascii, toupper, tolower
 
-示例
+**示例**
 
 ```c
 #include <stdio.h>
@@ -339,9 +371,13 @@ tolower
 
 将大写字母转换成小写字母
 
-头文件 `#include <ctype.h>`
+**头文件**
 
-函数原型
+```c
+#include <ctype.h>
+```
+
+**函数原型**
 
 ```c
 int tolower(int c);
@@ -351,7 +387,7 @@ int tolower(int c);
 - 返回值：返回转换后的小写字母，若不需转换则将参数 c 值返回。
 - 相关函数：isalpha, toupper
 
-示例
+**示例**
 
 ```c
 /* 将 s 字符串内的大写字母转换成小写字母 */
@@ -383,9 +419,13 @@ toupper
 
 将小写字母转换成大写字母
 
-头文件 `#include <ctype.h>`
+**头文件**
 
-函数原型
+```c
+#include <ctype.h>
+```
+
+**函数原型**
 
 ```c
 int toupper(int c);
@@ -395,7 +435,7 @@ int toupper(int c);
 - 返回值：返回转换后的大写字母，若不需转换则将参数 c 值返回。
 - 相关函数：isalpha, tolower
 
-示例
+**示例**
 
 ```c
 /* 将 s 字符串内的小写字母转换成大写字母 */

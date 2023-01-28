@@ -6,9 +6,13 @@ bcmp
 
 比较内存内容
 
-头文件 `#include <string.h>`
+**头文件**
 
-函数原型
+```c
+#include <string.h>
+```
+
+**函数原型**
 
 ```c
 int bcmp(const void *s1, const void *s2, size_t n);
@@ -19,7 +23,7 @@ int bcmp(const void *s1, const void *s2, size_t n);
 - 附加说明：建议使用 memcmp() 取代。
 - 相关函数：bcmp，strcasecmp，strcmp，strcoll，strncmp，strncasecmp
 
-示例
+**示例**
 
 参考 [memcmp()](#memcmp)
 
@@ -29,9 +33,13 @@ bcopy
 
 拷贝内存内容
 
-头文件 `#include <string.h>`
+**头文件**
 
-函数原型
+```c
+#include <string.h>
+```
+
+**函数原型**
 
 ```c
 void bcopy(const void *src, void *dest, size_t n);
@@ -42,7 +50,7 @@ void bcopy(const void *src, void *dest, size_t n);
 - 附加说明：建议使用 memcpy() 取代。
 - 相关函数：memccpy，memcpy，memmove，strcpy，ctrncpy
 
-示例
+**示例**
 
 ```c
 #include <stdio.h>
@@ -80,9 +88,13 @@ bzero
 
 将一段内存内容全清为零
 
-头文件 `#include <string.h>`
+**头文件**
 
-函数原型
+```c
+#include <string.h>
+```
+
+**函数原型**
 
 ```c
 void bzero(void *s, size_t n);
@@ -93,15 +105,23 @@ void bzero(void *s, size_t n);
 - 附加说明：bzero 不是标准库函数，为了提高可移植性，建议使用 memset 取代。
 - 相关函数：memset，swab
 
+**示例**
+
+参考 [memset()](#memset)
+
 
 index
 ---------------------------------------------
 
 查找字符串中第一个出现的指定字符
 
-头文件 `#include <string.h>`
+**头文件**
 
-函数原型
+```c
+#include <string.h>
+```
+
+**函数原型**
 
 ```c
 char *index(const char *s, int c);
@@ -111,7 +131,7 @@ char *index(const char *s, int c);
 - 返回值：如果找到指定的字符则返回该字符所在地址，否则返回 NULL。
 - 相关函数：rindex，srechr，strrchr
 
-示例
+**示例**
 
 ```c
 #include <stdio.h>
@@ -139,9 +159,13 @@ memccpy
 
 拷贝内存内容
 
-头文件 `#include <string.h>`
+**头文件**
 
-函数原型
+```c
+#include <string.h>
+```
+
+**函数原型**
 
 ```c
 void *memccpy(void *dest, const void *src, int c, size_t n);
@@ -151,7 +175,7 @@ void *memccpy(void *dest, const void *src, int c, size_t n);
 - 返回值：返回指向 dest 中值为 c 的下一个字节指针。返回值为 0 表示在 src 所指内存前 n 个字节中没有值为 c 的字节。
 - 相关函数：bcopy，memcpy，memmove，strcpy，strncpy
 
-示例
+**示例**
 
 ```c
 #include <stdio.h>
@@ -183,9 +207,13 @@ memchr
 
 在某一内存范围中查找一特定字符
 
-头文件 `#include <string.h>`
+**头文件**
 
-函数原型
+```c
+#include <string.h>
+```
+
+**函数原型**
 
 ```c
 void *memchr(const void *s, int c, size_t n);
@@ -195,7 +223,7 @@ void *memchr(const void *s, int c, size_t n);
 - 返回值：如果找到指定的字节则返回该字节的指针，否则返回 0。
 - 相关函数：index，rindex，strchr，strpbrk，strrchr，strsep，strspn，strstr
 
-示例
+**示例**
 
 ```c
 #include <stdio.h>
@@ -223,9 +251,13 @@ memcmp
 
 比较内存内容
 
-头文件 `#include <string.h>`
+**头文件**
 
-函数原型
+```c
+#include <string.h>
+```
+
+**函数原型**
 
 ```c
 int memcmp(const void *s1, const void *s2, size_t n);
@@ -235,7 +267,7 @@ int memcmp(const void *s1, const void *s2, size_t n);
 - 返回值：若参数 s1 和 s2 所指的内存内容都完全相同则返回 0 值。s1 若大于 s2 则返回大于 0 的值。s1 若小于 s2 则返回小于 0 的值。
 - 相关函数：bcmp，strcasecmp，strcmp，strcoll，strncmp，strncasecmp
 
-示例
+**示例**
 
 ```c
 #include <stdio.h>
@@ -268,9 +300,13 @@ memcpy
 
 拷贝内存内容
 
-头文件 `#include <string.h>`
+**头文件**
 
-函数原型
+```c
+#include <string.h>
+```
+
+**函数原型**
 
 ```c
 void *memcpy(void *dest, const void *src, size_t n);
@@ -281,7 +317,7 @@ void *memcpy(void *dest, const void *src, size_t n);
 - 附加说明：指针 src 和 dest 所指的内存区域不可重叠。
 - 相关函数：bcopy，memccpy，memcpy，memmove，strcpy，strncpy
 
-示例
+**示例**
 
 ```c
 #include <stdio.h>
@@ -317,9 +353,13 @@ memmove
 
 拷贝内存内容
 
-头文件 `#include <string.h>`
+**头文件**
 
-函数原型
+```c
+#include <string.h>
+```
+
+**函数原型**
 
 ```c
 void *memmove(void *dest, const void *src, size_t n);
@@ -330,7 +370,7 @@ void *memmove(void *dest, const void *src, size_t n);
 - 附加说明：指针 src 和 dest 所指的内存区域可以重叠。
 - 相关函数：bcopy，memccpy，memcpy，strcpy，strncpy
 
-示例
+**示例**
 
 参考 [memcpy()](#memcpy)
 
@@ -340,9 +380,13 @@ memset
 
 将一段内存空间填入某值
 
-头文件 `#include <string.h>`
+**头文件**
 
-函数原型
+```c
+#include <string.h>
+```
+
+**函数原型**
 
 ```c
 void *memset(void *s, int c, size_t n);
@@ -353,7 +397,7 @@ void *memset(void *s, int c, size_t n);
 - 附加说明：参数 c 虽声明为 int，但必须是 unsigned char，所以范围在 0 到 255 之间。
 - 相关函数：bzero，swab
 
-示例
+**示例**
 
 ```c
 #include <stdio.h>
@@ -381,9 +425,13 @@ rindex
 
 查找字符串中最后一个出现的指定字符
 
-头文件 `#include <string.h>`
+**头文件**
 
-函数原型
+```c
+#include <string.h>
+```
+
+**函数原型**
 
 ```c
 char *rindex(const char *s, int c);
@@ -393,7 +441,7 @@ char *rindex(const char *s, int c);
 - 返回值：如果找到指定的字符则返回该字符所在的地址，否则返回 0。
 - 相关函数：index，memchr，strchr，strrchr
 
-示例
+**示例**
 
 ```c
 #include <string.h>
@@ -421,9 +469,13 @@ strcasecmp
 
 忽略大小写比较字符串
 
-头文件 `#include <string.h>`
+**头文件**
 
-函数原型
+```c
+#include <string.h>
+```
+
+**函数原型**
 
 ```c
 int strcasecmp(const char *s1, const char *s2);
@@ -433,7 +485,7 @@ int strcasecmp(const char *s1, const char *s2);
 - 返回值：若参数 s1 和 s2 字符串相同则返回 0。s1 长度大于 s2 长度则返回大于 0 的值，s1 长度若小于 s2 长度则返回小于 0 的值。
 - 相关函数：bcmp，memcmp，strcmp，strcoll，strncmp
 
-示例
+**示例**
 
 ```c
 #include <stdio.h>
@@ -461,9 +513,13 @@ strcat
 
 连接两字符串
 
-头文件 `#include <string.h>`
+**头文件**
 
-函数原型
+```c
+#include <string.h>
+```
+
+**函数原型**
 
 ```c
 char *strcat(char *dest, const char *src);
@@ -473,7 +529,7 @@ char *strcat(char *dest, const char *src);
 - 返回值：返回参数 dest 的字符串起始地址。
 - 相关函数：bcopy，memccpy，memcpy，strcpy，strncpy
 
-示例
+**示例**
 
 ```c
 #include <stdio.h.>
@@ -492,8 +548,8 @@ int main()
 执行
 
 ```shell
-before strcat () : string(1)
- after strcat () : string(1)string(2)
+before strcat() : string(1)
+ after strcat() : string(1)string(2)
 ```
 
 
@@ -502,9 +558,13 @@ strchr
 
 查找字符串中第一个出现的指定字符
 
-头文件 `#include <string.h>`
+**头文件**
 
-函数原型
+```c
+#include <string.h>
+```
+
+**函数原型**
 
 ```c
 char *strchr (const char *s, int c);
@@ -514,7 +574,7 @@ char *strchr (const char *s, int c);
 - 返回值：如果找到指定的字符则返回该字符所在地址，否则返回 0。
 - 相关函数：index，memchr，rinex，strbrk，strsep，strspn，strstr，strtok
 
-示例
+**示例**
 
 ```c
 #include <stdio.h>
@@ -542,9 +602,13 @@ strcmp
 
 比较字符串
 
-头文件 `#include <string.h>`
+**头文件**
 
-函数原型
+```c
+#include <string.h>
+```
+
+**函数原型**
 
 ```c
 int strcmp(const char *s1, const char *s2);
@@ -554,7 +618,7 @@ int strcmp(const char *s1, const char *s2);
 - 返回值：若参数 s1 和 s2 字符串相同则返回 0，s1 若大于 s2 则返回大于 0 的值，s1 若小于 s2 则返回小于 0 的值。
 - 相关函数：bcmp，memcmp，strcasecmp，strncasecmp，strcoll
 
-示例
+**示例**
 
 ```c
 #include <stdio.h>
@@ -587,9 +651,13 @@ strcoll
 
 采用目前区域的字符排列次序来比较字符串
 
-头文件 `#include <string.h>`
+**头文件**
 
-函数原型
+```c
+#include <string.h>
+```
+
+**函数原型**
 
 ```c
 int strcoll(const char *s1, const char *s2);
@@ -600,7 +668,7 @@ int strcoll(const char *s1, const char *s2);
 - 附加说明：若 `LC_COLLATE` 为 "POSIX" 或 "C"，则 strcoll() 与 strcmp() 作用完全相同。
 - 相关函数：strcmp，bcmp，memcmp，strcasecmp，strncasecmp
 
-示例
+**示例**
 
 参考 [strcmp()](#strcmp)
 
@@ -610,9 +678,13 @@ strcpy
 
 拷贝字符串
 
-头文件 `#include <string.h>`
+**头文件**
 
-函数原型
+```c
+#include <string.h>
+```
+
+**函数原型**
 
 ```c
 char *strcpy(char *dest, const char *src);
@@ -623,7 +695,7 @@ char *strcpy(char *dest, const char *src);
 - 附加说明：如果参数 dest 所指的内存空间不够大，可能会造成缓冲溢出（buffer Overflow）的错误情况，在编写程序时请特别留意，或者用 strncpy() 来取代。
 - 相关函数：bcopy，memcpy，memccpy，memmove
 
-示例
+**示例**
 
 ```c
 #include <stdio.h>
@@ -652,9 +724,13 @@ strcspn
 
 返回字符串中连续不含指定字符串内容的字符数
 
-头文件 `#include <string.h>`
+**头文件**
 
-函数原型
+```c
+#include <string.h>
+```
+
+**函数原型**
 
 ```c
 size_t strcspn(const char *s, const char *reject);
@@ -664,7 +740,7 @@ size_t strcspn(const char *s, const char *reject);
 - 返回值：返回字符串 s 开头连续不含字符串 reject 内的字符数目。
 - 相关函数：strspn
 
-示例
+**示例**
 
 ```c
 #include <stdio.h>
@@ -694,9 +770,13 @@ strdup
 
 复制字符串
 
-头文件 `#include <string.h>`
+**头文件**
 
-函数原型
+```c
+#include <string.h>
+```
+
+**函数原型**
 
 ```c
 char *strdup(const char *s);
@@ -706,7 +786,7 @@ char *strdup(const char *s);
 - 返回值：返回一字符串指针，该指针指向复制后的新字符串地址。若返回 NULL 表示内存不足。
 - 相关函数：calloc，malloc，realloc，free
 
-示例
+**示例**
 
 ```c
 #include <stdio.h>
@@ -734,9 +814,13 @@ strlen
 
 返回字符串长度
 
-头文件 `#include <string.h>`
+**头文件**
 
-函数原型
+```c
+#include <string.h>
+```
+
+**函数原型**
 
 ```c
 size_t strlen (const char *s);
@@ -745,7 +829,7 @@ size_t strlen (const char *s);
 - 说明：strlen() 用来计算指定的字符串 s 的长度，不包括结束字符 '\0'。
 - 返回值：返回字符串 s 的字符数。
 
-示例
+**示例**
 
 ```c
 #include <stdio.h>
@@ -771,9 +855,13 @@ strncasecmp
 
 忽略大小写比较字符串
 
-头文件 `#include <string.h>`
+**头文件**
 
-函数原型
+```c
+#include <string.h>
+```
+
+**函数原型**
 
 ```c
 int strncasecmp(const char *s1, const char *s2, size_t n);
@@ -783,7 +871,7 @@ int strncasecmp(const char *s1, const char *s2, size_t n);
 - 返回值：若参数 s1 和 s2 字符串相同则返回 0，s1 若大于 s2 则返回大于 0 的值，s1 若小于 s2 则返回小于 0 的值。
 - 相关函数：bcmp，memcmp，strcmp，strcoll，strncmp
 
-示例
+**示例**
 
 ```c
 #include <stdio.h>
@@ -811,9 +899,13 @@ strncat
 
 连接两字符串
 
-头文件 `#include <string.h>`
+**头文件**
 
-函数原型
+```c
+#include <string.h>
+```
+
+**函数原型**
 
 ```c
 char *strncat(char *dest, const char *src, size_t n);
@@ -823,7 +915,7 @@ char *strncat(char *dest, const char *src, size_t n);
 - 返回值：返回参数 dest 的字符串起始地址。
 - 相关函数：bcopy，memccpy，memecpy，strcpy，strncpy
 
-示例
+**示例**
 
 ```c
 #include <stdio.h>
@@ -852,9 +944,13 @@ strncpy
 
 拷贝字符串
 
-头文件 `#include <string.h>`
+**头文件**
 
-函数原型
+```c
+#include <string.h>
+```
+
+**函数原型**
 
 ```c
 char *strncpy(char *dest, const char *src, size_t n);
@@ -864,7 +960,7 @@ char *strncpy(char *dest, const char *src, size_t n);
 - 返回值：返回参数 dest 的字符串起始地址。
 - 相关函数：bcopy，memccpy，memcpy，memmove
 
-示例
+**示例**
 
 ```c
 #include <stdio.h>
@@ -895,9 +991,13 @@ strpbrk
 
 查找字符串中第一个出现的指定字符
 
-头文件 `#include <string.h>`
+**头文件**
 
-函数原型
+```c
+#include <string.h>
+```
+
+**函数原型**
 
 ```c
 char *strpbrk(const char *s, const char *accept);
@@ -907,7 +1007,7 @@ char *strpbrk(const char *s, const char *accept);
 - 返回值：如果找到指定的字符则返回该字符所在地址，否则返回 0。
 - 相关函数：index，memchr，rindex，strpbrk，strsep，strspn，strstr，strtok
 
-示例
+**示例**
 
 ```c
 #include <stdio.h>
@@ -938,9 +1038,13 @@ strrchr
 
 查找字符串中最后出现的指定字符
 
-头文件 `#include <string.h>`
+**头文件**
 
-函数原型
+```c
+#include <string.h>
+```
+
+**函数原型**
 
 ```c
 char *strrchr(const char *s, int c);
@@ -950,7 +1054,7 @@ char *strrchr(const char *s, int c);
 - 返回值：如果找到指定的字符则返回该字符所在地址，否则返回 0。
 - 相关函数：index，memchr，rindex，strpbrk，strsep，strspn，strstr，strtok
 
-示例
+**示例**
 
 ```c
 #include <stdio.h>
@@ -978,9 +1082,13 @@ strspn
 
 返回字符串中连续不含指定字符串内容的字符数
 
-头文件 `#include <string.h>`
+**头文件**
 
-函数原型
+```c
+#include <string.h>
+```
+
+**函数原型**
 
 ```c
 size_t strspn(const char *s, const char *accept);
@@ -990,7 +1098,7 @@ size_t strspn(const char *s, const char *accept);
 - 返回值：返回字符串 s 开头连续包含字符串 accept 内的字符数目。
 - 相关函数：strcspn，strchr，strpbrk，strsep，strstr
 
-示例
+**示例**
 
 ```c
 #include <stdio.h>
@@ -1017,9 +1125,13 @@ strstr
 
 在一字符串中查找指定的字符串
 
-头文件 `#include <string.h>`
+**头文件**
 
-函数原型
+```c
+#include <string.h>
+```
+
+**函数原型**
 
 ```c
 char *strstr(const char *haystack, const char *needle);
@@ -1029,7 +1141,7 @@ char *strstr(const char *haystack, const char *needle);
 - 返回值：返回指定字符串第一次出现的地址，否则返回 0。
 - 相关函数：index，memchr，rindex，strchr，strpbrk，strsep，strspn，strtok
 
-示例
+**示例**
 
 ```c
 #include <stdio.h>
@@ -1057,9 +1169,13 @@ strtok
 
 分隔字符串
 
-头文件 `#include <string.h>`
+**头文件**
 
-函数原型
+```c
+#include <string.h>
+```
+
+**函数原型**
 
 ```c
 char *strtok(char *s, const char *delim);
@@ -1069,7 +1185,7 @@ char *strtok(char *s, const char *delim);
 - 返回值：返回下一个分割后的字符串指针，如果已无从分割则返回 NULL。
 - 相关函数：index，memchr，rindex，strpbrk，strsep，strspn，strstr
 
-示例
+**示例**
 
 ```c
 #include <stdio.h>

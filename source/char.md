@@ -6,9 +6,13 @@ isalnum
 
 测试字符是否为英文或数字
 
-头文件 `#include <ctype.h>`
+**头文件**
 
-函数原型
+```c
+#include <ctype.h>
+```
+
+**函数原型**
 
 ```c
 int isalnum(int c);
@@ -19,7 +23,7 @@ int isalnum(int c);
 - 附加说明：此为宏定义，非真正函数。
 - 相关函数： isalpha, isdigit, islower, isupper
 
-示例
+**示例**
 
 
 ```c
@@ -59,9 +63,13 @@ isalpha
 
 测试字符是否为英文字母
 
-头文件 `#include <ctype.h>`
+**头文件**
 
-函数原型
+```c
+#include <ctype.h>
+```
+
+**函数原型**
 
 ```c
 int isalpha(int c);
@@ -72,8 +80,7 @@ int isalpha(int c);
 - 附加说明：此为宏定义，非真正函数。
 - 相关函数：isalnum, islower, isupper
 
-
-示例
+**示例**
 
 ```c
 /* 找出 str 字符串中为英文字母的字符 */
@@ -108,9 +115,13 @@ isascii
 
 测试字符串是否为 ASCII 码字符
 
-头文件 `#include <ctype.h>`
+**头文件**
 
-函数原型
+```c
+#include <ctype.h>
+```
+
+**函数原型**
 
 ```c
 int isascii(int c);
@@ -121,7 +132,7 @@ int isascii(int c);
 - 附加说明：此为宏定义，非真正函数。
 - 相关函数：iscntrl
 
-示例
+**示例**
 
 ```c
 /* 判断 int i 是否具有对应的 ASCII 码字符 */
@@ -157,9 +168,13 @@ iscntrl
 
 测试字符是否为 ASCII 码的控制字符
 
-头文件 `#include <ctype.h>`
+**头文件**
 
-函数原型
+```c
+#include <ctype.h>
+```
+
+**函数原型**
 
 ```c
 int iscntrl(int c);
@@ -176,9 +191,13 @@ isdigit
 
 测试字符是否为阿拉伯数字
 
-头文件 `#include <ctype.h>`
+**头文件**
 
-函数原型
+```c
+#include <ctype.h>
+```
+
+**函数原型**
 
 ```c
 int isdigit(int c);
@@ -189,7 +208,7 @@ int isdigit(int c);
 - 附加说明：此为宏定义，非真正函数。
 - 相关函数：isxdigit
 
-示例
+**示例**
 
 ```c
 /* 找出str字符串中为阿拉伯数字的字符 */
@@ -222,9 +241,13 @@ isgraphis
 
 测试字符是否为可打印字符
 
-头文件 `#include <ctype.h>`
+**头文件**
 
-函数原型
+```c
+#include <ctype.h>
+```
+
+**函数原型**
 
 ```c
 int isgraph(int c);
@@ -235,7 +258,7 @@ int isgraph(int c);
 - 附加说明：此为宏定义，非真正函数。
 - 相关函数：isprint
 
-示例
+**示例**
 
 ```c
 /* 判断 str 字符串中哪些为可打印字符 */
@@ -269,9 +292,13 @@ islower
 
 测试字符是否为小写字母
 
-头文件 `#include <ctype.h>`
+**头文件**
 
-函数原型
+```c
+#include <ctype.h>
+```
+
+**函数原型**
 
 ```c
 int islower(int c);
@@ -282,7 +309,7 @@ int islower(int c);
 - 附加说明：此为宏定义，非真正函数。
 - 相关函数：isalpha, isupper
 
-示例
+**示例**
 
 ```c
 #include <stdio.h>
@@ -314,9 +341,13 @@ isprint
 
 测试字符是否为可打印字符
 
-头文件 `#include <ctype.h>`
+**头文件**
 
-函数原型
+```c
+#include <ctype.h>
+```
+
+**函数原型**
 
 ```c
 int isprint(int c);
@@ -327,7 +358,7 @@ int isprint(int c);
 - 附加说明：此为宏定义，非真正函数。
 - 相关函数：isgraph
 
-示例
+**示例**
 
 ```c
 /* 判断 str 字符串中哪些为可打印字符包含空格字符 */
@@ -362,9 +393,13 @@ isspace
 
 测试字符是否为空格字符
 
-头文件 `#include <ctype.h>`
+**头文件**
 
-函数原型
+```c
+#include <ctype.h>
+```
+
+**函数原型**
 
 ```c
 int isspace(int c);
@@ -375,7 +410,7 @@ int isspace(int c);
 - 附加说明：此为宏定义，非真正函数。
 - 相关函数：isgraph
 
-示例
+**示例**
 
 ```c
 /* 将字符串 str[] 中内含的空格字符找出，并显示空格字符的 ASCII 码 */
@@ -409,9 +444,13 @@ ispunct
 
 测试字符是否为标点符号或特殊符号
 
-头文件 `#include <ctype.h>`
+**头文件**
 
-函数原型
+```c
+#include <ctype.h>
+```
+
+**函数原型**
 
 ```c
 int ispunct(int c);
@@ -422,7 +461,7 @@ int ispunct(int c);
 - 附加说明：此为宏定义，非真正函数。
 - 相关函数：isspace, isdigit, isalpha
 
-示例
+**示例**
 
 ```c
 /* 列出字符串 str 中的标点符号或特殊符号 */
@@ -453,9 +492,13 @@ isupper
 
 测试字符是否为大写英文字母
 
-头文件 `#include <ctype.h>`
+**头文件**
 
-函数原型
+```c
+#include <ctype.h>
+```
+
+**函数原型**
 
 ```c
 int isupper(int c);
@@ -466,7 +509,7 @@ int isupper(int c);
 - 附加说明：此为宏定义，非真正函数。
 - 相关函数：isalpha, islower
 
-示例
+**示例**
 
 ```c
 /* 找出字符串 str 中为大写英文字母的字符 */
@@ -499,9 +542,13 @@ isxdigit
 
 测试字符是否为十六进制数字
 
-头文件 `#include <ctype.h>`
+**头文件**
 
-函数原型
+```c
+#include <ctype.h>
+```
+
+**函数原型**
 
 ```c
 int isxdigit(int c);
@@ -512,7 +559,7 @@ int isxdigit(int c);
 - 附加说明：此为宏定义，非真正函数。
 - 相关函数：isalnum, isdigit
 
-示例
+**示例**
 
 ```c
 /* 找出字符串 str 中为十六进制数字的字符 */
@@ -531,7 +578,7 @@ int main()
 }
 ```
 
-执行
+**执行**
 
 ```shell
 1 is a hexadecimal digits
