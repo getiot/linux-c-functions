@@ -6,9 +6,13 @@ pthread_create
 
 简介
 
-头文件 `#include <pthread.h>`
+**头文件**
 
-函数原型
+```c
+#include <pthread.h>
+```
+
+**函数原型**
 
 ```c
 int pthread_create(pthread_t *thread, const pthread_attr_t *attr,
@@ -21,7 +25,7 @@ int pthread_create(pthread_t *thread, const pthread_attr_t *attr,
 - 附加说明：
 - 相关函数：
 
-示例
+**示例**
 
 ```c
 
@@ -39,9 +43,13 @@ pthread_join
 
 简介
 
-头文件 `#include <pthread.h>`
+**头文件**
 
-函数原型
+```c
+#include <pthread.h>
+```
+
+**函数原型**
 
 ```c
 int pthread_join(pthread_t thread, void **retval);
@@ -52,7 +60,7 @@ int pthread_join(pthread_t thread, void **retval);
 - 附加说明：
 - 相关函数：
 
-示例
+**示例**
 
 ```c
 
@@ -70,9 +78,13 @@ pthread_detach
 
 简介
 
-头文件 `#include <pthread.h>`
+**头文件**
 
-函数原型
+```c
+#include <pthread.h>
+```
+
+**函数原型**
 
 ```c
 int pthread_detach(pthread_t thread);
@@ -83,7 +95,7 @@ int pthread_detach(pthread_t thread);
 - 附加说明：
 - 相关函数：
 
-示例
+**示例**
 
 ```c
 
@@ -101,9 +113,13 @@ pthread_cancel
 
 简介
 
-头文件 `#include <pthread.h>`
+**头文件**
 
-函数原型
+```c
+#include <pthread.h>
+```
+
+**函数原型**
 
 ```c
 int pthread_cancel(pthread_t thread);
@@ -114,7 +130,7 @@ int pthread_cancel(pthread_t thread);
 - 附加说明：
 - 相关函数：
 
-示例
+**示例**
 
 ```c
 
@@ -132,9 +148,13 @@ pthread_equal
 
 简介
 
-头文件 `#include <pthread.h>`
+**头文件**
 
-函数原型
+```c
+#include <pthread.h>
+```
+
+**函数原型**
 
 ```c
 int pthread_equal(pthread_t t1, pthread_t t2);
@@ -145,7 +165,7 @@ int pthread_equal(pthread_t t1, pthread_t t2);
 - 附加说明：
 - 相关函数：
 
-示例
+**示例**
 
 ```c
 
@@ -163,9 +183,13 @@ pthread_exit
 
 简介
 
-头文件 `#include <pthread.h>`
+**头文件**
 
-函数原型
+```c
+#include <pthread.h>
+```
+
+**函数原型**
 
 ```c
 void pthread_exit(void *retval);
@@ -176,7 +200,7 @@ void pthread_exit(void *retval);
 - 附加说明：
 - 相关函数：
 
-示例
+**示例**
 
 ```c
 
@@ -194,9 +218,13 @@ pthread_self
 
 简介
 
-头文件 `#include <pthread.h>`
+**头文件**
 
-函数原型
+```c
+#include <pthread.h>
+```
+
+**函数原型**
 
 ```c
 pthread_t pthread_self(void);
@@ -207,7 +235,7 @@ pthread_t pthread_self(void);
 - 附加说明：
 - 相关函数：
 
-示例
+**示例**
 
 ```c
 
@@ -225,9 +253,13 @@ pthread_attr_init
 
 简介
 
-头文件 `#include <pthread.h>`
+**头文件**
 
-函数原型
+```c
+#include <pthread.h>
+```
+
+**函数原型**
 
 ```c
 int pthread_attr_init(pthread_attr_t *attr);
@@ -239,7 +271,7 @@ int pthread_attr_destroy(pthread_attr_t *attr);
 - 附加说明：
 - 相关函数：
 
-示例
+**示例**
 
 ```c
 
@@ -257,9 +289,13 @@ pthread_attr_destroy
 
 简介
 
-头文件 `#include <pthread.h>`
+**头文件**
 
-函数原型
+```c
+#include <pthread.h>
+```
+
+**函数原型**
 
 ```c
 int pthread_attr_destroy(pthread_attr_t *attr);
@@ -270,7 +306,7 @@ int pthread_attr_destroy(pthread_attr_t *attr);
 - 附加说明：
 - 相关函数：
 
-示例
+**示例**
 
 ```c
 
@@ -288,9 +324,13 @@ pthread_setattr_default_np
 
 简介
 
-头文件 `#include <pthread.h>`
+**头文件**
 
-函数原型
+```c
+#include <pthread.h>
+```
+
+**函数原型**
 
 ```c
 int pthread_setattr_default_np(pthread_attr_t *attr);
@@ -301,7 +341,7 @@ int pthread_setattr_default_np(pthread_attr_t *attr);
 - 附加说明：
 - 相关函数：
 
-示例
+**示例**
 
 ```c
 
@@ -319,14 +359,14 @@ getrlimit
 
 简介
 
-头文件
+**头文件**
 
 ```c
 #include <sys/time.h>
 #include <sys/resource.h>
 ```
 
-函数原型
+**函数原型**
 
 ```c
 int getrlimit(int resource, struct rlimit *rlim);
@@ -337,7 +377,7 @@ int getrlimit(int resource, struct rlimit *rlim);
 - 附加说明：
 - 相关函数：
 
-示例
+**示例**
 
 ```c
 
@@ -355,9 +395,13 @@ prctl
 
 简介
 
-头文件 `#include <sys/prctl.h>`
+**头文件**
 
-函数原型
+```c
+#include <sys/prctl.h>
+```
+
+**函数原型**
 
 ```c
 int prctl(int option, unsigned long arg2, unsigned long arg3,
@@ -369,7 +413,7 @@ int prctl(int option, unsigned long arg2, unsigned long arg3,
 - 附加说明：
 - 相关函数：
 
-示例
+**示例**
 
 ```c
 

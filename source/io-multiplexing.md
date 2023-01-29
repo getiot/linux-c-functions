@@ -6,7 +6,7 @@ select
 
 I/O 多工机制
 
-头文件
+**头文件**
 
 ```c
 /* According to POSIX.1-2001, POSIX.1-2008 */
@@ -18,7 +18,7 @@ I/O 多工机制
 #include <unistd.h>
 ```
 
-函数原型
+**函数原型**
 
 ```c
 int select(int nfds, fd_set *readfds, fd_set *writefds,
@@ -44,7 +44,7 @@ int select(int nfds, fd_set *readfds, fd_set *writefds,
   - `EINVAL` 参数 n 为负值
   - `ENOMEM` 内存不足
 
-示例
+**示例**
 
 常见的程序片段
 
@@ -66,9 +66,13 @@ poll
 
 获取环境变量内容
 
-头文件 `#include <poll.h>`
+**头文件**
 
-函数原型
+```c
+#include <poll.h>
+```
+
+**函数原型**
 
 ```c
 int poll(struct pollfd *fds, nfds_t nfds, int timeout);
@@ -78,7 +82,7 @@ int poll(struct pollfd *fds, nfds_t nfds, int timeout);
 - 返回值：
 - 相关函数：restart_syscall, select, select_tut, epoll, time
 
-示例
+**示例**
 
 ```c
 
@@ -96,7 +100,7 @@ ppoll
 
 获取环境变量内容
 
-头文件
+**头文件**
 
 ```c
 #define _GNU_SOURCE         /* See feature_test_macros(7) */
@@ -104,7 +108,7 @@ ppoll
 #include <poll.h>
 ```
 
-函数原型
+**函数原型**
 
 ```c
 int ppoll(struct pollfd *fds, nfds_t nfds, 
@@ -115,7 +119,7 @@ int ppoll(struct pollfd *fds, nfds_t nfds,
 - 返回值：
 - 相关函数：restart_syscall, select, select_tut, epoll, time
 
-示例
+**示例**
 
 ```c
 
@@ -134,9 +138,13 @@ epoll_create
 
 创建一个新的 epoll 实例
 
-头文件 `#include <sys/epoll.h>`
+**头文件**
 
-函数原型
+```c
+#include <sys/epoll.h>
+```
+
+**函数原型**
 
 ```c
 int epoll_create(int size);
@@ -158,9 +166,13 @@ epoll_create1
 
 创建一个新的 epoll 实例
 
-头文件 `#include <sys/epoll.h>`
+**头文件**
 
-函数原型
+```c
+#include <sys/epoll.h>
+```
+
+**函数原型**
 
 ```c
 int epoll_create1(int flags);
@@ -176,7 +188,7 @@ int epoll_create1(int flags);
 - 说明：当其参数 flags 为 0 时，除了丢弃过时的 size 参数之外，它的效果与 `epoll_create` 一样。
 - 相关函数：epoll_create, close, epoll_ctl, epoll_wait, epoll
 
-示例
+**示例**
 
 ```c
 int main (int argc, char *argv[])
@@ -200,9 +212,13 @@ epoll_ctl
 
 这个系统调用用于操作 epoll 函数所生成的实例（该实例由 epfd 指向），向 fd 实施 op 操作。
 
-头文件 `#include <sys/epoll.h>`
+**头文件**
 
-函数原型
+```c
+#include <sys/epoll.h>
+```
+
+**函数原型**
 
 ```c
 int epoll_ctl(int epfd, int op, int fd, struct epoll_event *event);
@@ -236,7 +252,7 @@ struct epoll_event {
 
 - 相关函数：epoll_create, epoll_wait, poll, epoll
 
-示例
+**示例**
 
 ```c
 int example(int sfd, int efd)
@@ -262,9 +278,13 @@ epoll_wait
 
 获取环境变量内容
 
-头文件 `#include <sys/epoll.h>`
+**头文件**
 
-函数原型
+```c
+#include <sys/epoll.h>
+```
+
+**函数原型**
 
 ```c
 int epoll_wait(int epfd, struct epoll_event *events, int maxevents, int timeout);
@@ -274,7 +294,7 @@ int epoll_wait(int epfd, struct epoll_event *events, int maxevents, int timeout)
 - 返回值：
 - 相关函数：epoll_create, epoll_ctl, epoll
 
-示例
+**示例**
 
 ```c
 
@@ -293,9 +313,13 @@ epoll_pwait
 
 获取环境变量内容
 
-头文件 `#include <sys/epoll.h>`
+**头文件**
 
-函数原型
+```c
+#include <sys/epoll.h>
+```
+
+**函数原型**
 
 ```c
 int epoll_pwait(int epfd, struct epoll_event *events, int maxevents, 
@@ -306,7 +330,7 @@ int epoll_pwait(int epfd, struct epoll_event *events, int maxevents,
 - 返回值：
 - 相关函数：epoll_create, epoll_ctl, epoll
 
-示例
+**示例**
 
 ```c
 

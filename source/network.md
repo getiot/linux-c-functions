@@ -6,14 +6,14 @@ accept
 
 接受 socket 连接
 
-头文件
+**头文件**
 
 ```c
 #include <sys/types.h>
 #include <sys/socket.h>
 ```
 
-函数原型
+**函数原型**
 
 ```c
 int accept(int sockfd, struct sockaddr *addr, int *addrlen);
@@ -30,7 +30,7 @@ int accept(int sockfd, struct sockaddr *addr, int *addrlen);
   - `ENOMEM` 核心内存不足。
 - 相关函数：socket, bind, listen, connect
 
-示例
+**示例**
 
 参考 [listen()](#listen)
 
@@ -40,14 +40,14 @@ bind
 
 绑定 socket
 
-头文件
+**头文件**
 
 ```c
 #include <sys/types.h>
 #include <sys/socket.h>
 ```
 
-函数原型
+**函数原型**
 
 ```c
 int bind(int sockfd, const struct sockaddr *addr, socklen_t addrlen);
@@ -91,7 +91,7 @@ int bind(int sockfd, const struct sockaddr *addr, socklen_t addrlen);
 
 - 相关函数：socket, accept, connect, listen
 
-示例
+**示例**
 
 参考 [listen()](#listen)
 
@@ -101,14 +101,14 @@ connect
 
 建立 socket 连接
 
-头文件
+**头文件**
 
 ```c
 #include <sys/types.h>
 #include <sys/socket.h>
 ```
 
-函数原型
+**函数原型**
 
 ```c
 int connect(int sockfd, const struct sockaddr *addr, socklen_t addrlen);
@@ -127,7 +127,7 @@ int connect(int sockfd, const struct sockaddr *addr, socklen_t addrlen);
   - `EALREADY` socket 为不可阻断且先前的连接操作还未完成。
 - 相关函数：socket, bind, listen
 
-示例
+**示例**
 
 ```c
 /* 
@@ -195,9 +195,13 @@ endprotoent
 
 结束网络协议数据的读取
 
-头文件 `#include <netdb.h>`
+**头文件**
 
-函数原型
+```c
+#include <netdb.h>
+```
+
+**函数原型**
 
 ```c
 void endprotoent(void);
@@ -208,7 +212,7 @@ void endprotoent(void);
 - 附加说明：
 - 相关函数：getprotoent，getprotobyname，getprotobynumber，setprotoent
 
-示例
+**示例**
 
 参考 [getprotoent()](#getprotoent)
 
@@ -218,9 +222,13 @@ endservent
 
 结束网络服务数据的读取
 
-头文件 `#include <netdb.h>`
+**头文件**
 
-函数原型
+```c
+#include <netdb.h>
+```
+
+**函数原型**
 
 ```c
 void endservent(void);
@@ -230,7 +238,7 @@ void endservent(void);
 - 返回值：无
 - 相关函数：getservent，getservbyname，getservbyport，setservent
 
-示例
+**示例**
 
 参考 [getservent()](#getservent)
 
@@ -257,14 +265,14 @@ getsockopt
 
 获取 socket 状态
 
-头文件
+**头文件**
 
 ```c
 #include <sys/types.h>
 #include <sys/socket.h>
 ```
 
-函数原型
+**函数原型**
 
 ```c
 int getsockopt(int sockfd, int level, int optname, void *optval, socklen_t *optlen);
@@ -278,7 +286,7 @@ int getsockopt(int sockfd, int level, int optname, void *optval, socklen_t *optl
   - `EFAULT` 参数 optval 指针指向无法存取的内存空间。
 - 相关函数：setsockopt
 
-示例
+**示例**
 
 ```c
 #include<sys/types.h>
@@ -308,9 +316,13 @@ htonl
 
 将32位主机字节序转换成网络字节序
 
-头文件 `#include <netinet/in.h>`
+**头文件**
 
-函数原型
+```c
+#include <netinet/in.h>
+```
+
+**函数原型**
 
 ```c
 unsigned long int htonl(unsigned long int hostlong);
@@ -320,7 +332,7 @@ unsigned long int htonl(unsigned long int hostlong);
 - 返回值：返回对应的网络字节序。
 - 相关函数：htons，ntohl，ntohs
 
-示例
+**示例**
 
 参考 [getservbyport()](#getservbyport) 或 [connect()](#connect)。
 
@@ -330,9 +342,13 @@ htons
 
 将16位主机字节序转换成网络字节序
 
-头文件 `#include <netinet/in.h>`
+**头文件**
 
-函数原型
+```c
+#include <netinet/in.h>
+```
+
+**函数原型**
 
 ```c
 unsigned short int htons(unsigned short int hostshort);
@@ -342,7 +358,7 @@ unsigned short int htons(unsigned short int hostshort);
 - 返回值：返回对应的网络字节序。
 - 相关函数：htonl，ntohl，ntohs
 
-示例
+**示例**
 
 参考 [connect()](#connect)
 
@@ -352,7 +368,7 @@ inet_addr
 
 将网络地址转成二进制的数字
 
-头文件
+**头文件**
 
 ```c
 #include <sys/socket.h>
@@ -360,7 +376,7 @@ inet_addr
 #include <arpa/inet.h>
 ```
 
-函数原型
+**函数原型**
 
 ```c
 unsigned long int inet_addr(const char *cp);
@@ -377,7 +393,7 @@ inet_aton
 
 将网络地址转成网络二进制的数字
 
-头文件
+**头文件**
 
 ```c
 #include <sys/scoket.h>
@@ -385,7 +401,7 @@ inet_aton
 #include <arpa/inet.h>
 ```
 
-函数原型
+**函数原型**
 
 ```c
 int inet_aton(const char *cp, struct in_addr *inp);
@@ -410,7 +426,7 @@ inet_ntoa
 
 将网络二进制的数字转换成网络地址
 
-头文件
+**头文件**
 
 ```c
 #include <sys/socket.h>
@@ -418,7 +434,7 @@ inet_ntoa
 #include <arpa/inet.h>
 ```
 
-函数原型
+**函数原型**
 
 ```c
 char *inet_ntoa(struct in_addr in);
@@ -434,9 +450,13 @@ listen
 
 等待 socket 连接
 
-头文件 `#include <sys/socket.h>`
+**头文件**
 
-函数原型
+```c
+#include <sys/socket.h>
+```
+
+**函数原型**
 
 ```c
 int listen(int sockfd, int backlog);
@@ -450,7 +470,7 @@ int listen(int sockfd, int backlog);
 - 附加说明：listen() 只适用 `SOCK_STREAM` 或 `SOCK_SEQPACKET` 的 socket 类型。如果 socket 为 `AF_INET` 则参数 backlog 最大值可设至 128。
 - 相关函数：socket，bind，accept，connect
 
-示例
+**示例**
 
 ```c
 #include<sys/types.h>
@@ -538,9 +558,13 @@ ntohl
 
 将32位网络字节序转换成主机字节序
 
-头文件 `#include <netinet/in.h>`
+**头文件**
 
-函数原型
+```c
+#include <netinet/in.h>
+```
+
+**函数原型**
 
 ```c
 unsigned long int ntohl(unsigned long int netlong);
@@ -550,7 +574,7 @@ unsigned long int ntohl(unsigned long int netlong);
 - 返回值：返回对应的主机字节序。
 - 相关函数：htonl，htons，ntohs
 
-示例
+**示例**
 
 参考 [getservent()](#getservent)
 
@@ -560,9 +584,13 @@ ntohs
 
 将16位网络字节序转换成主机字节序
 
-头文件 `#include <netinet/in.h>`
+**头文件**
 
-函数原型
+```c
+#include <netinet/in.h>
+```
+
+**函数原型**
 
 ```c
 unsigned short int ntohs(unsigned short int netshort);
@@ -572,7 +600,7 @@ unsigned short int ntohs(unsigned short int netshort);
 - 返回值：返回对应的主机字节序。
 - 相关函数：htonl，htons，ntohl
 
-示例
+**示例**
 
 参考 [getservent()](#getservent)
 
@@ -582,14 +610,14 @@ recv
 
 经 socket 接收数据
 
-头文件
+**头文件**
 
 ```c
 #include<sys/types.h>
 #include<sys/socket.h>
 ```
 
-函数原型
+**函数原型**
 
 ```c
 ssize_t recv(int sockfd, void *buf, size_t len, int flags);
@@ -611,7 +639,7 @@ ssize_t recv(int sockfd, void *buf, size_t len, int flags);
   - `EINVAL` 传给系统调用的参数不正确
 - 相关函数：recvfrom，recvmsg，send，sendto，socket
 
-示例
+**示例**
 
 参考 [listen()](#listen)
 
@@ -621,14 +649,14 @@ recvfrom
 
 经 socket 接收数据
 
-头文件
+**头文件**
 
 ```c
 #include <sys/types.h>
 #include <sys/socket.h>
 ```
 
-函数原型
+**函数原型**
 
 ```c
 ssize_t recvfrom(int sockfd, void *buf, size_t len, int flags,
@@ -648,7 +676,7 @@ ssize_t recvfrom(int sockfd, void *buf, size_t len, int flags,
 - 附加说明：
 - 相关函数：recv，recvmsg，send，sendto，socket
 
-示例
+**示例**
 
 ```c
 /*
@@ -708,14 +736,14 @@ recvmsg
 
 经 socket 接收数据
 
-头文件
+**头文件**
 
 ```c
 #include <sys/types.h>
 #include <sys/socktet.h>
 ```
 
-函数原型
+**函数原型**
 
 ```c
 ssize_t recvmsg(int sockfd, struct msghdr *msg, int flags);
@@ -733,7 +761,7 @@ ssize_t recvmsg(int sockfd, struct msghdr *msg, int flags);
   - `EINVAL` 传给系统调用的参数不正确
 - 相关函数：recv，recvfrom，send，sendto，sendmsg，socket
 
-示例
+**示例**
 
 参考 [recvfrom()](#recvfrom)
 
@@ -743,14 +771,14 @@ send
 
 经 socket 发送数据
 
-头文件
+**头文件**
 
 ```c
 #include <sys/types.h>
 #include <sys/socket.h>
 ```
 
-函数原型
+**函数原型**
 
 ```c
 ssize_t send(int sockfd, const void *buf, size_t len, int flags);
@@ -772,7 +800,7 @@ ssize_t send(int sockfd, const void *buf, size_t len, int flags);
   - `EINVAL` 传给系统调用的参数不正确
 - 相关函数：sendto，sendmsg，recv，recvfrom，socket
 
-示例
+**示例**
 
 参考 [connect()](#connect)
 
@@ -782,14 +810,14 @@ sendmsg
 
 经 socket 传送数据
 
-头文件 
+**头文件**
 
 ```c
 #include <sys/types.h>
 #include <sys/socket.h>
 ```
 
-函数原型
+**函数原型**
 
 ```c
 ssize_t sendmsg(int sockfd, const struct msghdr *msg, int flags);
@@ -822,7 +850,7 @@ ssize_t sendmsg(int sockfd, const struct msghdr *msg, int flags);
 
 - 相关函数：send，sendto，recv，recvfrom，recvmsg，socket
 
-示例
+**示例**
 
 参考 [sendto()](#sendto)
 
@@ -832,14 +860,14 @@ sendto
 
 经 socket 传送数据
 
-头文件
+**头文件**
 
 ```c
 #include <sys/types.h>
 #include <sys/socket.h>
 ```
 
-函数原型
+**函数原型**
 
 ```c
 ssize_t sendto(int sockfd, const void *buf, size_t len, int flags,
@@ -858,7 +886,7 @@ ssize_t sendto(int sockfd, const void *buf, size_t len, int flags,
   - `EINVAL` 传给系统调用的参数不正确
 - 相关函数：send , sendmsg,recv , recvfrom , socket
 
-示例
+**示例**
 
 ```c
 #include <sys/types.h>
@@ -905,9 +933,13 @@ setprotoent
 
 打开网络协议的数据文件
 
-头文件 `#include <netdb.h>`
+**头文件**
 
-函数原型
+```c
+#include <netdb.h>
+```
+
+**函数原型**
 
 ```c
 void setprotoent(int stayopen);
@@ -923,9 +955,13 @@ setservent
 
 打开主机网络服务的数据文件
 
-头文件 `#include <netdb.h>`
+**头文件**
 
-函数原型
+```c
+#include <netdb.h>
+```
+
+**函数原型**
 
 ```c
 void setservent(int stayopen);
@@ -941,14 +977,14 @@ setsockopt
 
 设置 socket 状态
 
-头文件
+**头文件**
 
 ```c
 #include <sys/types.h>
 #include <sys/socket.h>
 ```
 
-函数原型
+**函数原型**
 
 ```c
 int setsockopt(int sockfd, int level, int optname,
@@ -974,7 +1010,7 @@ int setsockopt(int sockfd, int level, int optname,
   - `EFAULT` 参数 optval 指针指向无法存取的内存空间。
 - 相关函数：getsockopt
 
-示例
+**示例**
 
 参考 [getsockopt()](#getsockopt)
 
@@ -984,9 +1020,13 @@ shutdown
 
 终止 socket 通信
 
-头文件 `#include <sys/socket.h>`
+**头文件**
 
-函数原型
+```c
+#include <sys/socket.h>
+```
+
+**函数原型**
 
 ```c
 int shutdown(int sockfd, int how);
@@ -1008,14 +1048,14 @@ socket
 
 建立一个 socket 通信
 
-头文件
+**头文件**
 
 ```c
 #include <sys/types.h>
 #include <sys/socket.h>
 ```
 
-函数原型
+**函数原型**
 
 ```c
 int socket(int domain, int type, int protocol);
@@ -1056,47 +1096,350 @@ int socket(int domain, int type, int protocol);
 
 - 相关函数：accept，bind，connect，listen
 
-示例
+**示例**
 
 参考 [connect()](#connect)
 
-
 res_ninit
 ---------------------------------------------
+
+简介
+
+**头文件**
+
+```c
+#include <stdio.h>
+```
+
+**函数原型**
+
+```c
+int printf(const char *format, ...);
+```
+
+- 功能：
+- 返回值：
+- 附加说明：
+- 相关函数：
+
+**示例**
+
+```c
+int main(void)
+{
+    printf("Hello, World!\n");
+    return 0;
+}
+```
+
+执行
+
+```bash
+Hello, World!
+```
 
 
 res_nclose
 ---------------------------------------------
 
+简介
 
+**头文件**
+
+```c
+#include <stdio.h>
+```
+
+**函数原型**
+
+```c
+int printf(const char *format, ...);
+```
+
+- 功能：
+- 返回值：
+- 附加说明：
+- 相关函数：
+
+**示例**
+
+```c
+int main(void)
+{
+    printf("Hello, World!\n");
+    return 0;
+}
+```
+
+执行
+
+```bash
+Hello, World!
+```
 
 res_nquery
 ---------------------------------------------
 
+简介
 
+**头文件**
+
+```c
+#include <stdio.h>
+```
+
+**函数原型**
+
+```c
+int printf(const char *format, ...);
+```
+
+- 功能：
+- 返回值：
+- 附加说明：
+- 相关函数：
+
+**示例**
+
+```c
+int main(void)
+{
+    printf("Hello, World!\n");
+    return 0;
+}
+```
+
+执行
+
+```bash
+Hello, World!
+```
 
 res_nsearch
 ---------------------------------------------
 
+简介
 
+**头文件**
+
+```c
+#include <stdio.h>
+```
+
+**函数原型**
+
+```c
+int printf(const char *format, ...);
+```
+
+- 功能：
+- 返回值：
+- 附加说明：
+- 相关函数：
+
+**示例**
+
+```c
+int main(void)
+{
+    printf("Hello, World!\n");
+    return 0;
+}
+```
+
+执行
+
+```bash
+Hello, World!
+```
 
 res_nquerydomain
 ---------------------------------------------
 
+简介
 
+**头文件**
+
+```c
+#include <stdio.h>
+```
+
+**函数原型**
+
+```c
+int printf(const char *format, ...);
+```
+
+- 功能：
+- 返回值：
+- 附加说明：
+- 相关函数：
+
+**示例**
+
+```c
+int main(void)
+{
+    printf("Hello, World!\n");
+    return 0;
+}
+```
+
+执行
+
+```bash
+Hello, World!
+```
 
 res_nmkquery
 ---------------------------------------------
 
+简介
+
+**头文件**
+
+```c
+#include <stdio.h>
+```
+
+**函数原型**
+
+```c
+int printf(const char *format, ...);
+```
+
+- 功能：
+- 返回值：
+- 附加说明：
+- 相关函数：
+
+**示例**
+
+```c
+int main(void)
+{
+    printf("Hello, World!\n");
+    return 0;
+}
+```
+
+执行
+
+```bash
+Hello, World!
+```
 
 res_nsend
 ---------------------------------------------
 
+简介
+
+**头文件**
+
+```c
+#include <stdio.h>
+```
+
+**函数原型**
+
+```c
+int printf(const char *format, ...);
+```
+
+- 功能：
+- 返回值：
+- 附加说明：
+- 相关函数：
+
+**示例**
+
+```c
+int main(void)
+{
+    printf("Hello, World!\n");
+    return 0;
+}
+```
+
+执行
+
+```bash
+Hello, World!
+```
 
 dn_comp
 ---------------------------------------------
 
+简介
+
+**头文件**
+
+```c
+#include <stdio.h>
+```
+
+**函数原型**
+
+```c
+int printf(const char *format, ...);
+```
+
+- 功能：
+- 返回值：
+- 附加说明：
+- 相关函数：
+
+**示例**
+
+```c
+int main(void)
+{
+    printf("Hello, World!\n");
+    return 0;
+}
+```
+
+执行
+
+```bash
+Hello, World!
+```
 
 dn_expand
 ---------------------------------------------
+
+简介
+
+**头文件**
+
+```c
+#include <stdio.h>
+```
+
+**函数原型**
+
+```c
+int printf(const char *format, ...);
+```
+
+- 功能：
+- 返回值：
+- 附加说明：
+- 相关函数：
+
+**示例**
+
+```c
+int main(void)
+{
+    printf("Hello, World!\n");
+    return 0;
+}
+```
+
+执行
+
+```bash
+Hello, World!
+```
 

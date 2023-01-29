@@ -6,9 +6,13 @@ getenv
 
 获取环境变量内容
 
-头文件 `#include <stdlib.h>`
+**头文件**
 
-函数原型
+```c
+#include <stdlib.h>
+```
+
+**函数原型**
 
 ```c
 char * getenv(const char *name);
@@ -18,7 +22,7 @@ char * getenv(const char *name);
 - 返回值：执行成功则返回指向该内容的指针，找不到符合的环境变量名称则返回 NULL。
 - 相关函数：putenv, setenv, unsetenv
 
-示例
+**示例**
 
 ```c
 #include <stdio.h>
@@ -45,9 +49,13 @@ putenv
 
 改变或增加环境变量
 
-头文件 `#include <stdlib.h>`
+**头文件**
 
-函数原型
+```c
+#include <stdlib.h>
+```
+
+**函数原型**
 
 ```c
 int putenv(const char * string);
@@ -57,7 +65,7 @@ int putenv(const char * string);
 - 返回值：执行成功则返回 0，有错误发生则返回错误代码，例如 ENOMEM 表示内存不足，无法配置新的环境变量空间。
 - 相关函数：getenv, setenv, unsetenv
 
-示例
+**示例**
 
 ```c
 #include <stdio.h>
@@ -87,9 +95,13 @@ setenv
 
 改变或增加环境变量
 
-头文件 `#include <stdlib.h>`
+**头文件**
 
-函数原型
+```c
+#include <stdlib.h>
+```
+
+**函数原型**
 
 ```c
 int setenv(const char *name, const char *value, int overwrite);
@@ -99,7 +111,7 @@ int setenv(const char *name, const char *value, int overwrite);
 - 返回值：执行成功则返回 0，有错误发生则返回错误代码，例如 ENOMEM 表示内存不足，无法配置新的环境变量空间。
 - 相关函数：getenv, putenv, unsetenv
 
-示例
+**示例**
 
 ```c
 #include <stdio.h>

@@ -6,9 +6,13 @@ close
 
 关闭文件
 
-头文件 `#include <unistd.h>`
+**头文件**
 
-函数原型
+```c
+#include <unistd.h>
+```
+
+**函数原型**
 
 ```c
 int close(int fd);
@@ -19,7 +23,7 @@ int close(int fd);
 - 附加说明：虽然在进程结束时，系统会自动关闭已打开的文件，但仍建议自行关闭文件，并确实检查返回值。
 - 相关函数：open，fcntl，shutdown，unlink，fclose
 
-示例
+**示例**
 
 ```c
 
@@ -37,7 +41,7 @@ creat
 
 创建文件
 
-头文件
+**头文件**
 
 ```c
 #include <sys/types.h>
@@ -45,7 +49,7 @@ creat
 #include <fcntl.h>
 ```
 
-函数原型
+**函数原型**
 
 ```c
 int creat(const char * pathname, mode_tmode);
@@ -77,7 +81,7 @@ int creat(const char * pathname, mode_tmode);
 
 - 相关函数：read，write，fcntl，close，link，stat，umask，unlink，fopen
 
-示例
+**示例**
 
 ```c
 
@@ -95,9 +99,13 @@ dup
 
 复制文件描述词
 
-头文件 `#include <unistd.h>`
+**头文件**
 
-函数原型
+```c
+#include <unistd.h>
+```
+
+**函数原型**
 
 ```c
 int dup (int oldfd);
@@ -108,7 +116,7 @@ int dup (int oldfd);
 - 附加说明：
 - 相关函数：open，close，fcntl，dup2
 
-示例
+**示例**
 
 ```c
 
@@ -126,9 +134,13 @@ dup2
 
 复制文件描述词
 
-头文件 `#include <unistd.h>`
+**头文件**
 
-函数原型
+```c
+#include <unistd.h>
+```
+
+**函数原型**
 
 ```c
 int dup2(int odlfd,int newfd);
@@ -139,7 +151,7 @@ int dup2(int odlfd,int newfd);
 - 附加说明：dup2() 相当于调用 `fcntl(oldfd，F_DUPFD，newfd)`；请参考 fcntl()。
 - 相关函数：open，close，fcntl，dup
 
-示例
+**示例**
 
 ```c
 
@@ -157,14 +169,14 @@ fcntl
 
 文件描述词操作
 
-头文件
+**头文件**
 
 ```c
 #include <unistd.h>
 #include <fcntl.h>
 ```
 
-函数原型
+**函数原型**
 
 ```c
 int fcntl(int fd, int cmd, ... /* arg */ );
@@ -212,7 +224,7 @@ int fcntl(int fd, int cmd, ... /* arg */ );
 
 - 相关函数：[open](#open)，[flock](#flock)
 
-示例
+**示例**
 
 ```c
 
@@ -230,9 +242,13 @@ flock
 
 锁定文件或解除锁定
 
-头文件 `#include <sys/file.h>`
+**头文件**
 
-函数原型
+```c
+#include <sys/file.h>
+```
+
+**函数原型**
 
 ```c
 int flock(int fd,int operation);
@@ -255,7 +271,7 @@ int flock(int fd,int operation);
 
 - 相关函数：open，fcntl
 
-示例
+**示例**
 
 ```c
 
@@ -273,9 +289,13 @@ fsync
 
 将缓冲区数据写回磁盘
 
-头文件 `#include <unistd.h>`
+**头文件**
 
-函数原型
+```c
+#include <unistd.h>
+```
+
+**函数原型**
 
 ```c
 int fsync(int fd);
@@ -286,7 +306,7 @@ int fsync(int fd);
 - 附加说明：
 - 相关函数：sync
 
-示例
+**示例**
 
 ```c
 
@@ -304,14 +324,14 @@ lseek
 
 移动文件的读写位置
 
-头文件
+**头文件**
 
 ```c
 #include<sys/types.h>
 #include<unistd.h>
 ```
 
-函数原型
+**函数原型**
 
 ```c
 off_t lseek(int fildes,off_t offset ,int whence);
@@ -339,7 +359,7 @@ off_t lseek(int fildes,off_t offset ,int whence);
 
 - 相关函数：dup，open，fseek
 
-示例
+**示例**
 
 ```c
 
@@ -357,9 +377,13 @@ mkstemp
 
 建立唯一的临时文件
 
-头文件 `#include <stdlib.h>`
+**头文件**
 
-函数原型
+```c
+#include <stdlib.h>
+```
+
+**函数原型**
 
 ```c
 int mkstemp(char * template);
@@ -383,7 +407,7 @@ int mkstemp(char * template);
 
 - 相关函数：mktemp
 
-示例
+**示例**
 
 ```c
 #include <stdlib.h>
@@ -410,7 +434,7 @@ open
 
 打开文件
 
-头文件
+**头文件**
 
 ```c
 #include <sys/types.h>
@@ -418,7 +442,7 @@ open
 #include <fcntl.h>
 ```
 
-函数原型
+**函数原型**
 
 ```c
 int open( const char *pathname, int flags);
@@ -475,7 +499,7 @@ int open( const char *pathname, int flags, mode_t mode);
 
 - 相关函数：read, write, fcntl, close, link, stat, umask, unlink, fopen
 
-示例
+**示例**
 
 ```c
 #include<unistd.h>
@@ -510,9 +534,13 @@ read
 
 由已打开的文件读取数据
 
-头文件 `#include <unistd.h>`
+**头文件**
 
-函数原型
+```c
+#include <unistd.h>
+```
+
+**函数原型**
 
 ```c
 ssize_t read(int fd,void * buf ,size_t count);
@@ -532,7 +560,7 @@ ssize_t read(int fd,void * buf ,size_t count);
 
 - 相关函数：readdir，write，fcntl，close，lseek，readlink，fread
 
-示例
+**示例**
 
 ```c
 
@@ -550,9 +578,13 @@ sync
 
 将缓冲区数据写回磁盘
 
-头文件 `#include <unistd.h>`
+**头文件**
 
-函数原型
+```c
+#include <unistd.h>
+```
+
+**函数原型**
 
 ```c
 int sync(void);
@@ -563,7 +595,7 @@ int sync(void);
 - 附加说明：
 - 相关函数：
 
-示例
+**示例**
 
 ```c
 
@@ -581,9 +613,13 @@ write
 
 将数据写入已打开的文件内
 
-头文件 `#include <unistd.h>`
+**头文件**
 
-函数原型
+```c
+#include <unistd.h>
+```
+
+**函数原型**
 
 ```c
 ssize_t write (int fd,const void * buf,size_t count);
@@ -603,7 +639,7 @@ ssize_t write (int fd,const void * buf,size_t count);
 
 - 相关函数：open，read，fcntl，close，lseek，sync，fsync，fwrite
 
-示例
+**示例**
 
 ```c
 

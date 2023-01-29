@@ -37,9 +37,13 @@
 
 简介
 
-头文件 `#include <stdio.h>`
+**头文件**
 
-函数原型
+```c
+#include <stdio.h>
+```
+
+**函数原型**
 
 ```c
 int printf(const char *format, ...);
@@ -50,7 +54,7 @@ int printf(const char *format, ...);
 - 附加说明：
 - 相关函数：
 
-示例
+**示例**
 
 ```c
 int main(void)

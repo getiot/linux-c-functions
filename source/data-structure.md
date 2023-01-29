@@ -6,9 +6,13 @@ crypt
 
 将密码或数据编码
 
-头文件 `#include <crypt.h>`
+**头文件**
 
-函数原型
+```c
+#include <crypt.h>
+```
+
+**函数原型**
 
 ```c
 char *crypt(const char *key, const char *salt);
@@ -19,7 +23,7 @@ char *crypt(const char *key, const char *salt);
 - 附加说明：使用 GCC 编译时需加 -lcrypt。
 - 相关函数：getpass
 
-示例
+**示例**
 
 ```c
 #include <stdio.h>
@@ -59,9 +63,13 @@ bsearch
 
 二元搜索
 
-头文件 `#include <stdlib.h>`
+**头文件**
 
-函数原型
+```c
+#include <stdlib.h>
+```
+
+**函数原型**
 
 ```c
 void *bsearch(const void *key, const void *base, size_t nmemb,
@@ -72,7 +80,7 @@ void *bsearch(const void *key, const void *base, size_t nmemb,
 - 返回值：找到关键数据则返回找到的地址，如果在数组中找不到关键数据则返回 NULL。
 - 相关函数：qsort
 
-示例
+**示例**
 
 ```c
 #include <stdio.h>
@@ -139,9 +147,13 @@ lfind
 
 线性搜索
 
-头文件 `#include <search.h>`
+**头文件**
 
-函数原型
+```c
+#include <search.h>
+```
+
+**函数原型**
 
 ```c
 void *lfind (const void *key, const void *base, size_t *nmemb,
@@ -152,7 +164,7 @@ void *lfind (const void *key, const void *base, size_t *nmemb,
 - 返回值：找到关键数据则返回找到的该笔元素的地址，如果在数组中找不到关键数据则返回空指针 NULL。
 - 相关函数：lsearch
 
-示例
+**示例**
 
 参考 [lsearch()](#lsearch)
 
@@ -162,9 +174,13 @@ lsearch
 
 线性搜索
 
-头文件 `#include <search.h>`
+**头文件**
 
-函数原型
+```c
+#include <search.h>
+```
+
+**函数原型**
 
 ```c
 void *lsearch(const void *key, const void *base, size_t *nmemb,
@@ -175,7 +191,7 @@ void *lsearch(const void *key, const void *base, size_t *nmemb,
 - 返回值：找到关键数据则返回找到的该笔元素的地址，如果在数组中找不到关键数据则将此关键数据加入数组，再把加入数组后的地址返回。
 - 相关函数：lfind
 
-示例
+**示例**
 
 ```c
 #include <stdio.h>
@@ -228,9 +244,13 @@ qsort
 
 利用快速排序法排列数组
 
-头文件 `#include <stdlib.h>`
+**头文件**
 
-函数原型
+```c
+#include <stdlib.h>
+```
+
+**函数原型**
 
 ```c
 void qsort(void *base, size_t nmemb, size_t size, 
@@ -241,7 +261,7 @@ void qsort(void *base, size_t nmemb, size_t size,
 - 返回值：无
 - 相关函数：bsearch
 
-示例
+**示例**
 
 ```c
 #include <stdio.h>
@@ -283,9 +303,13 @@ rand
 
 产生随机数
 
-头文件 `#include <stdlib.h>`
+**头文件**
 
-函数原型
+```c
+#include <stdlib.h>
+```
+
+**函数原型**
 
 ```c
 int rand(void);
@@ -295,7 +319,7 @@ int rand(void);
 - 返回值：返回 0 至 RAND_MAX 之间的随机数值，RAND_MAX 定义在 stdlib.h，其值为 2147483647。
 - 相关函数：srand，random，srandom
 
-示例
+**示例**
 
 ```c
 /* 产生介于1到10的随机数值，本示例未设置随机数种子，完整的随机数产生请参考 srand() */
@@ -325,9 +349,13 @@ srand
 
 设置随机数种子
 
-头文件 `#include <stdlib.h>`
+**头文件**
 
-函数原型
+```c
+#include <stdlib.h>
+```
+
+**函数原型**
 
 ```c
 void srand (unsigned int seed);
@@ -337,7 +365,7 @@ void srand (unsigned int seed);
 - 返回值：无
 - 相关函数：rand，random srandom
 
-示例
+**示例**
 
 ```c
 /* 产生介于1到10之间的随机数值，本示例与执行结果可与 rand() 参照 */
