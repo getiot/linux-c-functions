@@ -1210,7 +1210,7 @@ int main()
 
 ```shell
 ab-cd : ef;gh :i-jkl;mnop;qrs-tu: vwx-y;z
-# '－' 和 ':' 字符已经被 '\0' 字符取代
+# '-' 和 ':' 字符已经被 '\0' 字符取代
 ab cd
 ef;gh
 i

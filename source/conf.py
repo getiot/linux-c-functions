@@ -17,8 +17,8 @@
 
 # -- Project information -----------------------------------------------------
 
-project = 'Linux 常用 C 函数'
-copyright = '2018-2022, 人人都懂物联网'
+project = 'Linux 常用 C 函数参考手册'
+copyright = '2018-2023, 人人都懂物联网'
 author = 'GetIoT.tech'
 
 # The full version, including alpha/beta/rc tags

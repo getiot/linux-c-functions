@@ -21,10 +21,10 @@ Linux 常用 C 函数参考手册
    data-structure
    file
    file-content
+   permission
    process
    ipcs
    pthreads
-   permission
    signal
    network
    io-multiplexing
