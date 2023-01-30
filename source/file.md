@@ -417,7 +417,7 @@ int main(void)
     int fd;
     char template[] = "template-XXXXXX";
     fd = mkstemp(template);
-    printf("template = %s\n", template);
+    printf("template file: %s\n", template);
     close(fd);
 }
 ```
@@ -425,7 +425,7 @@ int main(void)
 执行
 
 ```bash
-template = template-lgZcbo
+template file: template-lgZcbo
 ```
 
 
@@ -502,10 +502,11 @@ int open( const char *pathname, int flags, mode_t mode);
 **示例**
 
 ```c
-#include<unistd.h>
-#include<sys/types.h>
-#include<sys/stat.h>
-#include<fcntl.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 int main()
 {
@@ -562,15 +563,7 @@ ssize_t read(int fd,void * buf ,size_t count);
 
 **示例**
 
-```c
-
-```
-
-执行
-
-```shell
-
-```
+参考 open()。
 
 
 sync
@@ -591,9 +584,9 @@ int sync(void);
 ```
 
 - 说明：sync() 负责将系统缓冲区数据写回磁盘，以确保数据同步。
-- 返回值：
+- 返回值：返回 0。
 - 附加说明：
-- 相关函数：
+- 相关函数：fsync
 
 **示例**
 
@@ -641,13 +634,5 @@ ssize_t write (int fd,const void * buf,size_t count);
 
 **示例**
 
-```c
-
-```
-
-执行
-
-```shell
-
-```
+参考 open()。
 
