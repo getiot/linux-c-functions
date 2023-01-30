@@ -1,6 +1,6 @@
 # linux-c-functions
 
-这是一份《Linux 常用 C 函数手册》，你可以点击 [这里](https://getiot.tech/manual/linux-c-functions/) 在线阅读。如果你在阅读过程中发现错误或者遗漏，欢迎给本仓库提交 issue 和 PR！
+这是一份开源的《Linux 常用 C 函数参考手册》中文版，文档托管在 [GetIoT.tech](https://getiot.tech) 网站，你可以点击 [这里](https://getiot.tech/manual/linux-c-functions/) 在线阅读。如果你在阅读过程中发现错误或者遗漏，欢迎给本仓库提交 issue 和 PR！示例代码均可在 [linux-c](https://github.com/getiot/linux-c) 仓库找到。
 
 ![](https://static.getiot.tech/The_C_Programming_Language_logo.png)
 
