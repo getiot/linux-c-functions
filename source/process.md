@@ -26,16 +26,16 @@ int atexit (void (*function)(void));
 **示例**
 
 ```c
-#include<stdlib.h>
+#include <stdlib.h>
 
 void my_exit(void)
 {
-    printf("before exit () !\n");
+    printf("before exit() !\n");
 }
 
 int main()
 {
-    atexit (my_exit);
+    atexit(my_exit);
     exit(0);
 }
 ```
@@ -61,7 +61,7 @@ execl
 **函数原型**
 
 ```c
-int execl(const char * path,const char * arg,....);
+int execl(const char * path, const char * arg, ...);
 ```
 
 - 说明：execl()用来执行参数path字符串所代表的文件路径，接下来的参数代表执行该文件时传递过去的argv(0)、argv[1]……，最后一个参数必须用空指针(NULL)作结束。
@@ -76,7 +76,7 @@ int execl(const char * path,const char * arg,....);
 
 int main()
 {
-    execl("/bin/ls","ls","-al","/etc/passwd",(char * )0);
+    execl("/bin/ls", "ls", "-al", "/etc/passwd", (char * )0);
     return 0;
 }
 ```
@@ -103,7 +103,7 @@ execlp
 **函数原型**
 
 ```c
-int execlp(const char * file,const char * arg,……)；
+int execlp(const char * file, const char * arg, ...);
 ```
 
 - 说明：execlp()会从PATH 环境变量所指的目录中查找符合参数file的文件名，找到后便执行该文件，然后将第二个以后的参数当做该文件的argv[0]、argv[1]……，最后一个参数必须用空指针(NULL)作结束。
@@ -120,11 +120,11 @@ int execlp(const char * file,const char * arg,……)；
 
 ```c
 /* 执行ls -al /etc/passwd execlp()会依PATH 变量中的/bin找到/bin/ls */
-#include<unistd.h>
+#include <unistd.h>
 
 int main()
 {
-    execlp("ls","ls","-al","/etc/passwd",(char *)0);
+    execlp("ls", "ls", "-al", "/etc/passwd", (char *)0);
     return 0;
 }
 ```
@@ -167,12 +167,12 @@ int execv (const char * path, char * const argv[ ]);
 
 ```c
 /* 执行/bin/ls -al /etc/passwd */
-#include<unistd.h>
+#include <unistd.h>
 
 int main()
 {
-    char * argv[ ]={"ls","-al","/etc/passwd"};
-    execv("/bin/ls",argv);
+    char * argv[ ] = {"ls", "-al", "/etc/passwd", (char *)0};
+    execv("/bin/ls", argv);
     return 0;
 }
 ```
@@ -198,7 +198,7 @@ execve
 **函数原型**
 
 ```c
-int execve(const char * filename, char * const argv[ ],char * const envp[ ]);
+int execve(const char * filename, char * const argv[], char * const envp[]);
 ```
 
 - 说明：execve()用来执行参数filename字符串所代表的文件路径，第二个参数系利用数组指针来传递给执行文件，最后一个参数则为传递给执行文件的新环境变量数组。
@@ -242,9 +242,9 @@ int execve(const char * filename, char * const argv[ ],char * const envp[ ]);
 
 int main()
 {
-    char * argv[ ]={"ls","-al","/etc/passwd",(char *)0};
-    char * envp[ ]={"PATH=/bin",0}
-    execve("/bin/ls",argv,envp);
+    char * argv[] = {"ls", "-al", "/etc/passwd", (char *)0};
+    char * envp[] = {"PATH=/bin", 0};
+    execve("/bin/ls", argv, envp);
     return 0;
 }
 ```
@@ -291,8 +291,8 @@ int execvp(const char *file, char * const argv []);
 
 int main()
 {
-    char * argv[ ] ={ "ls","-al","/etc/passwd",0};
-    execvp("ls",argv);
+    char * argv[] = {"ls", "-al", "/etc/passwd", 0};
+    execvp("ls", argv);
     return 0;
 }
 ```
@@ -400,11 +400,11 @@ pid_t vfork(void);
 
 int main()
 {
-    if(vfork() = =0)
+    if(vfork() == 0)
     {
         printf("This is the child process\n");
     }
-    else{
+    else {
         printf("This is the parent process\n");
     }
     return 0;
@@ -433,7 +433,7 @@ getpgid
 **函数原型**
 
 ```c
-pid_t getpgid( pid_t pid);
+pid_t getpgid(pid_t pid);
 ```
 
 - 说明：getpgid()用来取得参数pid 指定进程所属的组识别码。如果参数pid为0，则会取得目前进程的组识别码。
@@ -450,11 +450,11 @@ pid_t getpgid( pid_t pid);
 
 ```c
 /*取得init 进程（pid＝1）的组识别码*/
-#include<unistd.h>
+#include <unistd.h>
 
 int main()
 {
-    printf("init gid = %d\n",getpgid(1));
+    printf("init gid = %d\n", getpgid(1));
     return 0;
 }
 ```
@@ -495,7 +495,7 @@ pid_t getpgrp(void);
 
 int main()
 {
-    printf("my gid = %d\n",getpgrp());
+    printf("my gid = %d\n", getpgrp());
     return 0;
 }
 ```
@@ -536,7 +536,7 @@ pid_t getpid(void);
 
 int main()
 {
-    printf("pid = %d\n",getpid());
+    printf("pid = %d\n", getpid());
     return 0;
 }
 ```
@@ -577,7 +577,7 @@ pid_t getppid(void);
 
 int main()
 {
-    printf("My parent ‘pid = %d\n",getppid());
+    printf("My parent ‘pid = %d\n", getppid());
     return 0;
 }
 ```
@@ -604,7 +604,7 @@ getpriority
 **函数原型**
 
 ```c
-int getpriority(int which,int who);
+int getpriority(int which, int who);
 ```
 
 - 说明：getpriority() 可用来取得进程、进程组和用户的进程执行优先权。which有三种数值，参数who 则依which值有不同定义。
@@ -708,17 +708,17 @@ int on_exit(void (* function)(int, void*), void *arg);
 ```c
 #include <stdlib.h>
 
-void my_exit(int status,void *arg)
+void my_exit(int status, void *arg)
 {
     printf("before exit()!\n");
-    printf("exit (%d)\n",status);
-    printf("arg = %s\n",(char*)arg);
+    printf("exit (%d)\n", status);
+    printf("arg = %s\n", (char*)arg);
 }
 
 int main()
 {
-    char * str="test";
-    on_exit(my_exit,(void *)str);
+    char * str = "test";
+    on_exit(my_exit, (void *)str);
     exit(1234);
 }
 ```
@@ -932,25 +932,25 @@ pid_t wait(int * status);
 **示例**
 
 ```c
-#include<stdlib.h>
-#include<unistd.h>
-#include<sys/types.h>
-#include<sys/wait.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 
 int main()
 {
     pid_t pid;
     int status,i;
-    if(fork()= =0){
-        printf("This is the child process .pid =%d\n",getpid());
+    if (fork() == 0) {
+        printf("This is the child process, pid = %d\n", getpid());
         exit(5);
     }
-    else{
+    else {
         sleep(1);
-        printf("This is the parent process ,wait for child...\n");
-        pid=wait(&status);
-        i=WEXITSTATUS(status);
-        printf("child’s pid =%d .exit status=^d\n",pid,i);
+        printf("This is the parent process, wait for child...\n");
+        pid = wait(&status);
+        i = WEXITSTATUS(status);
+        printf("child’s pid = %d, exit status = %d\n", pid, i);
     }
 }
 ```
@@ -958,9 +958,9 @@ int main()
 执行
 
 ```shell
-This is the child process.pid=1501
-This is the parent process .wait for child...
-child’s pid =1501,exit status =5
+This is the child process, pid = 1501
+This is the parent process, wait for child...
+child’s pid = 1501, exit status = 5
 ```
 
 
@@ -1041,15 +1041,15 @@ int fprintf(FILE * stream, const char * format, ...);
 **示例**
 
 ```c
-#include<stdio.h>
+#include <stdio.h>
 
 int main()
 {
     int i = 150;
     int j = -100;
     double k = 3.14159;
-    fprintf(stdout,"%d %f %x \n",j,k,i);
-    fprintf(stdout,"%2d %*d\n",i,2,i);
+    fprintf(stdout, "%d %f %x\n", j, k, i);
+    fprintf(stdout, "%2d %*d\n", i, 2, i);
     return 0;
 }
 ```
@@ -1094,8 +1094,8 @@ int main()
     int i;
     unsigned int j;
     char s[5];
-    fscanf(stdin,"%d %x %5[a-z] %*s %f",&i,&j,s,s);
-    printf("%d %d %s \n",i,j,s);
+    fscanf(stdin, "%d %x %5[a-z] %*s %f", &i, &j, s, s);
+    printf("%d %d %s \n", i, j, s);
     return 0;
 }
 ```
@@ -1103,7 +1103,7 @@ int main()
 执行
 
 ```shell
-10 0x1b aaaaaaaaa bbbbbbbbbb /*从键盘输入*/
+10 0x1b aaaaaaaaa bbbbbbbbbb # 从键盘输入
 10 27 aaaaa
 ```
 
@@ -1130,10 +1130,10 @@ int printf(const char * format, ...);
   2. ASCII控制字符，如\t、\n等。
   3. 格式转换字符。
   
-  格式转换为一个百分比符号(％)及其后的格式字符所组成。一般而言，每个％符号在其后都必需有一printf()的参数与之相呼应（只有当％％转换字符出现时会直接输出％字符），而欲输出的数据类型必须与其相对应的转换字符类型相同。
-  Printf()格式转换的一般形式如下：
+  格式转换为一个百分比符号(％)及其后的格式字符所组成。一般而言，每个％符号在其后都必需有一 printf() 的参数与之相呼应（只有当％％转换字符出现时会直接输出％字符），而欲输出的数据类型必须与其相对应的转换字符类型相同。
+  printf() 格式转换的一般形式如下：
   
-  ```c
+  ```
   ％(flags)(width)(.prec)type
   ```
   
@@ -1197,15 +1197,15 @@ int printf(const char * format, ...);
 **示例**
 
 ```c
-#include<stdio.h>
+#include <stdio.h>
 
 int main()
 {
     int i = 150;
     int j = -100;
     double k = 3.14159;
-    printf("%d %f %x\n",j,k,i);
-    printf("%2d %*d\n",i,2,i); /*参数2 会代入格式*中，而与%2d同意义*/
+    printf("%d %f %x\n", j, k, i);
+    printf("%2d %*d\n", i, 2, i); /*参数2 会代入格式*中，而与%2d同意义*/
     return 0;
 }
 ```
@@ -1237,7 +1237,7 @@ int scanf(const char * format, ...);
 
 - 说明：scanf()会将输入的数据根据参数format字符串来转换并格式化数据。Scanf()格式转换的一般形式如下：
 
-  ```c
+  ```
   ％[*][size][l][h]type
   ```
 
@@ -1279,8 +1279,8 @@ int main()
     int i;
     unsigned int j;
     char s[5];
-    scanf("%d %x %5[a-z] %*s %f",&i,&j,s,s);
-    printf("%d %d %s\n",i,j,s);
+    scanf("%d %x %5[a-z] %*s %f", &i, &j, s, s);
+    printf("%d %d %s\n", i, j, s);
     return 0;
 }
 ```
@@ -1318,14 +1318,14 @@ int sprintf( char *str, const char * format, ...);
 **示例**
 
 ```c
-#include<stdio.h>
+#include <stdio.h>
 
 int main()
 {
-    char * a="This is string A!";
+    char * a = "This is string A!";
     char buf[80];
-    sprintf(buf,">>> %s<<<\n",a);
-    printf("%s".buf);
+    sprintf(buf, ">>> %s<<<\n", a);
+    printf("%s", buf);
     return 0;
 }
 ```
@@ -1368,10 +1368,10 @@ int main()
 {
     int i;
     unsigned int j;
-    char input[ ]="10 0x1b aaaaaaaa bbbbbbbb";
+    char input[] = "10 0x1b aaaaaaaa bbbbbbbb";
     char s[5];
-    sscanf(input,"%d %x %5[a-z] %*s %f",&i,&j,s,s);
-    printf("%d %d %s\n",i,j,s);
+    sscanf(input, "%d %x %5[a-z] %*s %f", &i, &j, s, s);
+    printf("%d %d %s\n", i, j, s);
     return 0;
 }
 ```

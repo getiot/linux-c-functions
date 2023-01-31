@@ -45,7 +45,7 @@ int access(const char * pathname, int mode);
 #include <unistd.h>
 int main()
 {
-	if (access("/etc/passwd",R_OK) = =0)
+	if (access("/etc/passwd",R_OK) == 0)
         printf("/etc/passwd can be read\n");
     return 0;
 }

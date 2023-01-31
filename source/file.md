@@ -396,13 +396,13 @@ int mkstemp(char * template);
 - 附加说明：参数 template 所指的文件名称字符串必须声明为数组，如
 
   ```c
-  char template[ ] =”template-XXXXXX”;
+  char template[ ] = "template-XXXXXX";
   ```
 
   千万不可以使用下列的表达方式
 
   ```c
-  char *template = “template-XXXXXX”;
+  char *template = "template-XXXXXX";
   ```
 
 - 相关函数：mktemp
