@@ -637,6 +637,7 @@ ssize_t recv(int sockfd, void *buf, size_t len, int flags);
   - `ENOBUFS` 系统的缓冲内存不足
   - `ENOMEM` 系统内存不足
   - `EINVAL` 传给系统调用的参数不正确
+- 附加说明：recv() 主要用于 TCP 通信。
 - 相关函数：recvfrom，recvmsg，send，sendto，socket
 
 **示例**
@@ -663,8 +664,8 @@ ssize_t recvfrom(int sockfd, void *buf, size_t len, int flags,
                  struct sockaddr *src_addr, socklen_t *addrlen);
 ```
 
-- 说明：recv()用來接收遠程主機經指定的socket 傳來的數據，並把數據存到由參數buf 指向的內存空間，參數len 為可接收數據的最大長度。參數flags 一般設0，其他數值定義請參考recv()。參數from用來指定欲傳送的網絡地址，結構sockaddr 請參考bind()。參數fromlen為sockaddr的結構長度。
-- 返回值：成功則返回接收到的字符數，失敗則返回-1，錯誤原因存於errno中。错误代码如下：
+- 说明：recvfrom() 用来接收远程主机经指定的 socket 传来的数据，并把数据存到由参数 buf 指向的内存空间，参数 len 为可接收数据的最大长度。参数 flags 一般设为 0，其他数值定义请参考 [`recv()`](#recv)。参数 src_addr 用来指定欲传送的网络地址，结构体 sockaddr 请参考 [`bind()`](#bind)。参数 addrlen 为 sockaddr 的结构长度。
+- 返回值：成功则返回接收到的字符数，失败则返回 -1，错误原因存于 errno 中。错误代码如下：
   - `EBADF` 参数 sockfd 非合法的 socket 处理代码
   - `EFAULT` 参数中有一指针指向无法存取的内存空间
   - `ENOTSOCK` 参数 sockfd 为一文件描述符，非 socket
@@ -673,7 +674,7 @@ ssize_t recvfrom(int sockfd, void *buf, size_t len, int flags,
   - `ENOBUFS` 系统的缓冲内存不足
   - `ENOMEM` 系统内存不足
   - `EINVAL` 传给系统调用的参数不正确
-- 附加说明：
+- 附加说明：recvfrom() 主要用于 UDP 通信。
 - 相关函数：recv，recvmsg，send，sendto，socket
 
 **示例**
@@ -798,11 +799,86 @@ ssize_t send(int sockfd, const void *buf, size_t len, int flags);
   - `ENOBUFS` 系统的缓冲内存不足
   - `ENOMEM` 系统内存不足
   - `EINVAL` 传给系统调用的参数不正确
+- 附加说明：send() 主要用于 TCP 通信。
 - 相关函数：sendto，sendmsg，recv，recvfrom，socket
 
 **示例**
 
 参考 [connect()](#connect)
+
+
+sendto
+---------------------------------------------
+
+经 socket 传送数据
+
+**头文件**
+
+```c
+#include <sys/types.h>
+#include <sys/socket.h>
+```
+
+**函数原型**
+
+```c
+ssize_t sendto(int sockfd, const void *buf, size_t len, int flags,
+               const struct sockaddr *dest_addr, socklen_t addrlen);
+```
+
+- 说明：sendto() 用来将数据由指定的 socket 传给对方主机。参数 sockfd 为已建立好连接的 socket，如果使用 UDP 协议则不需要经过连接操作。参数 buf 指向要发送的数据内容，参数 len 为数据长度，参数 flags 一般设为 0，详细描述请参考 send()。参数 dest_addr 用来指定欲传送的网络地址，结构体 sockaddr 请参考 bind()。参数 addrlen 为 sockaddr 的结构长度。
+- 返回值：成功则返回实际传送出去的字节数，失败返回 -1，错误原因存于 errno。错误代码如下：
+  - `EBADF` 参数 sockfd 非合法的 socket 处理代码
+  - `EFAULT` 参数中有一指针指向无法存取的内存空间
+  - `ENOTSOCK` 参数 sockfd 为一文件描述符，非 socket
+  - `EINTR` 被信号所中断
+  - `EAGAIN` 此动作会令进程阻断，但参数 sockfd 的 socket 为不可阻断
+  - `ENOBUFS` 系统的缓冲内存不足
+  - `ENOMEM` 系统内存不足
+  - `EINVAL` 传给系统调用的参数不正确
+- 附加说明：sendto() 主要用于 UDP 通信。
+- 相关函数：send , sendmsg,recv , recvfrom , socket
+
+**示例**
+
+```c
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet.in.h>
+#include <arpa.inet.h>
+
+#define PORT 2345
+
+int main()
+{
+    int sockfd,len;
+    struct sockaddr_in addr;
+    char buffer[256];
+    
+    /* 建立 socket */
+    if(sockfd = socket(AF_INET, SOCK_DGRAM, 0)) < 0) {
+        perror("socket");
+        exit(1);
+    }
+    /* 填写 sockaddr_in 结构体 */
+    bzero(&addr, sizeof(addr));
+    addr.sin_family = AF_INET;
+    addr.sin_port = htons(PORT);
+    addr.sin_addr = hton1(INADDR_ANY);
+    if (bind(sockfd, &addr, sizeof(addr)) < 0) {
+        perror("connect");
+        exit(1);
+    }
+    while(1) {
+        bezro(buffer, sizeof(buffer));
+        len = recvfrom(socket, buffer, sizeof(buffer), 0 , &addr, &addr_len);
+        /* 显示 client 端的网络地址 */
+        printf("receive from %s\n", inet_ntoa(addr.sin_addr));
+        /* 将字串返回给 client 端 */
+        sendto(sockfd, buffer, len, 0, &addr, addr_len);
+    }
+}
+```
 
 
 sendmsg
@@ -852,80 +928,7 @@ ssize_t sendmsg(int sockfd, const struct msghdr *msg, int flags);
 
 **示例**
 
-参考 [sendto()](#sendto)
-
-
-sendto
----------------------------------------------
-
-经 socket 传送数据
-
-**头文件**
-
-```c
-#include <sys/types.h>
-#include <sys/socket.h>
-```
-
-**函数原型**
-
-```c
-ssize_t sendto(int sockfd, const void *buf, size_t len, int flags,
-               const struct sockaddr *dest_addr, socklen_t addrlen);
-```
-
-- 说明：sendto() 用来将数据由指定的 socket 传给对方主机。参数 sockfd 为已建立好连接的 socket，如果使用 UDP 协议则不需要经过连接操作。参数 buf 指向要发送的数据内容，参数 len 为数据长度，参数 flags 一般设为 0，详细描述请参考 send()。参数 dest_addr 用来指定欲传送的网络地址，结构体 sockaddr 请参考 bind()。参数 addrlen 为 sockaddr 的结构长度。
-- 返回值：成功则返回实际传送出去的字节数，失败返回 -1，错误原因存于 errno。错误代码如下：
-  - `EBADF` 参数 sockfd 非合法的 socket 处理代码
-  - `EFAULT` 参数中有一指针指向无法存取的内存空间
-  - `ENOTSOCK` 参数 sockfd 为一文件描述符，非 socket
-  - `EINTR` 被信号所中断
-  - `EAGAIN` 此动作会令进程阻断，但参数 sockfd 的 socket 为不可阻断
-  - `ENOBUFS` 系统的缓冲内存不足
-  - `ENOMEM` 系统内存不足
-  - `EINVAL` 传给系统调用的参数不正确
-- 相关函数：send , sendmsg,recv , recvfrom , socket
-
-**示例**
-
-```c
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet.in.h>
-#include <arpa.inet.h>
-
-#define PORT 2345
-
-int main()
-{
-    int sockfd,len;
-    struct sockaddr_in addr;
-    char buffer[256];
-    
-    /* 建立 socket */
-    if(sockfd = socket(AF_INET, SOCK_DGRAM, 0)) < 0) {
-        perror("socket");
-        exit(1);
-    }
-    /* 填写 sockaddr_in 结构体 */
-    bzero(&addr, sizeof(addr));
-    addr.sin_family = AF_INET;
-    addr.sin_port = htons(PORT);
-    addr.sin_addr = hton1(INADDR_ANY);
-    if (bind(sockfd, &addr, sizeof(addr)) < 0) {
-        perror("connect");
-        exit(1);
-    }
-    while(1) {
-        bezro(buffer, sizeof(buffer));
-        len = recvfrom(socket, buffer, sizeof(buffer), 0 , &addr, &addr_len);
-        /* 显示 client 端的网络地址 */
-        printf("receive from %s\n", inet_ntoa(addr.sin_addr));
-        /* 将字串返回给 client 端 */
-        sendto(sockfd, buffer, len, 0, &addr, addr_len);
-    }
-}
-```
+参考 [`sendto()`](#sendto)
 
 
 setprotoent
