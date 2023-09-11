@@ -70,3 +70,70 @@ int main(void)
 Hello, World!
 ```
 
+## 如何参与
+
+linux-c-functions 文档系统的目录结构很简单，所有文档均放置在 source 目录中，source 目录的大致结构和简要说明如下。
+
+```bash
+source
+├── conf.py      # 文档配置文件
+├── index.rst    # 文档首页（包含目录信息）
+├── about.rst    # 关于页面
+├── **.md        # 函数分类页面
+├── _static      # 静态资源目录
+└── _templates   # 模板资源目录
+```
+
+source 目录下包含多个 .md 文档，每个文档是一个大类的 C 函数。
+
+```bash
+char.md            file.md             memory.md         process.md         time.md
+data-structure.md  io-multiplexing.md  memory-string.md  pthreads.md        tty.md
+env.md             ipcs.md             network.md        signal.md          user-group.md
+file-content.md    math.md             permission.md     string-convert.md
+```
+
+你可以找到其中的某个函数进行修改，对于不存在的函数，你可以新增。如果找不到想要的分类，可以在提 issue 讨论。
+
+## 如何构建
+
+Sphinx 文档系统支持本地构建、部署，这里以 Ubuntu 为例（其他 Linux 发行版、MacOS 或 Windows 也行），介绍如何构建出可在本地访问的 linux-c-functions 在线文档。
+
+首先需要安装 Python3、Git、Make 等基础软件。
+
+```bash
+sudo apt install git
+sudo apt install make
+sudo apt install python3
+sudo apt install python3-pip 
+```
+
+然后安装最新版本的 Sphinx 及依赖。
+
+```bash
+pip3 install -U Sphinx
+```
+
+为了完成本示例，还需要安装以下软件包。
+
+```bash
+pip3 install sphinx-autobuild
+pip3 install sphinx_rtd_theme
+pip3 install recommonmark
+pip3 install sphinx_markdown_tables
+```
+
+安装完成后，系统会增加一些 `sphinx-` 开头的命令。
+
+```bash
+sphinx-apidoc    sphinx-autobuild    sphinx-autogen    sphinx-build    sphinx-quickstart
+```
+
+在工程目录下执行下面命令，生成 HTML 网页并启动本地测试 Web Server，默认端口为 8000。
+
+```bash
+sphinx-autobuild source build/html
+```
+
+现在，在浏览器输入 `127.0.0.1:8000` 即可访问。
+
