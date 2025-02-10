@@ -135,5 +135,7 @@ sphinx-apidoc    sphinx-autobuild    sphinx-autogen    sphinx-build    sphinx-qu
 sphinx-autobuild source build/html
 ```
 
+或者直接执行 `make html` 构建。
+
 现在，在浏览器输入 `127.0.0.1:8000` 即可访问。
 
