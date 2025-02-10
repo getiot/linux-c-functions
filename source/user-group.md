@@ -19,14 +19,14 @@ endgrent
 void endgrent(void);
 ```
 
-- 说明：endgrent() 用来关闭由 getgrent() 所打开的密码文件。
+- 说明：`endgrent()` 用来关闭由 `getgrent()` 所打开的密码文件。
 - 返回值：无
 - 附加说明：
 - 相关函数：getgrent，setgrent
 
 **示例**
 
-请参考 getgrent() 与 setgrent()。
+请参考 `getgrent()` 与 `setgrent()`。
 
 
 endpwent
@@ -47,14 +47,14 @@ endpwent
 void endpwent(void);
 ```
 
-- 说明：endpwent() 用来关闭由 getpwent() 所打开的密码文件。
+- 说明：`endpwent()` 用来关闭由 `getpwent()` 所打开的密码文件。
 - 返回值：无
 - 附加说明：
 - 相关函数：getpwent，setpwent
 
 **示例**
 
-请参考 getpwent() 与 setpwent()。
+请参考 `getpwent()` 与 `setpwent()`。
 
 
 endutent
@@ -74,14 +74,14 @@ endutent
 void endutent(void);
 ```
 
-- 说明：endutent() 用来关闭由 getutent 所打开的 utmp 文件。
+- 说明：`endutent()` 用来关闭由 `getutent` 所打开的 utmp 文件。
 - 返回值：无
 - 附加说明：
 - 相关函数：getutent，setutent
 
 **示例**
 
-请参考 getutent()。
+请参考 `getutent()`。
 
 
 fgetgrent
@@ -103,8 +103,8 @@ fgetgrent
 struct group * getgrent(FILE * stream);
 ```
 
-- 说明：fgetgrent()会从参数stream指定的文件读取一行数据，然后以group结构将该数据返回。参数stream所指定的文件必须和、etc/group相同的格式。group结构定义请参考getgrent()。
-- 返回值：返回group结构数据，如果返回NULL则表示已无数据，或有错误发生。
+- 说明：`fgetgrent()` 会从参数 stream 指定的文件读取一行数据，然后以 group 结构将该数据返回。参数 stream 所指定的文件必须和、etc/group 相同的格式。group 结构定义请参考 `getgrent()`。
+- 返回值：返回 group 结构数据，如果返回 NULL 则表示已无数据，或有错误发生。
 - 附加说明：
 - 相关函数：fgetpwent
 
@@ -177,8 +177,8 @@ fgetpwent
 struct passwd * fgetpwent(FILE *stream);
 ```
 
-- 说明：fgetpwent()会从参数stream指定的文件读取一行数据，然后以passwd结构将该数据返回。参数stream所指定的文件必须和/etc/passwd相同的格式。passwd结构定义请参考getpwent()。
-- 返回值：返回passwd结构数据，如果返回NULL则表示已无数据，或有错误发生。
+- 说明：`fgetpwent()` 会从参数 stream 指定的文件读取一行数据，然后以 passwd 结构将该数据返回。参数 stream 所指定的文件必须和 /etc/passwd 相同的格式。passwd 结构定义请参考 `getpwent()`。
+- 返回值：返回 passwd 结构数据，如果返回 `NULL` 则表示已无数据，或有错误发生。
 - 附加说明：
 - 相关函数：fgetgrent
 
@@ -243,7 +243,7 @@ getegid
 gid_t getegid(void);
 ```
 
-- 说明：getegid()用来取得执行目前进程有效组识别码。有效的组识别码用来决定进程执行时组的权限。返回值返回有效的组识别码。
+- 说明：`getegid()` 用来取得执行目前进程有效组识别码。有效的组识别码用来决定进程执行时组的权限。返回值返回有效的组识别码。
 - 返回值：
 - 附加说明：
 - 相关函数：getgid，setgid，setregid
@@ -282,7 +282,7 @@ geteuid
 uid_t geteuid(void)
 ```
 
-- 说明：geteuid()用来取得执行目前进程有效的用户识别码。有效的用户识别码用来决定进程执行的权限，借由此改变此值，进程可以获得额外的权限。倘若执行文件的setID位已被设置，该文件执行时，其进程的euid值便会设成该文件所有者的uid。例如，执行文件/usr/bin/passwd的权限为-r-s--x--x，其s 位即为setID(SUID)位，而当任何用户在执行passwd 时其有效的用户识别码会被设成passwd 所有者的uid 值，即root的uid 值(0)。
+- 说明：`geteuid()` 用来取得执行目前进程有效的用户识别码。有效的用户识别码用来决定进程执行的权限，借由此改变此值，进程可以获得额外的权限。倘若执行文件的 setID 位已被设置，该文件执行时，其进程的 euid 值便会设成该文件所有者的 uid。例如，执行文件 /usr/bin/passwd 的权限为 `-r-s--x--x`，其 `s` 位即为 `setID(SUID)` 位，而当任何用户在执行 passwd 时其有效的用户识别码会被设成 passwd 所有者的 uid 值，即 root 的 uid 值（0）。
 - 返回值：返回有效的用户识别码。
 - 附加说明：
 - 相关函数：getuid，setreuid，setuid
@@ -321,7 +321,7 @@ getgid
 gid_t getgid(void);
 ```
 
-- 说明： getgid()用来取得执行目前进程的组识别码。
+- 说明：`getgid()` 用来取得执行目前进程的组识别码。
 - 返回值：返回组识别码
 - 附加说明：
 - 相关函数：getegid，setregid，setgid
@@ -360,7 +360,7 @@ getgrent
 struct group *getgrent(void);
 ```
 
-- 说明：getgrent()用来从组文件(/etc/group)中读取一项组数据，该数据以group 结构返回。第一次调用时会取得第一项组数据，之后每调用一次就会返回下一项数据，直到已无任何数据时返回 NULL。
+- 说明：`getgrent()` 用来从组文件（/etc/group）中读取一项组数据，该数据以 group 结构返回。第一次调用时会取得第一项组数据，之后每调用一次就会返回下一项数据，直到已无任何数据时返回 `NULL`。
 
   ```c
   struct group
@@ -372,13 +372,13 @@ struct group *getgrent(void);
   }
   ```
 
-- 返回值：返回 group 结构数据，如果返回 NULL 则表示已无数据，或有错误发生。
+- 返回值：返回 group 结构数据，如果返回 `NULL` 则表示已无数据，或有错误发生。
 
   错误代码：
 
   - `ENOMEM` 内存不足，无法配置 group 结构。
 
-- 附加说明：getgrent() 在第一次调用时会打开组文件，读取数据完毕后可使用 endgrent() 来关闭该组文件。
+- 附加说明：`getgrent()` 在第一次调用时会打开组文件，读取数据完毕后可使用 `endgrent()` 来关闭该组文件。
 
 - 相关函数：setgrent，endgrent
 
@@ -448,8 +448,8 @@ getgrgid
 struct group * getgrgid(gid_t gid);
 ```
 
-- 说明：getgrgid() 用来依参数gid指定的组识别码逐一搜索组文件，找到时便将该组的数据以 group 结构返回。group 结构请参考 getgrent()。
-- 返回值：返回group结构数据，如果返回NULL则表示已无数据，或有错误发生。
+- 说明：`getgrgid()` 用来依参数 gid 指定的组识别码逐一搜索组文件，找到时便将该组的数据以 group 结构返回。group 结构请参考 `getgrent()`。
+- 返回值：返回 group 结构数据，如果返回 `NULL` 则表示已无数据，或有错误发生。
 - 附加说明：
 - 相关函数：fgetgrent，getgrent，getgrnam
 
@@ -498,8 +498,8 @@ getgrnam
 struct group * getgrnam(const char * name);
 ```
 
-- 说明：getgrnam() 用来逐一搜索参数那么指定的组名称，找到时便将该组的数据以group结构返回。group 结构请参考getgrent()。
-- 返回值：返回group结构数据，如果返回NULL则表示已无数据，或有错误发生。
+- 说明：`getgrnam()` 用来逐一搜索参数那么指定的组名称，找到时便将该组的数据以 group 结构返回。group 结构请参考 `getgrent()`。
+- 返回值：返回 group 结构数据，如果返回 `NULL` 则表示已无数据，或有错误发生。
 - 附加说明：
 - 相关函数：fgetgrent，getrent，getgruid
 
@@ -507,8 +507,8 @@ struct group * getgrnam(const char * name);
 
 ```c
 /* 取得adm的组数据*/
-#include<grp.h>
-#include<sys/types.h>
+#include <grp.h>
+#include <sys/types.h>
 
 int main()
 {
@@ -547,14 +547,14 @@ getgroups
 int getgroups(int size, gid_t list[]);
 ```
 
-- 说明：getgroup（）用来取得目前用户所属的组代码。参数size为list〔〕所能容纳的gid_t 数目。如果参数size 值为零，此函数仅会返回用户所属的组数。
+- 说明：`getgroup()` 用来取得目前用户所属的组代码。参数 size 为 `list[]` 所能容纳的 `gid_t` 数目。如果参数 `size` 值为零，此函数仅会返回用户所属的组数。
 
 - 返回值：返回组识别码，如有错误则返回-1。
 
   错误代码：
 
-  - `EFAULT` 参数list数组地址不合法。
-  - `EINVAL` 参数size值不足以容纳所有的组。
+  - `EFAULT` 参数 list 数组地址不合法。
+  - `EINVAL` 参数 size 值不足以容纳所有的组。
 
 - 附加说明：
 
@@ -563,8 +563,8 @@ int getgroups(int size, gid_t list[]);
 **示例**
 
 ```c
-#include<unistd.h>
-#include<sys/types.h>
+#include <unistd.h>
+#include <sys/types.h>
 
 int main()
 {
@@ -572,8 +572,9 @@ int main()
     int x,i;
     x = getgroups(0.list);
     getgroups(x,list);
-    for(i=0;i<x;i++)
+    for(i=0;i<x;i++) {
         printf("%d:%d\n",i,list[i]);
+    }
     return 0;
 }
 ```
@@ -609,20 +610,20 @@ getpw
 int getpw(uid_t uid, char *buf);
 ```
 
-- 说明：getpw()会从/etc/passwd中查找符合参数uid所指定的用户账号数据，找不到相关数据就返回-1。
+- 说明：`getpw()` 会从 /etc/passwd 中查找符合参数 uid 所指定的用户账号数据，找不到相关数据就返回 -1。
 
-  所返回的buf字符串格式如下：
+  所返回的 buf 字符串格式如下：
 
   ```bash
   账号:密码:用户识别码(uid):组识别码(gid):全名:根目录:shell
   ```
 
-- 返回值：返回0表示成功，有错误发生时返回-1。
+- 返回值：返回 0 表示成功，有错误发生时返回 -1。
 
 - 附加说明：
 
-  1. getpw() 会有潜在的安全性问题，请尽量使用别的函数取代。
-  2. 使用 shadow 的系统已把用户密码抽出 /etc/passwd，因此使用 getpw() 取得的密码将为"x"。
+  1. `getpw()` 会有潜在的安全性问题，请尽量使用别的函数取代。
+  2. 使用 shadow 的系统已把用户密码抽出 /etc/passwd，因此使用 `getpw()` 取得的密码将为"x"。
 
 - 相关函数：getpwent
 
@@ -666,7 +667,7 @@ getpwent
 struct passwd * getpwent(void);
 ```
 
-- 说明：getpwent（）用来从密码文件（/etc/passwd）中读取一项用户数据，该用户的数据以passwd 结构返回。第一次调用时会取得第一位用户数据，之后每调用一次就会返回下一项数据，直到已无任何数据时返回NULL。
+- 说明：`getpwent()` 用来从密码文件（/etc/passwd）中读取一项用户数据，该用户的数据以 passwd 结构返回。第一次调用时会取得第一位用户数据，之后每调用一次就会返回下一项数据，直到已无任何数据时返回 `NULL`。
 
   passwd 结构定义如下：
 
@@ -683,9 +684,9 @@ struct passwd * getpwent(void);
   };
   ```
 
-- 返回值：返回passwd 结构数据，如果返回NULL 则表示已无数据，或有错误发生。
+- 返回值：返回 passwd 结构数据，如果返回 `NULL` 则表示已无数据，或有错误发生。
 
-- 附加说明：getpwent()在第一次调用时会打开密码文件，读取数据完毕后可使用endpwent()来关闭该密码文件。错误代码ENOMEM 内存不足，无法配置passwd结构。
+- 附加说明：`getpwent()` 在第一次调用时会打开密码文件，读取数据完毕后可使用 `endpwent()` 来关闭该密码文件。错误代码 `ENOMEM` 内存不足，无法配置 passwd 结构。
 
 - 相关函数：getpw，fgetpwent，getpwnam，getpwuid，setpwent，endpwent
 
@@ -752,8 +753,8 @@ getpwnam
 struct passwd * getpwnam(const char * name);
 ```
 
-- 说明：getpwnam()用来逐一搜索参数name 指定的账号名称，找到时便将该用户的数据以passwd结构返回。passwd结构请参考getpwent()。
-- 返回值：返回passwd 结构数据，如果返回NULL 则表示已无数据，或有错误发生。
+- 说明：`getpwnam()` 用来逐一搜索参数name 指定的账号名称，找到时便将该用户的数据以 passwd 结构返回。passwd 结构请参考 `getpwent()`。
+- 返回值：返回 passwd 结构数据，如果返回 `NULL` 则表示已无数据，或有错误发生。
 - 附加说明：
 - 相关函数：getpw，fgetpwent，getpwent，getpwuid
 
@@ -802,8 +803,8 @@ getpwuid
 struct passwd * getpwuid(uid_t uid);
 ```
 
-- 说明：getpwuid()用来逐一搜索参数uid 指定的用户识别码，找到时便将该用户的数据以结构返回结构请参考将该用户的数据以passwd 结构返回。passwd 结构请参考getpwent()。
-- 返回值：返回passwd 结构数据，如果返回NULL 则表示已无数据，或者有错误发生。
+- 说明：`getpwuid()` 用来逐一搜索参数uid 指定的用户识别码，找到时便将该用户的数据以结构返回结构请参考将该用户的数据以 passwd 结构返回。passwd 结构请参考 `getpwent()`。
+- 返回值：返回 passwd 结构数据，如果返回 `NULL` 则表示已无数据，或者有错误发生。
 - 附加说明：
 - 相关函数：getpw，fgetpwent，getpwent，getpwnam
 
@@ -851,7 +852,7 @@ getuid
 uid_t getuid(void);
 ```
 
-- 说明：getuid()用来取得执行目前进程的用户识别码。
+- 说明：`getuid()` 用来取得执行目前进程的用户识别码。
 - 返回值：用户识别码
 - 附加说明：
 - 相关函数：geteuid，setreuid，setuid
@@ -889,7 +890,7 @@ getutent
 struct utmp *getutent(void);
 ```
 
-- 说明：getutent()用来从utmp 文件(/var/run/utmp)中读取一项登录数据，该数据以utmp 结构返回。第一次调用时会取得第一位用户数据，之后每调用一次就会返回下一项数据，直到已无任何数据时返回NULL。
+- 说明：`getutent()` 用来从 utmp 文件（/var/run/utmp）中读取一项登录数据，该数据以 utmp 结构返回。第一次调用时会取得第一位用户数据，之后每调用一次就会返回下一项数据，直到已无任何数据时返回 `NULL`。
 
   utmp 结构定义如下：
 
@@ -910,7 +911,7 @@ struct utmp *getutent(void);
   };
   ```
 
-  ut_type 有以下几种类型：
+  `ut_type` 有以下几种类型：
 
   - `EMPTY` 此为空的记录。
   - `RUN_LVL` 记录系统 run－level 的改变
@@ -923,7 +924,7 @@ struct utmp *getutent(void);
   - `DEAD_PROCESS` 记录一结束的进程。
   - `ACCOUNTING` 目前尚未使用。
 
-  exit_status 结构定义：
+  `exit_status` 结构定义：
 
   ```c
   struct exit_status
@@ -933,7 +934,7 @@ struct utmp *getutent(void);
   };
   ```
 
-  timeval 的结构定义请参考 gettimeofday()。
+  `timeval` 的结构定义请参考 `gettimeofday()`。
   相关常数定义如下：
 
   ```c
@@ -942,9 +943,9 @@ struct utmp *getutent(void);
   UT_HOSTSIZE 256
   ```
 
-- 返回值：返回 utmp 结构数据，如果返回 NULL 则表示已无数据，或有错误发生。
+- 返回值：返回 utmp 结构数据，如果返回 `NULL` 则表示已无数据，或有错误发生。
 
-- 附加说明：getutent()在第一次调用时会打开utmp 文件，读取数据完毕后可使用endutent()来关闭该utmp文件。
+- 附加说明：`getutent()` 在第一次调用时会打开 utmp 文件，读取数据完毕后可使用 `endutent()` 来关闭该 utmp 文件。
 
 - 相关函数：getutent，getutid，getutline，setutent，endutent，pututline，utmpname
 
@@ -996,8 +997,8 @@ getutid
 struct utmp *getutid(struct utmp *ut);
 ```
 
-- 说明：getutid()用来从目前utmp 文件的读写位置逐一往后搜索参数ut指定的记录，如果ut->ut_type 为RUN_LVL，BOOT_TIME，NEW_TIME，OLD_TIME 其中之一则查找与ut->ut_type 相符的记录；若ut->ut_type 为INIT_PROCESS，LOGIN_PROCESS，USER_PROCESS或DEAD_PROCESS其中之一，则查找与ut->ut_id相符的记录。找到相符的记录便将该数据以utmp 结构返回。utmp结构请参考getutent()。
-- 返回值：返回 utmp 结构数据，如果返回 NULL 则表示已无数据，或有错误发生。
+- 说明：`getutid()` 用来从目前 utmp 文件的读写位置逐一往后搜索参数 `ut` 指定的记录，如果 `ut->ut_type` 为`RUN_LVL`、`BOOT_TIME`、`NEW_TIME`、`OLD_TIME` 其中之一则查找与 `ut->ut_type` 相符的记录；若 `ut->ut_type` 为 `INIT_PROCESS`、`LOGIN_PROCESS`、`USER_PROCESS` 或 `DEAD_PROCESS` 其中之一，则查找与 `ut->ut_id` 相符的记录。找到相符的记录便将该数据以 utmp 结构返回。utmp 结构请参考 `getutent()`。
+- 返回值：返回 utmp 结构数据，如果返回 `NULL` 则表示已无数据，或有错误发生。
 - 附加说明：
 - 相关函数：getutent，getutline
 
@@ -1041,8 +1042,8 @@ getutline
 struct utmp * getutline(struct utmp *ut);
 ```
 
-- 说明：getutline()用来从目前utmp文件的读写位置逐一往后搜索ut_type为USER_PROCESS 或LOGIN_PROCESS 的记录，而且ut_line 和ut->ut_line 相符。找到相符的记录便将该数据以utmp 结构返回，utmp结构请参考getutent()。
-- 返回值：返回 utmp 结构数据，如果返回 NULL 则表示已无数据，或有错误发生。
+- 说明：`getutline()` 用来从目前 utmp 文件的读写位置逐一往后搜索 `ut_type` 为 `USER_PROCESS` 或 `LOGIN_PROCESS` 的记录，而且 `ut_line` 和 `ut->ut_line` 相符。找到相符的记录便将该数据以 utmp 结构返回，utmp 结构请参考 `getutent()`。
+- 返回值：返回 `utmp` 结构数据，如果返回 `NULL` 则表示已无数据，或有错误发生。
 - 附加说明：
 - 相关函数：getutent，getutid，pututline
 
@@ -1086,7 +1087,7 @@ initgroups
 int initgroups(const char *user, gid_t group);
 ```
 
-- 说明：initgroups() 用来从组文件（/etc/group）中读取一项组数据，若该组数据的成员中有参数 user 时，便将参数 group 组识别码加入到此数据中。
+- 说明：`initgroups()` 用来从组文件（/etc/group）中读取一项组数据，若该组数据的成员中有参数 user 时，便将参数 group 组识别码加入到此数据中。
 - 返回值：执行成功则返回 0，失败则返回 -1，错误码存于 errno。
 - 附加说明：
 - 相关函数：setgrent，endgrent
