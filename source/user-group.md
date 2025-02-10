@@ -1072,7 +1072,7 @@ int main()
 initgroups
 ---------------------------------------------
 
-初始化组清单
+该函数用于初始化进程的附属组访问列表。它通过读取系统组数据库（通常是 `/etc/group` 文件），若该组数据的成员中有参数 `user` 时，便将参数 `group` 组识别码加入到此数据中。
 
 **头文件**
 
@@ -1087,21 +1087,55 @@ initgroups
 int initgroups(const char *user, gid_t group);
 ```
 
-- 说明：`initgroups()` 用来从组文件（/etc/group）中读取一项组数据，若该组数据的成员中有参数 user 时，便将参数 group 组识别码加入到此数据中。
-- 返回值：执行成功则返回 0，失败则返回 -1，错误码存于 errno。
-- 附加说明：
-- 相关函数：setgrent，endgrent
+**参数**
+
+- `user`：指定用户的用户名，该用户必须存在。
+- `group`：一个额外的组 ID，该组 ID 也会被添加到附属组列表中。
+
+**返回值**
+
+- 成功时返回 `0`。
+- 失败时返回 `-1`，并设置 `errno`：
+  - `ENOMEM`：内存不足。
+  - `EPERM`：调用进程权限不足。
+
+**使用说明**
+
+- 该函数通常用于需要切换用户权限的场景，例如在创建子进程时，需要以特定用户的身份运行。
+- 调用该函数时，需要确保当前进程有足够的权限（通常是超级用户权限），否则可能会失败。
+- 如果用户所属的组数量超过系统限制（`NGROUPS_MAX`），可能会导致部分组被丢弃。
+
+相关函数：setgrent，endgrent
 
 **示例**
 
 ```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <grp.h>
+#include <sys/types.h>
+#include <unistd.h>
 
+int main()
+{
+    const char *username = "testuser"; // 替换为实际存在的用户名
+    gid_t group = 1000; // 替换为实际的组ID
+
+    // 初始化附属组列表
+    if (initgroups(username, group) == -1) {
+        perror("initgroups failed");
+        return EXIT_FAILURE;
+    }
+
+    printf("Group list initialized successfully for user: %s\n", username);
+    return EXIT_SUCCESS;
+}
 ```
 
-执行
+编译并执行程序，如果用户 `testuser` 和组 ID `1000` 都有效，则输出如下：
 
 ```shell
-
+Group list initialized successfully for user: testuser
 ```
 
 
