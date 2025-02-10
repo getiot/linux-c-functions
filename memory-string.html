@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>内存及字符串操作篇 &mdash; Linux 常用 C 函数参考手册 v1.0 文档</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/translations.js"></script>
+        <script src="_static/js/baidutongji.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="常用数学函数篇" href="math.html" />
+    <link rel="prev" title="日期时间篇" href="time.html" />
+    <link href="_static/main.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> Linux 常用 C 函数参考手册
+            <img src="_static/GetIoT_Logo_150px.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="在文档中搜索" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="char.html">字符测试篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="string-convert.html">字符串转换篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="memory.html">内存控制篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="time.html">日期时间篇</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">内存及字符串操作篇</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#bcmp">bcmp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#bcopy">bcopy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#bzero">bzero</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#index">index</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#memccpy">memccpy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#memchr">memchr</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#memcmp">memcmp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#memcpy">memcpy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#memmove">memmove</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#memset">memset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#rindex">rindex</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#strcasecmp">strcasecmp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#strcat">strcat</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#strchr">strchr</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#strcmp">strcmp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#strcoll">strcoll</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#strcpy">strcpy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#strcspn">strcspn</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#strdup">strdup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#strlen">strlen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#strncasecmp">strncasecmp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#strncat">strncat</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#strncpy">strncpy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#strpbrk">strpbrk</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#strrchr">strrchr</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#strspn">strspn</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#strstr">strstr</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#strtok">strtok</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="math.html">常用数学函数篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user-group.html">用户组篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data-structure.html">数据结构及算法篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="file.html">文件操作篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="file-content.html">文件内容操作篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="permission.html">文件权限控制篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="process.html">进程操作篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ipcs.html">进程间通信篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pthreads.html">线程管理篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="signal.html">信号处理篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="network.html">网络接口篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="io-multiplexing.html">I/O 复用篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="env.html">环境变量篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tty.html">终端控制篇</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Linux 常用 C 函数参考手册</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>内存及字符串操作篇</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/memory-string.md.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1>内存及字符串操作篇<a class="headerlink" href="#id1" title="永久链接至标题"></a></h1>
+<section id="bcmp">
+<h2>bcmp<a class="headerlink" href="#bcmp" title="永久链接至标题"></a></h2>
+<p>比较内存内容</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">bcmp</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">s1</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">s2</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">n</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：bcmp() 用来比较 s1 和 s2 所指的内存区间前 n 个字节，若参数 n 为 0，则返回 0。</p></li>
+<li><p>返回值：若参数 s1 和 s2 所指的内存内容都完全相同则返回 0 值，否则返回非零值。</p></li>
+<li><p>附加说明：建议使用 memcmp() 取代。</p></li>
+<li><p>相关函数：bcmp，strcasecmp，strcmp，strcoll，strncmp，strncasecmp</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<p>参考 <a class="reference external" href="#memcmp">memcmp()</a></p>
+</section>
+<section id="bcopy">
+<h2>bcopy<a class="headerlink" href="#bcopy" title="永久链接至标题"></a></h2>
+<p>拷贝内存内容</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">bcopy</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">src</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">dest</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">n</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：bcopy() 和 memcpy() 一样都是用来拷贝 src 所指的内存内容前 n 个字节到 dest 所指的地址，不过参数 src 与 dest 在传给函数时是相反的位置。</p></li>
+<li><p>返回值：无</p></li>
+<li><p>附加说明：建议使用 memcpy() 取代。</p></li>
+<li><p>相关函数：memccpy，memcpy，memmove，strcpy，ctrncpy</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">dest</span><span class="p">[</span><span class="mi">30</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;string(a)&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">src</span><span class="p">[</span><span class="mi">30</span><span class="p">]</span><span class="o">=</span><span class="s">&quot;string</span><span class="se">\0</span><span class="s">string&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">bcopy</span><span class="p">(</span><span class="n">src</span><span class="p">,</span><span class="w"> </span><span class="n">dest</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">);</span><span class="w">      </span><span class="cm">/* src指针放在前面 */</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;bcopy(): &quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">&lt;</span><span class="mi">30</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%c&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">dest</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span><span class="w"></span>
+<span class="w">    </span>
+<span class="w">    </span><span class="n">memcpy</span><span class="p">(</span><span class="n">dest</span><span class="p">,</span><span class="w"> </span><span class="n">src</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">);</span><span class="w">     </span><span class="cm">/* dest指针放在前面 */</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">memcpy(): &quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">&lt;</span><span class="mi">30</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%c&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">dest</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span><span class="w"></span>
+<span class="w">    </span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>bcopy<span class="o">()</span>: stringstring
+memcpy<span class="o">()</span>: stringstring
+</pre></div>
+</div>
+</section>
+<section id="bzero">
+<h2>bzero<a class="headerlink" href="#bzero" title="永久链接至标题"></a></h2>
+<p>将一段内存内容全清为零</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">bzero</span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">n</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：bzero() 会将参数 s 所指的内存区域前 n 个字节，全部设为零值。相当于调用 <code class="docutils literal notranslate"><span class="pre">memset((void*)s,</span> <span class="pre">0,</span> <span class="pre">size_tn)</span></code>。</p></li>
+<li><p>返回值：无</p></li>
+<li><p>附加说明：bzero 不是标准库函数，为了提高可移植性，建议使用 memset 取代。</p></li>
+<li><p>相关函数：memset，swab</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<p>参考 <a class="reference external" href="#memset">memset()</a></p>
+</section>
+<section id="index">
+<h2>index<a class="headerlink" href="#index" title="永久链接至标题"></a></h2>
+<p>查找字符串中第一个出现的指定字符</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="nf">index</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">c</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：index() 用来找出参数 s 字符串中第一个出现的参数 c 地址，然后将该字符出现的地址返回。字符串结束字符（NULL）也视为字符串一部分。</p></li>
+<li><p>返回值：如果找到指定的字符则返回该字符所在地址，否则返回 NULL。</p></li>
+<li><p>相关函数：rindex，srechr，strrchr</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;0123456789012345678901234567890&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">p</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">index</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;5&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="m">56789012345678901234567890</span>
+</pre></div>
+</div>
+</section>
+<section id="memccpy">
+<h2>memccpy<a class="headerlink" href="#memccpy" title="永久链接至标题"></a></h2>
+<p>拷贝内存内容</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="nf">memccpy</span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">dest</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">src</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">n</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：memccpy() 用来拷贝 src 所指的内存内容前 n 个字节到 dest 所指的地址上。与 memcpy() 不同的是，memccpy() 会在复制时检查参数 c 是否出现，若是则返回 dest 中值为 c 的下一个字节地址。</p></li>
+<li><p>返回值：返回指向 dest 中值为 c 的下一个字节指针。返回值为 0 表示在 src 所指内存前 n 个字节中没有值为 c 的字节。</p></li>
+<li><p>相关函数：bcopy，memcpy，memmove，strcpy，strncpy</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">a</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;string[a]&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">b</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;string(b)&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">c</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">memccpy</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;b&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">b</span><span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;memccpy(): %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">c</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>memccpy<span class="o">()</span>: string<span class="o">(</span>b<span class="o">]</span>
+<span class="o">]</span>
+</pre></div>
+</div>
+</section>
+<section id="memchr">
+<h2>memchr<a class="headerlink" href="#memchr" title="永久链接至标题"></a></h2>
+<p>在某一内存范围中查找一特定字符</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="nf">memchr</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">n</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：memchr() 从头开始搜寻 s 所指的内存内容前 n 个字节，直到发现第一个值为 c 的字节，则返回指向该字节的指针。</p></li>
+<li><p>返回值：如果找到指定的字节则返回该字节的指针，否则返回 0。</p></li>
+<li><p>相关函数：index，rindex，strchr，strpbrk，strrchr，strsep，strspn，strstr</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;0123456789012345678901234567890&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">p</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">memchr</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;5&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="m">56789012345678901234567890</span>
+</pre></div>
+</div>
+</section>
+<section id="memcmp">
+<h2>memcmp<a class="headerlink" href="#memcmp" title="永久链接至标题"></a></h2>
+<p>比较内存内容</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">memcmp</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">s1</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">s2</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">n</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：memcmp() 用来比较 s1 和 s2 所指的内存区间前 n 个字符。字符串大小的比较是以 ASCII 码表上的顺序来决定，此顺序亦为字符的值。memcmp() 首先将 s1 第一个字符值减去 s2 第一个字符的值，若差为 0 则再继续比较下个字符，若差值不为 0 则将差值返回。例如，字符串 “Ac” 和 “ba” 比较则会返回字符 ‘A’(65) 和 ‘b’(98) 的差值 (-33)。</p></li>
+<li><p>返回值：若参数 s1 和 s2 所指的内存内容都完全相同则返回 0 值。s1 若大于 s2 则返回大于 0 的值。s1 若小于 s2 则返回小于 0 的值。</p></li>
+<li><p>相关函数：bcmp，strcasecmp，strcmp，strcoll，strncmp，strncasecmp</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;aBcDeF&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;AbCdEf&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;aacdef&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;aBcDeF&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;memcmp(a,b): %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">memcmp</span><span class="p">((</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;memcmp(a,c): %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">memcmp</span><span class="p">((</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;memcmp(a,d): %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">memcmp</span><span class="p">((</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">d</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>memcmp<span class="o">(</span>a,b<span class="o">)</span>: <span class="m">1</span>    <span class="c1"># 字符串a &gt; 字符串b，返回 1</span>
+memcmp<span class="o">(</span>a,c<span class="o">)</span>: -1   <span class="c1"># 字符串a &lt; 字符串c，返回 -1</span>
+memcmp<span class="o">(</span>a,d<span class="o">)</span>: <span class="m">0</span>    <span class="c1"># 字符串a = 字符串d，返回 0</span>
+</pre></div>
+</div>
+</section>
+<section id="memcpy">
+<h2>memcpy<a class="headerlink" href="#memcpy" title="永久链接至标题"></a></h2>
+<p>拷贝内存内容</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="nf">memcpy</span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">dest</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">src</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">n</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：memcpy() 用来拷贝 src 所指的内存内容前 n 个字节到 dest 所指的内存地址上。与 strcpy() 不同的是，memcpy() 会完整地复制 n 个字节，不会因为遇到字符串结束 ‘\0’ 而结束。</p></li>
+<li><p>返回值：返回指向 dest 的指针。</p></li>
+<li><p>附加说明：指针 src 和 dest 所指的内存区域不可重叠。</p></li>
+<li><p>相关函数：bcopy，memccpy，memcpy，memmove，strcpy，strncpy</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">	</span><span class="kt">char</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="mi">30</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;string (a)&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">b</span><span class="p">[</span><span class="mi">30</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;string</span><span class="se">\0</span><span class="s">string&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">strcpy</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;strcpy(): &quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">&lt;</span><span class="mi">30</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%c&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span><span class="w"></span>
+<span class="w">    </span><span class="n">memcpy</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">memcpy(): &quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">&lt;</span><span class="mi">30</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%c&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>strcpy<span class="o">()</span>: string<span class="o">(</span>a<span class="o">)</span>
+memcpy<span class="o">()</span>: stringstring
+</pre></div>
+</div>
+</section>
+<section id="memmove">
+<h2>memmove<a class="headerlink" href="#memmove" title="永久链接至标题"></a></h2>
+<p>拷贝内存内容</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="nf">memmove</span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">dest</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">src</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">n</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：memmove() 和 memcpy() 一样都是用来拷贝 src 所指的内存内容前 n 个字节到 dest 所指的地址上。不同的是，当 src 和 dest 所指的内存区域重叠时，memmove() 仍然可以正确的处理，不过执行效率上会比使用 memcpy() 略慢些。</p></li>
+<li><p>返回值：返回指向 dest 的指针。</p></li>
+<li><p>附加说明：指针 src 和 dest 所指的内存区域可以重叠。</p></li>
+<li><p>相关函数：bcopy，memccpy，memcpy，strcpy，strncpy</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<p>参考 <a class="reference external" href="#memcpy">memcpy()</a></p>
+</section>
+<section id="memset">
+<h2>memset<a class="headerlink" href="#memset" title="永久链接至标题"></a></h2>
+<p>将一段内存空间填入某值</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="nf">memset</span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">n</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：memset() 会将参数 s 所指的内存区域前 n 个字节以参数 c 填入，然后返回指向 s 的指针。在编写程序时，若需要将某一数组作初始化，memset() 会相当方便。</p></li>
+<li><p>返回值：返回指向 s 的指针。</p></li>
+<li><p>附加说明：参数 c 虽声明为 int，但必须是 unsigned char，所以范围在 0 到 255 之间。</p></li>
+<li><p>相关函数：bzero，swab</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">s</span><span class="p">[</span><span class="mi">30</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="n">memset</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;A&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">s</span><span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="n">s</span><span class="p">[</span><span class="mi">30</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sc">&#39;\0&#39;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">s</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+</pre></div>
+</div>
+</section>
+<section id="rindex">
+<h2>rindex<a class="headerlink" href="#rindex" title="永久链接至标题"></a></h2>
+<p>查找字符串中最后一个出现的指定字符</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="nf">rindex</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">c</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：rindex() 用来找出参数 s 字符串中最后一个出现的参数 c 地址，然后将该字符出现的地址返回。字符串结束字符（NULL）也视为字符串一部分。</p></li>
+<li><p>返回值：如果找到指定的字符则返回该字符所在的地址，否则返回 0。</p></li>
+<li><p>相关函数：index，memchr，strchr，strrchr</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;0123456789012345678901234567890&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">p</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rindex</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;5&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="m">567890</span>
+</pre></div>
+</div>
+</section>
+<section id="strcasecmp">
+<h2>strcasecmp<a class="headerlink" href="#strcasecmp" title="永久链接至标题"></a></h2>
+<p>忽略大小写比较字符串</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">strcasecmp</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">s1</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">s2</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：strcasecmp() 用来比较参数 s1 和 s2 字符串，比较时会自动忽略大小写的差异。</p></li>
+<li><p>返回值：若参数 s1 和 s2 字符串相同则返回 0。s1 长度大于 s2 长度则返回大于 0 的值，s1 长度若小于 s2 长度则返回小于 0 的值。</p></li>
+<li><p>相关函数：bcmp，memcmp，strcmp，strcoll，strncmp</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;aBcDeF&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;AbCdEf&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">strcasecmp</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">))</span><span class="w"></span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s=%s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nv">aBcDeF</span><span class="o">=</span>AbCdEf
+</pre></div>
+</div>
+</section>
+<section id="strcat">
+<h2>strcat<a class="headerlink" href="#strcat" title="永久链接至标题"></a></h2>
+<p>连接两字符串</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="nf">strcat</span><span class="p">(</span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">dest</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">src</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：strcat() 会将参数 src 字符串拷贝到参数 dest 所指的字符串尾。第一个参数 dest 要有足够的空间来容纳要拷贝的字符串。</p></li>
+<li><p>返回值：返回参数 dest 的字符串起始地址。</p></li>
+<li><p>相关函数：bcopy，memccpy，memcpy，strcpy，strncpy</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h.&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h.&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="mi">30</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;string(1)&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">b</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;string(2)&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;before strcat() : %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot; after strcat() : %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">strcat</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>before strcat<span class="o">()</span> : string<span class="o">(</span><span class="m">1</span><span class="o">)</span>
+ after strcat<span class="o">()</span> : string<span class="o">(</span><span class="m">1</span><span class="o">)</span>string<span class="o">(</span><span class="m">2</span><span class="o">)</span>
+</pre></div>
+</div>
+</section>
+<section id="strchr">
+<h2>strchr<a class="headerlink" href="#strchr" title="永久链接至标题"></a></h2>
+<p>查找字符串中第一个出现的指定字符</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="nf">strchr</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">c</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：strchr() 用来找出参数 s 字符串中第一个出现的参数 c 地址，然后将该字符出现的地址返回。</p></li>
+<li><p>返回值：如果找到指定的字符则返回该字符所在地址，否则返回 0。</p></li>
+<li><p>相关函数：index，memchr，rinex，strbrk，strsep，strspn，strstr，strtok</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;0123456789012345678901234567890&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">p</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">strchr</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;5&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="m">56789012345678901234567890</span>
+</pre></div>
+</div>
+</section>
+<section id="strcmp">
+<h2>strcmp<a class="headerlink" href="#strcmp" title="永久链接至标题"></a></h2>
+<p>比较字符串</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">strcmp</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">s1</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">s2</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：strcmp() 用来比较参数 s1 和 s2 字符串。字符串大小的比较是以 ASCII 码表上的顺序来决定，此顺序亦为字符的值。strcmp() 首先将 s1 第一个字符值减去 s2 第一个字符的值，若差为 0 则再继续比较下个字符，若差值不为 0 则将差值返回。例如，字符串 “Ac” 和 “ba” 比较则会返回字符 ‘A’(65) 和 ‘b’(98) 的差值 (-33)。</p></li>
+<li><p>返回值：若参数 s1 和 s2 字符串相同则返回 0，s1 若大于 s2 则返回大于 0 的值，s1 若小于 s2 则返回小于 0 的值。</p></li>
+<li><p>相关函数：bcmp，memcmp，strcasecmp，strncasecmp，strcoll</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;aBcDeF&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;AbCdEf&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;aacdef&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;aBcDeF&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;strcmp(a,b) : %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">strcmp</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;strcmp(a,c) : %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">strcmp</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;strcmp(a,d) : %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">strcmp</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">d</span><span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>strcmp<span class="o">(</span>a,b<span class="o">)</span> : <span class="m">32</span>
+strcmp<span class="o">(</span>a,c<span class="o">)</span> : -31
+strcmp<span class="o">(</span>a,d<span class="o">)</span> : <span class="m">0</span>
+</pre></div>
+</div>
+</section>
+<section id="strcoll">
+<h2>strcoll<a class="headerlink" href="#strcoll" title="永久链接至标题"></a></h2>
+<p>采用目前区域的字符排列次序来比较字符串</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">strcoll</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">s1</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">s2</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：strcoll() 会依环境变量 <code class="docutils literal notranslate"><span class="pre">LC_COLLATE</span></code> 所指定的文字排列次序来比较 s1 和 s2 字符串。</p></li>
+<li><p>返回值：若参数 s1 和 s2 字符串相同则返回 0，s1 若大于 s2 则返回大于 0 的值，s1 若小于 s2 则返回小于 0 的值。</p></li>
+<li><p>附加说明：若 <code class="docutils literal notranslate"><span class="pre">LC_COLLATE</span></code> 为 “POSIX” 或 “C”，则 strcoll() 与 strcmp() 作用完全相同。</p></li>
+<li><p>相关函数：strcmp，bcmp，memcmp，strcasecmp，strncasecmp</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<p>参考 <a class="reference external" href="#strcmp">strcmp()</a></p>
+</section>
+<section id="strcpy">
+<h2>strcpy<a class="headerlink" href="#strcpy" title="永久链接至标题"></a></h2>
+<p>拷贝字符串</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="nf">strcpy</span><span class="p">(</span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">dest</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">src</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：strcpy() 会将参数 src 字符串拷贝至参数 dest 所指的地址。</p></li>
+<li><p>返回值：返回参数 dest 的字符串起始地址。</p></li>
+<li><p>附加说明：如果参数 dest 所指的内存空间不够大，可能会造成缓冲溢出（buffer Overflow）的错误情况，在编写程序时请特别留意，或者用 strncpy() 来取代。</p></li>
+<li><p>相关函数：bcopy，memcpy，memccpy，memmove</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="mi">30</span><span class="p">]</span><span class="o">=</span><span class="s">&quot;Hello, World!&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">b</span><span class="p">[]</span><span class="o">=</span><span class="s">&quot;你好，世界！&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;before strcpy() : %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot; after strcpy() : %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">strcpy</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>before strcpy<span class="o">()</span> : Hello, World!
+ after strcpy<span class="o">()</span> : 你好，世界！
+</pre></div>
+</div>
+</section>
+<section id="strcspn">
+<h2>strcspn<a class="headerlink" href="#strcspn" title="永久链接至标题"></a></h2>
+<p>返回字符串中连续不含指定字符串内容的字符数</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">size_t</span><span class="w"> </span><span class="nf">strcspn</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">reject</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：strcspn() 从参数 s 字符串的开头计算连续的字符，而这些字符都完全不在参数 reject 所指的字符串中。简单地说，若 strcspn() 返回的数值为 n，则代表字符串 s 开头连续有 n 个字符都不含字符串 reject 内的字符。</p></li>
+<li><p>返回值：返回字符串 s 开头连续不含字符串 reject 内的字符数目。</p></li>
+<li><p>相关函数：strspn</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">str</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Linux was first developed for 386/486-based pcs.&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">strcspn</span><span class="p">(</span><span class="n">str</span><span class="p">,</span><span class="w"> </span><span class="s">&quot; &quot;</span><span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">strcspn</span><span class="p">(</span><span class="n">str</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;/-&quot;</span><span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">strcspn</span><span class="p">(</span><span class="n">str</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;1234567890&quot;</span><span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="m">5</span>    <span class="c1"># 值计算算到 &quot; &quot; 的出现，所以返回 &quot;Linux&quot; 的长度</span>
+<span class="m">33</span>   <span class="c1"># 计算到出现 &quot;/&quot; 或 &quot;-&quot;，所以返回到 &quot;6&quot; 的长度</span>
+<span class="m">30</span>   <span class="c1"># 计算到出现数字字符为止，所以返回 &quot;3&quot; 出现前的长度</span>
+</pre></div>
+</div>
+</section>
+<section id="strdup">
+<h2>strdup<a class="headerlink" href="#strdup" title="永久链接至标题"></a></h2>
+<p>复制字符串</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="nf">strdup</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">s</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：strdup() 会先用 maolloc() 分配与参数 s 字符串相同的空间大小，然后将参数 s 字符串的内容复制到该内存地址，然后把该地址返回。该地址最后可以利用 free() 来释放。</p></li>
+<li><p>返回值：返回一字符串指针，该指针指向复制后的新字符串地址。若返回 NULL 表示内存不足。</p></li>
+<li><p>相关函数：calloc，malloc，realloc，free</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">a</span><span class="p">[]</span><span class="o">=</span><span class="s">&quot;strdup&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">b</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">strdup</span><span class="p">(</span><span class="n">a</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;b[ ]=</span><span class="se">\&quot;</span><span class="s">%s</span><span class="se">\&quot;\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>b<span class="o">[</span> <span class="o">]=</span><span class="s2">&quot;strdup&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="strlen">
+<h2>strlen<a class="headerlink" href="#strlen" title="永久链接至标题"></a></h2>
+<p>返回字符串长度</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">size_t</span><span class="w"> </span><span class="nf">strlen</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">s</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：strlen() 用来计算指定的字符串 s 的长度，不包括结束字符 ‘\0’。</p></li>
+<li><p>返回值：返回字符串 s 的字符数。</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">str</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;12345678&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;str length = %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">strlen</span><span class="p">(</span><span class="n">str</span><span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>str <span class="nv">length</span> <span class="o">=</span> <span class="m">8</span>
+</pre></div>
+</div>
+</section>
+<section id="strncasecmp">
+<h2>strncasecmp<a class="headerlink" href="#strncasecmp" title="永久链接至标题"></a></h2>
+<p>忽略大小写比较字符串</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">strncasecmp</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">s1</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">s2</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">n</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：strncasecmp() 用来比较参数 s1 和 s2 字符串前 n 个字符，比较时会自动忽略大小写的差异。</p></li>
+<li><p>返回值：若参数 s1 和 s2 字符串相同则返回 0，s1 若大于 s2 则返回大于 0 的值，s1 若小于 s2 则返回小于 0 的值。</p></li>
+<li><p>相关函数：bcmp，memcmp，strcmp，strcoll，strncmp</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;aBcDeF&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;AbCdEf&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">strncasecmp</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">))</span><span class="w"></span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s=%s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nv">aBcDef</span><span class="o">=</span>AbCdEf
+</pre></div>
+</div>
+</section>
+<section id="strncat">
+<h2>strncat<a class="headerlink" href="#strncat" title="永久链接至标题"></a></h2>
+<p>连接两字符串</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="nf">strncat</span><span class="p">(</span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">dest</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">src</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">n</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：strncat() 会将参数 src 字符串拷贝 n 个字符到参数 dest 所指的字符串尾。第一个参数 dest 要有足够的空间来容纳要拷贝的字符串。</p></li>
+<li><p>返回值：返回参数 dest 的字符串起始地址。</p></li>
+<li><p>相关函数：bcopy，memccpy，memecpy，strcpy，strncpy</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="mi">30</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;https://&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">b</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;getiot.tech&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;before strnact() : %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot; after strncat() : %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">strncat</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">strlen</span><span class="p">(</span><span class="n">b</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>before strnact<span class="o">()</span> : https://
+ after strncat<span class="o">()</span> : https://getiot.tech
+</pre></div>
+</div>
+</section>
+<section id="strncpy">
+<h2>strncpy<a class="headerlink" href="#strncpy" title="永久链接至标题"></a></h2>
+<p>拷贝字符串</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="nf">strncpy</span><span class="p">(</span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">dest</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">src</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">n</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：strncpy() 会将参数 src 字符串拷贝前 n 个字符至参数 dest 所指的地址。</p></li>
+<li><p>返回值：返回参数 dest 的字符串起始地址。</p></li>
+<li><p>相关函数：bcopy，memccpy，memcpy，memmove</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="mi">30</span><span class="p">]</span><span class="o">=</span><span class="s">&quot;Hello, World!&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">b</span><span class="p">[]</span><span class="o">=</span><span class="s">&quot;你好，世界！&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;before strncpy() : %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot; after strncpy() : %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">strncpy</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">strlen</span><span class="p">(</span><span class="n">b</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="cm">/* 注意给&#39;\0&#39;留位置 */</span><span class="w"></span>
+<span class="w">    </span><span class="cm">/* 否则可能出现 warning: ‘strncpy’ output truncated before terminating nul copying */</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>before strncpy<span class="o">()</span> : Hello, World!
+ after strncpy<span class="o">()</span> : 你好，世界！
+</pre></div>
+</div>
+</section>
+<section id="strpbrk">
+<h2>strpbrk<a class="headerlink" href="#strpbrk" title="永久链接至标题"></a></h2>
+<p>查找字符串中第一个出现的指定字符</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="nf">strpbrk</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">accept</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：strpbrk() 用来找出参数 s 字符串中最先出现存在参数 accept 字符串中的任意字符。</p></li>
+<li><p>返回值：如果找到指定的字符则返回该字符所在地址，否则返回 0。</p></li>
+<li><p>相关函数：index，memchr，rindex，strpbrk，strsep，strspn，strstr，strtok</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;0123456789012345678901234567890&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">p</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">strpbrk</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;a1 839&quot;</span><span class="p">);</span><span class="w"> </span><span class="cm">/* 1会最先在s字符串中找到 */</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">strpbrk</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;4398&quot;</span><span class="p">);</span><span class="w">    </span><span class="cm">/* 3会最先在s字符串中找到*/</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="m">123456789012345678901234567890</span>
+<span class="m">3456789012345678901234567890</span>
+</pre></div>
+</div>
+</section>
+<section id="strrchr">
+<h2>strrchr<a class="headerlink" href="#strrchr" title="永久链接至标题"></a></h2>
+<p>查找字符串中最后出现的指定字符</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="nf">strrchr</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">c</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：strrchr() 用来找出参数 s 字符串中最后一个出现的参数 c 地址，然后将该字符出现的地址返回。</p></li>
+<li><p>返回值：如果找到指定的字符则返回该字符所在地址，否则返回 0。</p></li>
+<li><p>相关函数：index，memchr，rindex，strpbrk，strsep，strspn，strstr，strtok</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;0123456789012345678901234567890&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">p</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">strrchr</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;5&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="m">567890</span>
+</pre></div>
+</div>
+</section>
+<section id="strspn">
+<h2>strspn<a class="headerlink" href="#strspn" title="永久链接至标题"></a></h2>
+<p>返回字符串中连续不含指定字符串内容的字符数</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">size_t</span><span class="w"> </span><span class="nf">strspn</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">accept</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：strspn() 从参数 s 字符串的开头计算连续的字符，而这些字符都完全是 accept 所指字符串中的字符。简单来说，若 strspn() 返回的数值为 n，则代表字符串 s 开头连续有 n 个字符都是属于字符串 accept 内的字符。</p></li>
+<li><p>返回值：返回字符串 s 开头连续包含字符串 accept 内的字符数目。</p></li>
+<li><p>相关函数：strcspn，strchr，strpbrk，strsep，strstr</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">str</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Linux was first developed for 386/486-based PCs.&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">t1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">strspn</span><span class="p">(</span><span class="n">str</span><span class="p">,</span><span class="w"> </span><span class="n">t1</span><span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="m">5</span>    <span class="c1"># 计算大小写字母。不包含 &quot; &quot;，所以返回 Linux 的长度</span>
+</pre></div>
+</div>
+</section>
+<section id="strstr">
+<h2>strstr<a class="headerlink" href="#strstr" title="永久链接至标题"></a></h2>
+<p>在一字符串中查找指定的字符串</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="nf">strstr</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">haystack</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">needle</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：strstr() 会从字符串 haystack 中搜寻字符串 needle，并将第一次出现的地址返回。</p></li>
+<li><p>返回值：返回指定字符串第一次出现的地址，否则返回 0。</p></li>
+<li><p>相关函数：index，memchr，rindex，strchr，strpbrk，strsep，strspn，strtok</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;012345678901234567890123456789&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">p</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">strstr</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;901&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="m">901234567890123456789</span>
+</pre></div>
+</div>
+</section>
+<section id="strtok">
+<h2>strtok<a class="headerlink" href="#strtok" title="永久链接至标题"></a></h2>
+<p>分隔字符串</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="nf">strtok</span><span class="p">(</span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">delim</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：strtok() 用来将字符串分割成一个个片段。参数 s 指向欲分割的字符串，参数 delim 则为分割字符串，当 strtok() 在参数 s 的字符串中发现到参数 delim 的分割字符时则会将该字符改为 ‘\0’ 字符。在第一次调用时，strtok() 必需给予参数 s 字符串，往后的调用则将参数 s 设置成 NULL。每次调用成功则返回下一个分割后的字符串指针。</p></li>
+<li><p>返回值：返回下一个分割后的字符串指针，如果已无从分割则返回 NULL。</p></li>
+<li><p>相关函数：index，memchr，rindex，strpbrk，strsep，strspn，strstr</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">s</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;ab-cd : ef;gh :i-jkl;mnop;qrs-tu: vwx-y;z&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">delim</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;-: &quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">p</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">s</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">strtok</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="n">delim</span><span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="k">while</span><span class="p">((</span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">strtok</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="n">delim</span><span class="p">)))</span><span class="w"></span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>ab-cd : ef<span class="p">;</span>gh :i-jkl<span class="p">;</span>mnop<span class="p">;</span>qrs-tu: vwx-y<span class="p">;</span>z
+<span class="c1"># &#39;-&#39; 和 &#39;:&#39; 字符已经被 &#39;\0&#39; 字符取代</span>
+ab <span class="nb">cd</span>
+ef<span class="p">;</span>gh
+i
+jkl<span class="p">;</span>mnop<span class="p">;</span>qrs
+tu
+vwx
+y<span class="p">;</span>z
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="time.html" class="btn btn-neutral float-left" title="日期时间篇" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="math.html" class="btn btn-neutral float-right" title="常用数学函数篇" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2018-2023, 人人都懂物联网.</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用了 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a>开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

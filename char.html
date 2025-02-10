@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>字符测试篇 &mdash; Linux 常用 C 函数参考手册 v1.0 文档</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/translations.js"></script>
+        <script src="_static/js/baidutongji.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="字符串转换篇" href="string-convert.html" />
+    <link rel="prev" title="Linux 常用 C 函数参考手册" href="index.html" />
+    <link href="_static/main.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> Linux 常用 C 函数参考手册
+            <img src="_static/GetIoT_Logo_150px.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="在文档中搜索" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">字符测试篇</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#isalnum">isalnum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#isalpha">isalpha</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#isascii">isascii</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#iscntrl">iscntrl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#isdigit">isdigit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#isgraphis">isgraphis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#islower">islower</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#isprint">isprint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#isspace">isspace</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ispunct">ispunct</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#isupper">isupper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#isxdigit">isxdigit</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="string-convert.html">字符串转换篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="memory.html">内存控制篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="time.html">日期时间篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="memory-string.html">内存及字符串操作篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="math.html">常用数学函数篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user-group.html">用户组篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data-structure.html">数据结构及算法篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="file.html">文件操作篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="file-content.html">文件内容操作篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="permission.html">文件权限控制篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="process.html">进程操作篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ipcs.html">进程间通信篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pthreads.html">线程管理篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="signal.html">信号处理篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="network.html">网络接口篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="io-multiplexing.html">I/O 复用篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="env.html">环境变量篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tty.html">终端控制篇</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Linux 常用 C 函数参考手册</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>字符测试篇</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/char.md.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1>字符测试篇<a class="headerlink" href="#id1" title="永久链接至标题"></a></h1>
+<section id="isalnum">
+<h2>isalnum<a class="headerlink" href="#isalnum" title="永久链接至标题"></a></h2>
+<p>测试字符是否为英文或数字</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;ctype.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">isalnum</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">c</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：检查参数 c 是否为英文字母或阿拉伯数字，在标准 C 中相当于使用 <code class="docutils literal notranslate"><span class="pre">isalpha(c)</span> <span class="pre">||</span> <span class="pre">isdigit(c)</span></code> 做测试。</p></li>
+<li><p>返回值：若参数 c 为字母或数字，则返回 <code class="docutils literal notranslate"><span class="pre">TRUE</span></code>，否则返回 <code class="docutils literal notranslate"><span class="pre">NULL</span></code>。</p></li>
+<li><p>附加说明：此为宏定义，非真正函数。</p></li>
+<li><p>相关函数： isalpha, isdigit, islower, isupper</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* 找出 str 字符串中为英文字母或数字的字符 */</span><span class="w"></span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;ctype.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">str</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;123c@#FDsP[e?&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">str</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">!=</span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">isalnum</span><span class="p">(</span><span class="n">str</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span><span class="w"> </span>
+<span class="w">            </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%c is an alphanumeric character</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">str</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="m">1</span> is an alphanumeric character
+<span class="m">2</span> is an alphanumeric character
+<span class="m">3</span> is an alphanumeric character
+c is an alphanumeric character
+F is an alphanumeric character
+D is an alphanumeric character
+s is an alphanumeric character
+P is an alphanumeric character
+e is an alphanumeric character
+</pre></div>
+</div>
+</section>
+<section id="isalpha">
+<h2>isalpha<a class="headerlink" href="#isalpha" title="永久链接至标题"></a></h2>
+<p>测试字符是否为英文字母</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;ctype.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">isalpha</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">c</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：检查参数 c 是否为英文字母，在标准 c 中相当于使用 <code class="docutils literal notranslate"><span class="pre">isupper(c)</span> <span class="pre">||</span> <span class="pre">islower(c)</span></code> 做测试。</p></li>
+<li><p>返回值：若参数 c 为英文字母，则返回 <code class="docutils literal notranslate"><span class="pre">TRUE</span></code>，否则返回 <code class="docutils literal notranslate"><span class="pre">NULL</span></code>。</p></li>
+<li><p>附加说明：此为宏定义，非真正函数。</p></li>
+<li><p>相关函数：isalnum, islower, isupper</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* 找出 str 字符串中为英文字母的字符 */</span><span class="w"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;ctype.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">str</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;123c@#FDsP[e?&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">str</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">!=</span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">isalpha</span><span class="p">(</span><span class="n">str</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span><span class="w"> </span>
+<span class="w">            </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%c is an alphanumeric character</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">str</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span><span class="w"></span>
+<span class="w">    </span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>c is an alphanumeric character
+F is an alphanumeric character
+D is an alphanumeric character
+s is an alphanumeric character
+P is an alphanumeric character
+e is an alphanumeric character
+</pre></div>
+</div>
+</section>
+<section id="isascii">
+<h2>isascii<a class="headerlink" href="#isascii" title="永久链接至标题"></a></h2>
+<p>测试字符串是否为 ASCII 码字符</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;ctype.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">isascii</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">c</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：检查参数 c 是否为 ASCII 码字符，也就是判断 c 的范围是否在 0 到 127 之间。</p></li>
+<li><p>返回值：若参数 c 为 ASCII 码字符，则返回 <code class="docutils literal notranslate"><span class="pre">TRUE</span></code>，否则返回 <code class="docutils literal notranslate"><span class="pre">NULL</span></code>。</p></li>
+<li><p>附加说明：此为宏定义，非真正函数。</p></li>
+<li><p>相关函数：iscntrl</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* 判断 int i 是否具有对应的 ASCII 码字符 */</span><span class="w"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;ctype.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">125</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">&lt;</span><span class="mi">130</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">isascii</span><span class="p">(</span><span class="n">i</span><span class="p">))</span><span class="w"></span>
+<span class="w">            </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d is an ascii character: %c</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="k">else</span><span class="w"></span>
+<span class="w">            </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d is not an ascii character</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="m">125</span> is an ascii character:<span class="o">}</span>
+<span class="m">126</span> is an ascii character:~
+<span class="m">127</span> is an ascii character:
+<span class="m">128</span> is not an ascii character
+<span class="m">129</span> is not an ascii character
+</pre></div>
+</div>
+</section>
+<section id="iscntrl">
+<h2>iscntrl<a class="headerlink" href="#iscntrl" title="永久链接至标题"></a></h2>
+<p>测试字符是否为 ASCII 码的控制字符</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;ctype.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">iscntrl</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">c</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：检查参数 c 是否为 ASCII 控制码，也就是判断 c 的范围是否在 0 到 30 之间。</p></li>
+<li><p>返回值：若参数 c 为 ASCII 控制码，则返回 <code class="docutils literal notranslate"><span class="pre">TRUE</span></code>，否则返回 <code class="docutils literal notranslate"><span class="pre">NULL</span></code>。</p></li>
+<li><p>附加说明：此为宏定义，非真正函数。</p></li>
+<li><p>相关函数：isascii</p></li>
+</ul>
+</section>
+<section id="isdigit">
+<h2>isdigit<a class="headerlink" href="#isdigit" title="永久链接至标题"></a></h2>
+<p>测试字符是否为阿拉伯数字</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;ctype.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">isdigit</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">c</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：检查参数 c 是否为阿拉伯数字 0 到 9。</p></li>
+<li><p>返回值：若参数 c 为阿拉伯数字，则返回 <code class="docutils literal notranslate"><span class="pre">TRUE</span></code>，否则返回 <code class="docutils literal notranslate"><span class="pre">NULL</span></code>。</p></li>
+<li><p>附加说明：此为宏定义，非真正函数。</p></li>
+<li><p>相关函数：isxdigit</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* 找出str字符串中为阿拉伯数字的字符 */</span><span class="w"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;ctype.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">str</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;123@#FDsP[e?&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">str</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">!=</span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">isdigit</span><span class="p">(</span><span class="n">str</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span><span class="w"></span>
+<span class="w">            </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%c is an digit character</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">str</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span><span class="w"></span>
+<span class="w">    </span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="m">1</span> is an digit character
+<span class="m">2</span> is an digit character
+<span class="m">3</span> is an digit character
+</pre></div>
+</div>
+</section>
+<section id="isgraphis">
+<h2>isgraphis<a class="headerlink" href="#isgraphis" title="永久链接至标题"></a></h2>
+<p>测试字符是否为可打印字符</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;ctype.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">isgraph</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">c</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：检查参数 c 是否为可打印字符，若 c 所对应的 ASCII 码可打印，且非空格字符则返回 <code class="docutils literal notranslate"><span class="pre">TRUE</span></code>。</p></li>
+<li><p>返回值：若参数 c 为可打印字符，则返回 <code class="docutils literal notranslate"><span class="pre">TRUE</span></code>，否则返回 <code class="docutils literal notranslate"><span class="pre">NULL</span></code>。</p></li>
+<li><p>附加说明：此为宏定义，非真正函数。</p></li>
+<li><p>相关函数：isprint</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* 判断 str 字符串中哪些为可打印字符 */</span><span class="w"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;ctype.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">str</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;a5 @;&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">str</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">!=</span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">isgraph</span><span class="p">(</span><span class="n">str</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span><span class="w"> </span>
+<span class="w">            </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;str[%d] is printable character: %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">str</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>str<span class="o">[</span><span class="m">0</span><span class="o">]</span> is printable character: a
+str<span class="o">[</span><span class="m">1</span><span class="o">]</span> is printable character: <span class="m">5</span>
+str<span class="o">[</span><span class="m">3</span><span class="o">]</span> is printable character: @
+str<span class="o">[</span><span class="m">4</span><span class="o">]</span> is printable character: <span class="p">;</span>
+</pre></div>
+</div>
+</section>
+<section id="islower">
+<h2>islower<a class="headerlink" href="#islower" title="永久链接至标题"></a></h2>
+<p>测试字符是否为小写字母</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;ctype.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">islower</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">c</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：检查参数 c 是否为小写英文字母。</p></li>
+<li><p>返回值：若参数 c 为小写英文字母，则返回 <code class="docutils literal notranslate"><span class="pre">TRUE</span></code>，否则返回 <code class="docutils literal notranslate"><span class="pre">NULL</span></code>。</p></li>
+<li><p>附加说明：此为宏定义，非真正函数。</p></li>
+<li><p>相关函数：isalpha, isupper</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;ctype.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">str</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;123c@#FDsP[e?&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">str</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">!=</span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">islower</span><span class="p">(</span><span class="n">str</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span><span class="w"></span>
+<span class="w">            </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%c is a lower-case character</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">str</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span><span class="w"></span>
+<span class="w">    </span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>c is a lower-case character
+s is a lower-case character
+e is a lower-case character
+</pre></div>
+</div>
+</section>
+<section id="isprint">
+<h2>isprint<a class="headerlink" href="#isprint" title="永久链接至标题"></a></h2>
+<p>测试字符是否为可打印字符</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;ctype.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">isprint</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">c</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：检查参数 c 是否为可打印字符，若 c 所对应的 ASCII 码可打印，且非空格字符则返回 <code class="docutils literal notranslate"><span class="pre">TRUE</span></code>。</p></li>
+<li><p>返回值：若参数 c 为可打印字符，则返回 <code class="docutils literal notranslate"><span class="pre">TRUE</span></code>，否则返回 <code class="docutils literal notranslate"><span class="pre">NULL</span></code>。</p></li>
+<li><p>附加说明：此为宏定义，非真正函数。</p></li>
+<li><p>相关函数：isgraph</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* 判断 str 字符串中哪些为可打印字符包含空格字符 */</span><span class="w"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;ctype.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">str</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;a5 @;&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">str</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">!=</span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">isprint</span><span class="p">(</span><span class="n">str</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span><span class="w"></span>
+<span class="w">            </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;str[%d] is printable character: %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">str</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span><span class="w"></span>
+<span class="w">    </span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>str<span class="o">[</span><span class="m">0</span><span class="o">]</span> is printable character: a
+str<span class="o">[</span><span class="m">1</span><span class="o">]</span> is printable character: <span class="m">5</span>
+str<span class="o">[</span><span class="m">2</span><span class="o">]</span> is printable character:
+str<span class="o">[</span><span class="m">3</span><span class="o">]</span> is printable character: @
+str<span class="o">[</span><span class="m">4</span><span class="o">]</span> is printable character: <span class="p">;</span>
+</pre></div>
+</div>
+</section>
+<section id="isspace">
+<h2>isspace<a class="headerlink" href="#isspace" title="永久链接至标题"></a></h2>
+<p>测试字符是否为空格字符</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;ctype.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">isspace</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">c</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：检查参数 c 是否为空格字符，也就是判断是否为空格 (’’)、定位字符 (’\t’)、CR (’\r’)、换行 (’\n’)、垂直定位字符 (’\v’) 或翻页 (’\f’) 的情況。</p></li>
+<li><p>返回值：若参数 c 为空格字符，则返回 <code class="docutils literal notranslate"><span class="pre">TRUE</span></code>，否则返回 <code class="docutils literal notranslate"><span class="pre">NULL</span></code>。</p></li>
+<li><p>附加说明：此为宏定义，非真正函数。</p></li>
+<li><p>相关函数：isgraph</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* 将字符串 str[] 中内含的空格字符找出，并显示空格字符的 ASCII 码 */</span><span class="w"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;ctype.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;123c @# FD</span><span class="se">\t</span><span class="s">sP[e?</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">str</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">!=</span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">isspace</span><span class="p">(</span><span class="n">str</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span><span class="w"></span>
+<span class="w">            </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;str[%d] is a white-space character: %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">str</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>str<span class="o">[</span><span class="m">4</span><span class="o">]</span> is a white-space character: <span class="m">32</span>
+str<span class="o">[</span><span class="m">7</span><span class="o">]</span> is a white-space character: <span class="m">32</span>
+str<span class="o">[</span><span class="m">10</span><span class="o">]</span> is a white-space character: <span class="m">9</span>
+str<span class="o">[</span><span class="m">16</span><span class="o">]</span> is a white-space character: <span class="m">10</span>
+</pre></div>
+</div>
+</section>
+<section id="ispunct">
+<h2>ispunct<a class="headerlink" href="#ispunct" title="永久链接至标题"></a></h2>
+<p>测试字符是否为标点符号或特殊符号</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;ctype.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">ispunct</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">c</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：检查参数 c 是否为标点符号或特殊符号。返回 <code class="docutils literal notranslate"><span class="pre">TRUE</span></code> 也就是代表参数 c 为非空格、非数字和非英文字母。</p></li>
+<li><p>返回值：若参数 c 为标点符号或特殊符号，则返回 <code class="docutils literal notranslate"><span class="pre">TRUE</span></code>，否则返回 <code class="docutils literal notranslate"><span class="pre">NULL</span></code>。</p></li>
+<li><p>附加说明：此为宏定义，非真正函数。</p></li>
+<li><p>相关函数：isspace, isdigit, isalpha</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* 列出字符串 str 中的标点符号或特殊符号 */</span><span class="w"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;ctype.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">str</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;123c@ #FDsP[e?&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">str</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">!=</span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">ispunct</span><span class="p">(</span><span class="n">str</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span><span class="w"></span>
+<span class="w">            </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%c</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">str</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span><span class="w"></span>
+<span class="w">    </span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>@#<span class="o">[</span>?
+</pre></div>
+</div>
+</section>
+<section id="isupper">
+<h2>isupper<a class="headerlink" href="#isupper" title="永久链接至标题"></a></h2>
+<p>测试字符是否为大写英文字母</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;ctype.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">isupper</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">c</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：检查参数 c 是否为大写英文字母。</p></li>
+<li><p>返回值：若参数 c 为大写英文字母，则返回 <code class="docutils literal notranslate"><span class="pre">TRUE</span></code>，否则返回 <code class="docutils literal notranslate"><span class="pre">NULL</span></code>。</p></li>
+<li><p>附加说明：此为宏定义，非真正函数。</p></li>
+<li><p>相关函数：isalpha, islower</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* 找出字符串 str 中为大写英文字母的字符 */</span><span class="w"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;ctype.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">str</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;123c@#FDsP[e?&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">str</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">!=</span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">isupper</span><span class="p">(</span><span class="n">str</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span><span class="w"></span>
+<span class="w">            </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%c is an uppercase character</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">str</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>F is an uppercase character
+D is an uppercase character
+P is an uppercase character
+</pre></div>
+</div>
+</section>
+<section id="isxdigit">
+<h2>isxdigit<a class="headerlink" href="#isxdigit" title="永久链接至标题"></a></h2>
+<p>测试字符是否为十六进制数字</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;ctype.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">isxdigit</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">c</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：检查参数 c 是否为十六进制数字，只要 c 为下列其中一个情况则返回 <code class="docutils literal notranslate"><span class="pre">TRUE</span></code>。十六进制数字：0123456789ABCDEF。</p></li>
+<li><p>返回值：若参数 c 为十六进制数字，则返回 <code class="docutils literal notranslate"><span class="pre">TRUE</span></code>，否则返回 <code class="docutils literal notranslate"><span class="pre">NULL</span></code>。</p></li>
+<li><p>附加说明：此为宏定义，非真正函数。</p></li>
+<li><p>相关函数：isalnum, isdigit</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* 找出字符串 str 中为十六进制数字的字符 */</span><span class="w"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;ctype.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">str</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;123c@#FDsP[e?&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">str</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">!=</span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">isxdigit</span><span class="p">(</span><span class="n">str</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span><span class="w"></span>
+<span class="w">            </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%c is a hexadecimal digits</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">str</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p><strong>执行</strong></p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="m">1</span> is a hexadecimal digits
+<span class="m">2</span> is a hexadecimal digits
+<span class="m">3</span> is a hexadecimal digits
+c is a hexadecimal digits
+F is a hexadecimal digits
+D is a hexadecimal digits
+e is a hexadecimal digits
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Linux 常用 C 函数参考手册" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="string-convert.html" class="btn btn-neutral float-right" title="字符串转换篇" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2018-2023, 人人都懂物联网.</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用了 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a>开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>进程间通信篇 &mdash; Linux 常用 C 函数参考手册 v1.0 文档</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/translations.js"></script>
+        <script src="_static/js/baidutongji.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="线程管理篇" href="pthreads.html" />
+    <link rel="prev" title="进程操作篇" href="process.html" />
+    <link href="_static/main.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> Linux 常用 C 函数参考手册
+            <img src="_static/GetIoT_Logo_150px.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="在文档中搜索" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="char.html">字符测试篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="string-convert.html">字符串转换篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="memory.html">内存控制篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="time.html">日期时间篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="memory-string.html">内存及字符串操作篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="math.html">常用数学函数篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user-group.html">用户组篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data-structure.html">数据结构及算法篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="file.html">文件操作篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="file-content.html">文件内容操作篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="permission.html">文件权限控制篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="process.html">进程操作篇</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">进程间通信篇</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#sem-init">sem_init</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sem-destroy">sem_destroy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sem-open">sem_open</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sem-close">sem_close</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sem-getvalue">sem_getvalue</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sem-post">sem_post</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sem-overview">sem_overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sem-wait">sem_wait</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sem-trywait">sem_trywait</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sem-timedwait">sem_timedwait</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sem-unlink">sem_unlink</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pthreads.html">线程管理篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="signal.html">信号处理篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="network.html">网络接口篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="io-multiplexing.html">I/O 复用篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="env.html">环境变量篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tty.html">终端控制篇</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Linux 常用 C 函数参考手册</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>进程间通信篇</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/ipcs.md.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1>进程间通信篇<a class="headerlink" href="#id1" title="永久链接至标题"></a></h1>
+<section id="sem-init">
+<h2>sem_init<a class="headerlink" href="#sem-init" title="永久链接至标题"></a></h2>
+<p>简介</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;semaphore.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">sem_init</span><span class="p">(</span><span class="n">sem_t</span><span class="w"> </span><span class="o">*</span><span class="n">sem</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">pshared</span><span class="p">,</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">value</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：</p></li>
+<li><p>返回值：</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</section>
+<section id="sem-destroy">
+<h2>sem_destroy<a class="headerlink" href="#sem-destroy" title="永久链接至标题"></a></h2>
+<p>简介</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;semaphore.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">sem_destroy</span><span class="p">(</span><span class="n">sem_t</span><span class="w"> </span><span class="o">*</span><span class="n">sem</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：</p></li>
+<li><p>返回值：</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</section>
+<section id="sem-open">
+<h2>sem_open<a class="headerlink" href="#sem-open" title="永久链接至标题"></a></h2>
+<p>简介</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;fcntl.h&gt;</span><span class="c1">           /* For O_* constants */</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/stat.h&gt;</span><span class="c1">        /* For mode constants */</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;semaphore.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">sem_t</span><span class="w"> </span><span class="o">*</span><span class="nf">sem_open</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">oflag</span><span class="p">);</span><span class="w"></span>
+<span class="n">sem_t</span><span class="w"> </span><span class="o">*</span><span class="nf">sem_open</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">oflag</span><span class="p">,</span><span class="w"> </span><span class="kt">mode_t</span><span class="w"> </span><span class="n">mode</span><span class="p">,</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">value</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：</p></li>
+<li><p>返回值：</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</section>
+<section id="sem-close">
+<h2>sem_close<a class="headerlink" href="#sem-close" title="永久链接至标题"></a></h2>
+<p>简介</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;semaphore.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">sem_close</span><span class="p">(</span><span class="n">sem_t</span><span class="w"> </span><span class="o">*</span><span class="n">sem</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：</p></li>
+<li><p>返回值：</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</section>
+<section id="sem-getvalue">
+<h2>sem_getvalue<a class="headerlink" href="#sem-getvalue" title="永久链接至标题"></a></h2>
+<p>简介</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;semaphore.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">sem_getvalue</span><span class="p">(</span><span class="n">sem_t</span><span class="w"> </span><span class="o">*</span><span class="n">sem</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">sval</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：</p></li>
+<li><p>返回值：</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</section>
+<section id="sem-post">
+<h2>sem_post<a class="headerlink" href="#sem-post" title="永久链接至标题"></a></h2>
+<p>简介</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;semaphore.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">sem_post</span><span class="p">(</span><span class="n">sem_t</span><span class="w"> </span><span class="o">*</span><span class="n">sem</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：</p></li>
+<li><p>返回值：</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</section>
+<section id="sem-overview">
+<h2>sem_overview<a class="headerlink" href="#sem-overview" title="永久链接至标题"></a></h2>
+<p>简介</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;semaphore.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">sem_init</span><span class="p">(</span><span class="n">sem_t</span><span class="w"> </span><span class="o">*</span><span class="n">sem</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">pshared</span><span class="p">,</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">value</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：</p></li>
+<li><p>返回值：</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</section>
+<section id="sem-wait">
+<h2>sem_wait<a class="headerlink" href="#sem-wait" title="永久链接至标题"></a></h2>
+<p>简介</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;semaphore.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">sem_wait</span><span class="p">(</span><span class="n">sem_t</span><span class="w"> </span><span class="o">*</span><span class="n">sem</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：</p></li>
+<li><p>返回值：</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</section>
+<section id="sem-trywait">
+<h2>sem_trywait<a class="headerlink" href="#sem-trywait" title="永久链接至标题"></a></h2>
+<p>简介</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;semaphore.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">sem_trywait</span><span class="p">(</span><span class="n">sem_t</span><span class="w"> </span><span class="o">*</span><span class="n">sem</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：</p></li>
+<li><p>返回值：</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</section>
+<section id="sem-timedwait">
+<h2>sem_timedwait<a class="headerlink" href="#sem-timedwait" title="永久链接至标题"></a></h2>
+<p>简介</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;semaphore.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">sem_timedwait</span><span class="p">(</span><span class="n">sem_t</span><span class="w"> </span><span class="o">*</span><span class="n">sem</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">timespec</span><span class="w"> </span><span class="o">*</span><span class="n">abs_timeout</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：</p></li>
+<li><p>返回值：</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</section>
+<section id="sem-unlink">
+<h2>sem_unlink<a class="headerlink" href="#sem-unlink" title="永久链接至标题"></a></h2>
+<p>简介</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;semaphore.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">sem_unlink</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">name</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：</p></li>
+<li><p>返回值：</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="process.html" class="btn btn-neutral float-left" title="进程操作篇" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="pthreads.html" class="btn btn-neutral float-right" title="线程管理篇" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2018-2023, 人人都懂物联网.</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用了 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a>开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

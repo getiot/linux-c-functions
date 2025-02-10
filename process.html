@@ -1,0 +1,1405 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>进程操作篇 &mdash; Linux 常用 C 函数参考手册 v1.0 文档</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/translations.js"></script>
+        <script src="_static/js/baidutongji.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="进程间通信篇" href="ipcs.html" />
+    <link rel="prev" title="文件权限控制篇" href="permission.html" />
+    <link href="_static/main.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> Linux 常用 C 函数参考手册
+            <img src="_static/GetIoT_Logo_150px.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="在文档中搜索" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="char.html">字符测试篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="string-convert.html">字符串转换篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="memory.html">内存控制篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="time.html">日期时间篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="memory-string.html">内存及字符串操作篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="math.html">常用数学函数篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user-group.html">用户组篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data-structure.html">数据结构及算法篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="file.html">文件操作篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="file-content.html">文件内容操作篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="permission.html">文件权限控制篇</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">进程操作篇</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#atexit">atexit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#execl">execl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#execlp">execlp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#execv">execv</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#execve">execve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#execvp">execvp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#exit">exit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">_exit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#vfork">vfork</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#getpgid">getpgid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#getpgrp">getpgrp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#getpid">getpid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#getppid">getppid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#getpriority">getpriority</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#nice">nice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#on-exit">on_exit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#setpgid">setpgid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#setpgrp">setpgrp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#setpriority">setpriority</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#system">system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#wait">wait</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#waitpid">waitpid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fprintf">fprintf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fscanf">fscanf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#printf">printf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#scanf">scanf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sprintf">sprintf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sscanf">sscanf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#vfprintf">vfprintf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#vfscanf">vfscanf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#vprintf">vprintf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#vscanf">vscanf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#vsprintf">vsprintf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#vsscanf">vsscanf</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ipcs.html">进程间通信篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pthreads.html">线程管理篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="signal.html">信号处理篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="network.html">网络接口篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="io-multiplexing.html">I/O 复用篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="env.html">环境变量篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tty.html">终端控制篇</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Linux 常用 C 函数参考手册</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>进程操作篇</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/process.md.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1>进程操作篇<a class="headerlink" href="#id1" title="永久链接至标题"></a></h1>
+<section id="atexit">
+<h2>atexit<a class="headerlink" href="#atexit" title="永久链接至标题"></a></h2>
+<p>设置程序正常结束前调用的函数</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">atexit</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">function</span><span class="p">)(</span><span class="kt">void</span><span class="p">));</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：atexit()用来设置一个程序正常结束前调用的函数。当程序通过调用exit()或从main中返回时，参数function所指定的函数会先被调用，然后才真正由exit()结束程序。</p></li>
+<li><p>返回值：如果执行成功则返回0，否则返回-1，失败原因存于errno中。</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：_exit, exit, on_exit</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span><span class="cp"></span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">my_exit</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;before exit() !</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">atexit</span><span class="p">(</span><span class="n">my_exit</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>before exit<span class="o">()</span>!
+</pre></div>
+</div>
+</section>
+<section id="execl">
+<h2>execl<a class="headerlink" href="#execl" title="永久链接至标题"></a></h2>
+<p>执行文件</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">execl</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">path</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">arg</span><span class="p">,</span><span class="w"> </span><span class="p">...);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：execl()用来执行参数path字符串所代表的文件路径，接下来的参数代表执行该文件时传递过去的argv(0)、argv[1]……，最后一个参数必须用空指针(NULL)作结束。</p></li>
+<li><p>返回值：如果执行成功则函数不会返回，执行失败则直接返回-1，失败原因存于errno中。</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：fork，execle，execlp，execv，execve，execvp</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">execl</span><span class="p">(</span><span class="s">&quot;/bin/ls&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;ls&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;-al&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;/etc/passwd&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">)</span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1"># 执行/bin/ls -al /etc/passwd</span>
+-rw-r--r-- <span class="m">1</span> root root <span class="m">705</span> Sep <span class="m">3</span> <span class="m">13</span> :52 /etc/passwd
+</pre></div>
+</div>
+</section>
+<section id="execlp">
+<h2>execlp<a class="headerlink" href="#execlp" title="永久链接至标题"></a></h2>
+<p>从 PATH 环境变量中查找文件并执行</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">execlp</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">file</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">arg</span><span class="p">,</span><span class="w"> </span><span class="p">...);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：execlp()会从PATH 环境变量所指的目录中查找符合参数file的文件名，找到后便执行该文件，然后将第二个以后的参数当做该文件的argv[0]、argv[1]……，最后一个参数必须用空指针(NULL)作结束。</p></li>
+<li><p>返回值：如果执行成功则函数不会返回，执行失败则直接返回-1，失败原因存于errno 中。</p>
+<p>错误代码：参考 execve()。</p>
+</li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：fork，execl，execle，execv，execve，execvp</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* 执行ls -al /etc/passwd execlp()会依PATH 变量中的/bin找到/bin/ls */</span><span class="w"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">execlp</span><span class="p">(</span><span class="s">&quot;ls&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;ls&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;-al&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;/etc/passwd&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>-rw-r--r-- <span class="m">1</span> root root <span class="m">705</span> Sep <span class="m">3</span> <span class="m">13</span> :52 /etc/passwd
+</pre></div>
+</div>
+</section>
+<section id="execv">
+<h2>execv<a class="headerlink" href="#execv" title="永久链接至标题"></a></h2>
+<p>执行文件</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">execv</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">path</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">argv</span><span class="p">[</span><span class="w"> </span><span class="p">]);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：execv()用来执行参数path字符串所代表的文件路径，与execl()不同的地方在于execve()只需两个参数，第二个参数利用数组指针来传递给执行文件。</p></li>
+<li><p>返回值：如果执行成功则函数不会返回，执行失败则直接返回-1，失败原因存于errno 中。</p>
+<p>错误代码：请参考 execve()。</p>
+</li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：fork，execl，execle，execlp，execve，execvp</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* 执行/bin/ls -al /etc/passwd */</span><span class="w"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">argv</span><span class="p">[</span><span class="w"> </span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="s">&quot;ls&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;-al&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;/etc/passwd&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="mi">0</span><span class="p">};</span><span class="w"></span>
+<span class="w">    </span><span class="n">execv</span><span class="p">(</span><span class="s">&quot;/bin/ls&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">argv</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>-rw-r--r-- <span class="m">1</span> root root <span class="m">705</span> Sep <span class="m">3</span> <span class="m">13</span> :52 /etc/passwd
+</pre></div>
+</div>
+</section>
+<section id="execve">
+<h2>execve<a class="headerlink" href="#execve" title="永久链接至标题"></a></h2>
+<p>执行文件</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">execve</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">filename</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">argv</span><span class="p">[],</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">envp</span><span class="p">[]);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：execve()用来执行参数filename字符串所代表的文件路径，第二个参数系利用数组指针来传递给执行文件，最后一个参数则为传递给执行文件的新环境变量数组。</p></li>
+<li><p>返回值：如果执行成功则函数不会返回，执行失败则直接返回-1，失败原因存于errno 中。</p>
+<p>错误代码：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">EACCES</span></code></p>
+<ol class="simple">
+<li><p>欲执行的文件不具有用户可执行的权限。欲执行的文件所属的文件系统是</p></li>
+<li><p>以 noexec 方式挂上。</p></li>
+<li><p>欲执行的文件或 script 解析器非一般文件。</p></li>
+</ol>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EPERM</span></code></p>
+<ol class="simple">
+<li><p>进程处于被追踪模式，执行者并不具有root权限，欲执行的文件具有SUID 或SGID 位。</p></li>
+<li><p>欲执行的文件所属的文件系统是以nosuid方式挂上，欲执行的文件具有SUID 或SGID 位元，但执行者并不具有root权限。</p></li>
+</ol>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">E2BIG</span></code> 参数数组过大</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENOEXEC</span></code> 无法判断欲执行文件的执行文件格式，有可能是格式错误或无法在此平台执行。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EFAULT</span></code> 参数filename所指的字符串地址超出可存取空间范围。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENAMETOOLONG</span></code> 参数filename所指的字符串太长。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENOENT</span></code> 参数filename字符串所指定的文件不存在。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENOMEM</span></code> 核心内存不足</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENOTDIR</span></code> 参数filename字符串所包含的目录路径并非有效目录</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EACCES</span></code> 参数filename字符串所包含的目录路径无法存取，权限不足</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ELOOP</span></code> 过多的符号连接</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ETXTBUSY</span></code> 欲执行的文件已被其他进程打开而且正把数据写入该文件中</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EIO</span></code> I/O 存取错误</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENFILE</span></code> 已达到系统所允许的打开文件总数。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EMFILE</span></code> 已达到系统所允许单一进程所能打开的文件总数。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EINVAL</span></code> 欲执行文件的ELF执行格式不只一个PT_INTERP节区</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EISDIR</span></code> ELF翻译器为一目录</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ELIBBAD</span></code> ELF翻译器有问题。</p></li>
+</ul>
+</li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：fork，execl，execle，execlp，execv，execvp</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">argv</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="s">&quot;ls&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;-al&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;/etc/passwd&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="mi">0</span><span class="p">};</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">envp</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="s">&quot;PATH=/bin&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">};</span><span class="w"></span>
+<span class="w">    </span><span class="n">execve</span><span class="p">(</span><span class="s">&quot;/bin/ls&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">argv</span><span class="p">,</span><span class="w"> </span><span class="n">envp</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>-rw-r--r-- <span class="m">1</span> root root <span class="m">705</span> Sep <span class="m">3</span> <span class="m">13</span> :52 /etc/passwd
+</pre></div>
+</div>
+</section>
+<section id="execvp">
+<h2>execvp<a class="headerlink" href="#execvp" title="永久链接至标题"></a></h2>
+<p>执行文件</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">execvp</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">file</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">argv</span><span class="w"> </span><span class="p">[]);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：execvp()会从PATH 环境变量所指的目录中查找符合参数file 的文件名，找到后便执行该文件，然后将第二个参数argv传给该欲执行的文件。</p></li>
+<li><p>返回值：如果执行成功则函数不会返回，执行失败则直接返回-1，失败原因存于errno中。</p>
+<p>错误代码：请参考 execve()。</p>
+</li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：fork，execl，execle，execlp，execv，execve</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/*请与execlp（）范例对照*/</span><span class="w"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">argv</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="s">&quot;ls&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;-al&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;/etc/passwd&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">};</span><span class="w"></span>
+<span class="w">    </span><span class="n">execvp</span><span class="p">(</span><span class="s">&quot;ls&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">argv</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>-rw-r--r-- <span class="m">1</span> root root <span class="m">705</span> Sep <span class="m">3</span> <span class="m">13</span> :52 /etc/passwd
+</pre></div>
+</div>
+</section>
+<section id="exit">
+<h2>exit<a class="headerlink" href="#exit" title="永久链接至标题"></a></h2>
+<p>正常结束进程</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">exit</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">status</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：exit()用来正常终结目前进程的执行，并把参数status返回给父进程，而进程所有的缓冲区数据会自动写回并关闭未关闭的文件。</p></li>
+<li><p>返回值：无</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：_exit，atexit，on_exit</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<p>参考 wait()。</p>
+</section>
+<section id="id2">
+<h2>_exit<a class="headerlink" href="#id2" title="永久链接至标题"></a></h2>
+<p>结束进程执行</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">_exit</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">status</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：_exit()用来立刻结束目前进程的执行，并把参数status返回给父进程，并关闭未关闭的文件。此函数调用后不会返回，并且会传递SIGCHLD信号给父进程，父进程可以由wait函数取得子进程结束状态。</p></li>
+<li><p>返回值：无</p></li>
+<li><p>附加说明：_exit() 不会处理标准 I/O 缓冲区，如要更新缓冲区请使用 exit()。</p></li>
+<li><p>相关函数：exit，wait，abort</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</section>
+<section id="vfork">
+<h2>vfork<a class="headerlink" href="#vfork" title="永久链接至标题"></a></h2>
+<p>建立一个新的进程</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">pid_t</span><span class="w"> </span><span class="nf">vfork</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：vfork()会产生一个新的子进程，其子进程会复制父进程的数据与堆栈空间，并继承父进程的用户代码，组代码，环境变量、已打开的文件代码、工作目录和资源限制等。Linux 使用copy-on-write(COW)技术，只有当其中一进程试图修改欲复制的空间时才会做真正的复制动作，由于这些继承的信息是复制而来，并非指相同的内存空间，因此子进程对这些变量的修改和父进程并不会同步。此外，子进程不会继承父进程的文件锁定和未处理的信号。注意，Linux不保证子进程会比父进程先执行或晚执行，因此编写程序时要留意死锁或竞争条件的发生。</p></li>
+<li><p>返回值：如果vfork()成功则在父进程会返回新建立的子进程代码(PID)，而在新建立的子进程中则返回0。如果vfork 失败则直接返回-1，失败原因存于errno中。</p>
+<p>错误代码：EAGAIN 内存不足。ENOMEM 内存不足，无法配置核心所需的数据结构空间。</p>
+</li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：wait，execve</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">vfork</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;This is the child process</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;This is the parent process</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>this is the parent process
+this is the child process
+</pre></div>
+</div>
+</section>
+<section id="getpgid">
+<h2>getpgid<a class="headerlink" href="#getpgid" title="永久链接至标题"></a></h2>
+<p>取得进程组识别码</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">pid_t</span><span class="w"> </span><span class="nf">getpgid</span><span class="p">(</span><span class="kt">pid_t</span><span class="w"> </span><span class="n">pid</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：getpgid()用来取得参数pid 指定进程所属的组识别码。如果参数pid为0，则会取得目前进程的组识别码。</p></li>
+<li><p>返回值：执行成功则返回组识别码，如果有错误则返回-1，错误原因存于errno中。</p>
+<p>错误代码：ESRCH 找不到符合参数pid 指定的进程。</p>
+</li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：setpgid，setpgrp，getpgrp</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/*取得init 进程（pid＝1）的组识别码*/</span><span class="w"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;init gid = %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">getpgid</span><span class="p">(</span><span class="mi">1</span><span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>init <span class="nv">gid</span> <span class="o">=</span> <span class="m">0</span>
+</pre></div>
+</div>
+</section>
+<section id="getpgrp">
+<h2>getpgrp<a class="headerlink" href="#getpgrp" title="永久链接至标题"></a></h2>
+<p>取得进程组识别码</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">pid_t</span><span class="w"> </span><span class="nf">getpgrp</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：getpgrp()用来取得目前进程所属的组识别码。此函数相当于调用getpgid(0)；</p></li>
+<li><p>返回值：返回目前进程所属的组识别码。</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：setpgid，getpgid，getpgrp</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;my gid = %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">getpgrp</span><span class="p">());</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>my <span class="nv">gid</span> <span class="o">=</span> <span class="m">29546</span>
+</pre></div>
+</div>
+</section>
+<section id="getpid">
+<h2>getpid<a class="headerlink" href="#getpid" title="永久链接至标题"></a></h2>
+<p>取得进程识别码</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">pid_t</span><span class="w"> </span><span class="nf">getpid</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：getpid() 用来取得目前进程的进程识别码，许多程序利用取到的此值来建立临时文件，以避免临时文件相同带来的问题。</p></li>
+<li><p>返回值：目前进程的进程识别码。</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：fork，kill，getpid</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;pid = %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">getpid</span><span class="p">());</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nv">pid</span> <span class="o">=</span> <span class="m">1494</span> <span class="c1"># 每次执行结果都不一定相同</span>
+</pre></div>
+</div>
+</section>
+<section id="getppid">
+<h2>getppid<a class="headerlink" href="#getppid" title="永久链接至标题"></a></h2>
+<p>取得父进程的进程识别码</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">pid_t</span><span class="w"> </span><span class="nf">getppid</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：getppid()用来取得目前进程的父进程识别码。</p></li>
+<li><p>返回值：目前进程的父进程识别码。</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：fork，kill，getpid</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;My parent ‘pid = %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">getppid</span><span class="p">());</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>My parent <span class="nv">pid</span> <span class="o">=</span> <span class="m">463</span>
+</pre></div>
+</div>
+</section>
+<section id="getpriority">
+<h2>getpriority<a class="headerlink" href="#getpriority" title="永久链接至标题"></a></h2>
+<p>取得程序进程执行优先权</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/time.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/resource.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">getpriority</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">which</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">who</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：getpriority() 可用来取得进程、进程组和用户的进程执行优先权。which有三种数值，参数who 则依which值有不同定义。</p>
+<p>which who 代表的意义：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">PRIO_PROCESS</span></code> who 为进程识别码</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PRIO_PGRP</span></code> who 为进程的组识别码</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PRIO_USER</span></code> who 为用户识别码</p></li>
+</ul>
+<p>此函数返回的数值介于-20 至20之间，代表进程执行优先权，数值越低代表有较高的优先次序，执行会较频繁。</p>
+</li>
+<li><p>返回值：返回进程执行优先权，如有错误发生返回值则为-1 且错误原因存于errno。</p>
+<p>错误代码：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ESRCH</span></code> 参数which或who 可能有错，而找不到符合的进程。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EINVAL</span></code> 参数which 值错误。</p></li>
+</ul>
+</li>
+<li><p>附加说明：由于返回值有可能是-1，因此要同时检查errno是否存有错误原因。最好在调用次函数前先清除errno变量。</p></li>
+<li><p>相关函数：setpriority，nice</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</section>
+<section id="nice">
+<h2>nice<a class="headerlink" href="#nice" title="永久链接至标题"></a></h2>
+<p>改变进程优先顺序</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">nice</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">inc</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：nice()用来改变进程的进程执行优先顺序。参数inc数值越大则优先顺序排在越后面，即表示进程执行会越慢。只有超级用户才能使用负的inc 值，代表优先顺序排在前面，进程执行会较快。</p></li>
+<li><p>返回值：如果执行成功则返回0，否则返回-1，失败原因存于errno中。</p>
+<p>错误代码：EPERM 一般用户企图转用负的参数inc值改变进程优先顺序。</p>
+</li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：setpriority，getpriority</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</section>
+<section id="on-exit">
+<h2>on_exit<a class="headerlink" href="#on-exit" title="永久链接至标题"></a></h2>
+<p>设置程序正常结束前调用的函数</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">on_exit</span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="w"> </span><span class="n">function</span><span class="p">)(</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="p">),</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">arg</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：on_exit()用来设置一个程序正常结束前调用的函数。当程序通过调用exit()或从main中返回时，参数function所指定的函数会先被调用，然后才真正由exit()结束程序。参数arg指针会传给参数function函数，详细情况请见范例。</p></li>
+<li><p>返回值：如果执行成功则返回0，否则返回-1，失败原因存于errno中。</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：_exit，atexit，exit</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span><span class="cp"></span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">my_exit</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">status</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">arg</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;before exit()!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;exit (%d)</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">status</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;arg = %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span><span class="n">arg</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;test&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">on_exit</span><span class="p">(</span><span class="n">my_exit</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">str</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">exit</span><span class="p">(</span><span class="mi">1234</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>before exit<span class="o">()</span>!
+<span class="nb">exit</span> <span class="o">(</span><span class="m">1234</span><span class="o">)</span>
+<span class="nv">arg</span> <span class="o">=</span> <span class="nb">test</span>
+</pre></div>
+</div>
+</section>
+<section id="setpgid">
+<h2>setpgid<a class="headerlink" href="#setpgid" title="永久链接至标题"></a></h2>
+<p>设置进程组识别码</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">setpgid</span><span class="p">(</span><span class="kt">pid_t</span><span class="w"> </span><span class="n">pid</span><span class="p">,</span><span class="w"> </span><span class="kt">pid_t</span><span class="w"> </span><span class="n">pgid</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：setpgid()将参数pid 指定进程所属的组识别码设为参数pgid 指定的组识别码。如果参数pid 为0，则会用来设置目前进程的组识别码，如果参数pgid为0，则会以目前进程的进程识别码来取代。</p></li>
+<li><p>返回值：执行成功则返回组识别码，如果有错误则返回-1，错误原因存于errno中。</p>
+<p>错误代码：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">EINVAL</span></code> 参数pgid小于0。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EPERM</span></code> 进程权限不足，无法完成调用。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ESRCH</span></code> 找不到符合参数pid指定的进程。</p></li>
+</ul>
+</li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：getpgid，setpgrp，getpgrp</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</section>
+<section id="setpgrp">
+<h2>setpgrp<a class="headerlink" href="#setpgrp" title="永久链接至标题"></a></h2>
+<p>设置进程组识别码</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">setpgrp</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：setpgrp()将目前进程所属的组识别码设为目前进程的进程识别码。此函数相当于调用setpgid(0,0)。</p></li>
+<li><p>返回值：执行成功则返回组识别码，如果有错误则返回-1，错误原因存于errno中。</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：getpgid，setpgid，getpgrp</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</section>
+<section id="setpriority">
+<h2>setpriority<a class="headerlink" href="#setpriority" title="永久链接至标题"></a></h2>
+<p>设置程序进程执行优先权</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/time.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/resource.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">setpriority</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">which</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">who</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">prio</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：setpriority()可用来设置进程、进程组和用户的进程执行优先权。参数which有三种数值，参数who 则依which值有不同定义
+which who 代表的意义：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">PRIO_PROCESS</span></code> who为进程识别码</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PRIO_PGRP</span></code> who 为进程的组识别码</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PRIO_USER</span></code> who为用户识别码</p></li>
+</ul>
+<p>参数 prio 介于-20 至20 之间。代表进程执行优先权，数值越低代表有较高的优先次序，执行会较频繁。此优先权默认是0，而只有超级用户（root）允许降低此值。</p>
+</li>
+<li><p>返回值：执行成功则返回0，如果有错误发生返回值则为-1，错误原因存于errno。</p>
+<p>错误代码：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ESRCH</span></code> 参数 which 或 who 可能有错，而找不到符合的进程。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EINVAL</span></code> 参数 which 值错误。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EPERM</span></code> 权限不够，无法完成设置。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EACCES</span></code> 一般用户无法降低优先权。</p></li>
+</ul>
+</li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：getpriority，nice</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</section>
+<section id="system">
+<h2>system<a class="headerlink" href="#system" title="永久链接至标题"></a></h2>
+<p>执行 shell 命令</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">system</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">string</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：system()会调用fork()产生子进程，由子进程来调用/bin/sh-c string来执行参数string字符串所代表的命令，此命令执行完后随即返回原调用的进程。在调用system()期间SIGCHLD 信号会被暂时搁置，SIGINT和SIGQUIT 信号则会被忽略。</p></li>
+<li><p>返回值：如果system()在调用/bin/sh时失败则返回127，其他失败原因返回-1。若参数string为空指针(NULL)，则返回非零值。如果system()调用成功则最后会返回执行shell命令后的返回值，但是此返回值也有可能为system()调用/bin/sh失败所返回的127，因此最好能再检查errno 来确认执行成功。</p></li>
+<li><p>附加说明：在编写具有SUID/SGID权限的程序时请勿使用system()，system()会继承环境变量，通过环境变量可能会造成系统安全的问题。</p></li>
+<li><p>相关函数：fork，execve，waitpid，popen</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">system</span><span class="p">(</span><span class="s">&quot;ls -al /etc/passwd /etc/shadow&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>-rw-r--r-- <span class="m">1</span> root root <span class="m">705</span> Sep <span class="m">3</span> <span class="m">13</span> :52 /etc/passwd
+-r-------- <span class="m">1</span> root root <span class="m">572</span> Sep <span class="m">2</span> <span class="m">15</span> :34 /etc/shadow
+</pre></div>
+</div>
+</section>
+<section id="wait">
+<h2>wait<a class="headerlink" href="#wait" title="永久链接至标题"></a></h2>
+<p>等待子进程中断或结束</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/wait.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">pid_t</span><span class="w"> </span><span class="nf">wait</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">status</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：wait()会暂时停止目前进程的执行，直到有信号来到或子进程结束。如果在调用wait()时子进程已经结束，则wait()会立即返回子进程结束状态值。子进程的结束状态值会由参数status 返回，而子进程的进程识别码也会一快返回。如果不在意结束状态值，则参数 status 可以设成 NULL。子进程的结束状态值请参考 waitpid()。</p></li>
+<li><p>返回值：如果执行成功则返回子进程识别码(PID)，如果有错误发生则返回-1。失败原因存于errno中。</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：waitpid，fork</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/wait.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">pid_t</span><span class="w"> </span><span class="n">pid</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">status</span><span class="p">,</span><span class="n">i</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">fork</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;This is the child process, pid = %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">getpid</span><span class="p">());</span><span class="w"></span>
+<span class="w">        </span><span class="n">exit</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;This is the parent process, wait for child...</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="n">pid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">wait</span><span class="p">(</span><span class="o">&amp;</span><span class="n">status</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">WEXITSTATUS</span><span class="p">(</span><span class="n">status</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;child’s pid = %d, exit status = %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">pid</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>This is the child process, <span class="nv">pid</span> <span class="o">=</span> <span class="m">1501</span>
+This is the parent process, <span class="nb">wait</span> <span class="k">for</span> child...
+child’s <span class="nv">pid</span> <span class="o">=</span> <span class="m">1501</span>, <span class="nb">exit</span> <span class="nv">status</span> <span class="o">=</span> <span class="m">5</span>
+</pre></div>
+</div>
+</section>
+<section id="waitpid">
+<h2>waitpid<a class="headerlink" href="#waitpid" title="永久链接至标题"></a></h2>
+<p>等待子进程中断或结束</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/wait.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">pid_t</span><span class="w"> </span><span class="nf">waitpid</span><span class="p">(</span><span class="kt">pid_t</span><span class="w"> </span><span class="n">pid</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">status</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">options</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：waitpid()会暂时停止目前进程的执行，直到有信号来到或子进程结束。如果在调用wait()时子进程已经结束，则wait()会立即返回子进程结束状态值。子进程的结束状态值会由参数status返回，而子进程的进程识别码也会一快返回。如果不在意结束状态值，则参数status可以设成NULL。</p>
+<p>参数pid为欲等待的子进程识别码，其他数值意义如下：</p>
+<ul class="simple">
+<li><p>pid&lt;-1 等待进程组识别码为pid绝对值的任何子进程。</p></li>
+<li><p>pid=-1 等待任何子进程，相当于wait()。</p></li>
+<li><p>pid=0 等待进程组识别码与目前进程相同的任何子进程。</p></li>
+<li><p>pid&gt;0 等待任何子进程识别码为pid的子进程。</p></li>
+</ul>
+<p>参数option可以为0 或下面的OR 组合</p>
+<ul class="simple">
+<li><p>WNOHANG 如果没有任何已经结束的子进程则马上返回，不予以等待。</p></li>
+<li><p>WUNTRACED 如果子进程进入暂停执行情况则马上返回，但结束状态不予以理会。</p></li>
+</ul>
+<p>子进程的结束状态返回后存于status，底下有几个宏可判别结束情况</p>
+<ul class="simple">
+<li><p>WIFEXITED(status)如果子进程正常结束则为非0值。</p></li>
+<li><p>WEXITSTATUS(status)取得子进程exit()返回的结束代码，一般会先用WIFEXITED 来判断是否正常结束才能使用此宏。</p></li>
+<li><p>WIFSIGNALED(status)如果子进程是因为信号而结束则此宏值为真</p></li>
+<li><p>WTERMSIG(status)取得子进程因信号而中止的信号代码，一般会先用WIFSIGNALED 来判断后才使用此宏。</p></li>
+<li><p>WIFSTOPPED(status)如果子进程处于暂停执行情况则此宏值为真。一般只有使用WUNTRACED 时才会有此情况。</p></li>
+<li><p>WSTOPSIG(status)取得引发子进程暂停的信号代码，一般会先用WIFSTOPPED 来判断后才使用此宏。</p></li>
+</ul>
+</li>
+<li><p>返回值：如果执行成功则返回子进程识别码(PID)，如果有错误发生则返回-1。失败原因存于errno中。</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：wait，fork</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<p>参考 wait()。</p>
+</section>
+<section id="fprintf">
+<h2>fprintf<a class="headerlink" href="#fprintf" title="永久链接至标题"></a></h2>
+<p>格式化输出数据至文件</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">fprintf</span><span class="p">(</span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">stream</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">format</span><span class="p">,</span><span class="w"> </span><span class="p">...);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：fprintf()会根据参数format字符串来转换并格式化数据，然后将结果输出到参数stream指定的文件中，直到出现字符串结束(’\0’)为止。</p></li>
+<li><p>返回值：关于参数format字符串的格式请参考printf()。成功则返回实际输出的字符数，失败则返回-1，错误原因存于errno中。</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：printf，fscanf，vfprintf</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">150</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-100</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">3.14159</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">fprintf</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;%d %f %x</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">fprintf</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;%2d %*d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>-100 <span class="m">3</span>.141590 <span class="m">96</span>
+<span class="m">150</span> <span class="m">150</span>
+</pre></div>
+</div>
+</section>
+<section id="fscanf">
+<h2>fscanf<a class="headerlink" href="#fscanf" title="永久链接至标题"></a></h2>
+<p>格式化字符串输入</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">fscanf</span><span class="p">(</span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">stream</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">format</span><span class="p">,</span><span class="w"> </span><span class="p">...);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：fscanf()会自参数stream的文件流中读取字符串，再根据参数format字符串来转换并格式化数据。格式转换形式请参考scanf()。转换后的结构存于对应的参数内。</p></li>
+<li><p>返回值：成功则返回参数数目，失败则返回-1，错误原因存于errno中。</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：scanf，sscanf</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">s</span><span class="p">[</span><span class="mi">5</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="n">fscanf</span><span class="p">(</span><span class="n">stdin</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;%d %x %5[a-z] %*s %f&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="n">s</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d %d %s </span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="n">s</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="m">10</span> 0x1b aaaaaaaaa bbbbbbbbbb <span class="c1"># 从键盘输入</span>
+<span class="m">10</span> <span class="m">27</span> aaaaa
+</pre></div>
+</div>
+</section>
+<section id="printf">
+<h2>printf<a class="headerlink" href="#printf" title="永久链接至标题"></a></h2>
+<p>格式化输出数据</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">printf</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">format</span><span class="p">,</span><span class="w"> </span><span class="p">...);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：printf() 会根据参数 format 字符串来转换并格式化数据，然后将结果写出到标准输出设备，直到出现字符串结束(’\0’)为止。参数 format 字符串可包含下列三种字符类型：</p>
+<ol class="simple">
+<li><p>一般文本，伴随直接输出。</p></li>
+<li><p>ASCII控制字符，如\t、\n等。</p></li>
+<li><p>格式转换字符。</p></li>
+</ol>
+<p>格式转换为一个百分比符号(％)及其后的格式字符所组成。一般而言，每个％符号在其后都必需有一 printf() 的参数与之相呼应（只有当％％转换字符出现时会直接输出％字符），而欲输出的数据类型必须与其相对应的转换字符类型相同。
+printf() 格式转换的一般形式如下：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>％(flags)(width)(.prec)type
+</pre></div>
+</div>
+<p>以中括号括起来的参数为选择性参数，而％与type则是必要的。底下先介绍 type 的几种形式
+整数：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">％d</span></code> 整数的参数会被转成一有符号的十进制数字</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">％u</span></code> 整数的参数会被转成一无符号的十进制数字</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">％o</span></code> 整数的参数会被转成一无符号的八进制数字</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">％x</span></code> 整数的参数会被转成一无符号的十六进制数字，并以小写abcdef表示</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">％X</span></code> 整数的参数会被转成一无符号的十六进制数字，并以大写ABCDEF表示浮点型数</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">％f</span></code> double 型的参数会被转成十进制数字，并取到小数点以下六位，四舍五入。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">％e</span></code> double型的参数以指数形式打印，有一个数字会在小数点前，六位数字在小数点后，而在指数部分会以小写的e来表示。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">％E</span></code> 与％e作用相同，唯一区别是指数部分将以大写的E 来表示。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">％g</span></code> double 型的参数会自动选择以％f 或％e 的格式来打印，其标准是根据欲打印的数值及所设置的有效位数来决定。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">％G</span></code> 与 <code class="docutils literal notranslate"><span class="pre">％g</span></code> 作用相同，唯一区别在以指数形态打印时会选择％E 格式。
+字符及字符串：</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">％c</span></code> 整型数的参数会被转成unsigned char型打印出。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">％s</span></code> 指向字符串的参数会被逐字输出，直到出现NULL字符为止</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">％p</span></code> 如果是参数是 <code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">*</span></code> 型指针则使用十六进制格式显示。
+prec 有几种情况：</p>
+<ol class="simple">
+<li><p>正整数的最小位数。</p></li>
+<li><p>在浮点型数中代表小数位数</p></li>
+<li><p>在％g 格式代表有效位数的最大值。</p></li>
+<li><p>在％s格式代表字符串的最大长度。</p></li>
+<li><p>若为×符号则代表下个参数值为最大长度。</p></li>
+</ol>
+</li>
+</ul>
+<p>width为参数的最小长度，若此栏并非数值，而是*符号，则表示以下一个参数当做参数长度。</p>
+<p>flags 有下列几种情况</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">#NAME?</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">+</span></code> 一般在打印负数时，printf（）会加印一个负号，整数则不加任何负号。此旗标会使得在打印正数前多一个正号（+）。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">#</span></code> 此旗标会根据其后转换字符的不同而有不同含义。当在类型为o 之前（如％#o），则会在打印八进制数值前多印一个o。而在类型为x 之前（％#x）则会在打印十六进制数前多印’0x’，在型态为e、E、f、g或G 之前则会强迫数值打印小数点。在类型为g 或G之前时则同时保留小数点及小数位数末尾的零。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code> 当有指定参数时，无数字的参数将补上0。默认是关闭此旗标，所以一般会打印出空白字符。</p></li>
+</ul>
+</li>
+<li><p>返回值：成功则返回实际输出的字符数，失败则返回-1，错误原因存于errno中。</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：scanf，snprintf</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">150</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-100</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">3.14159</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d %f %x</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%2d %*d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">);</span><span class="w"> </span><span class="cm">/*参数2 会代入格式*中，而与%2d同意义*/</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>-100 <span class="m">3</span>.14159 <span class="m">96</span>
+<span class="m">150</span> <span class="m">150</span>
+</pre></div>
+</div>
+</section>
+<section id="scanf">
+<h2>scanf<a class="headerlink" href="#scanf" title="永久链接至标题"></a></h2>
+<p>格式化字符串输入</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">scanf</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">format</span><span class="p">,</span><span class="w"> </span><span class="p">...);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：scanf()会将输入的数据根据参数format字符串来转换并格式化数据。Scanf()格式转换的一般形式如下：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>％[*][size][l][h]type
+</pre></div>
+</div>
+<p>以中括号括起来的参数为选择性参数，而％与type则是必要的。</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">*</span></code> 代表该对应的参数数据忽略不保存。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">size</span></code> 为允许参数输入的数据长度。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">l</span></code> 输入的数据数值以long int 或double型保存。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">h</span></code> 输入的数据数值以short int 型保存。
+底下介绍type的几种形式</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">％d</span></code> 输入的数据会被转成一有符号的十进制数字（int）。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">％i</span></code> 输入的数据会被转成一有符号的十进制数字，若输入数据以”0x”或”0X”开头代表转换十六进制数字，若以”0”开头则转换八进制数字，其他情况代表十进制。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">％0</span></code> 输入的数据会被转换成一无符号的八进制数字。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">％u</span></code> 输入的数据会被转换成一无符号的正整数。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">％x</span></code> 输入的数据为无符号的十六进制数字，转换后存于unsigned int型变量。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">％X</span></code> 同％x</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">％f</span></code> 输入的数据为有符号的浮点型数，转换后存于float型变量。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">％e</span></code> 同％f</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">％E</span></code> 同％f</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">％g</span></code> 同％f</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">％s</span></code> 输入数据为以空格字符为终止的字符串。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">％c</span></code> 输入数据为单一字符。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[]</span></code> 读取数据但只允许括号内的字符。如[a-z]。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[^]</span></code> 读取数据但不允许中括号的^符号后的字符出现，如[^0-9].</p></li>
+</ul>
+</li>
+<li><p>返回值：成功则返回参数数目，失败则返回-1，错误原因存于errno中。</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：fscanf，snprintf</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">s</span><span class="p">[</span><span class="mi">5</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="n">scanf</span><span class="p">(</span><span class="s">&quot;%d %x %5[a-z] %*s %f&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="n">s</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d %d %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="n">s</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="m">10</span> 0x1b aaaaaaaaaa bbbbbbbbbb
+<span class="m">10</span> <span class="m">27</span> aaaaa
+</pre></div>
+</div>
+</section>
+<section id="sprintf">
+<h2>sprintf<a class="headerlink" href="#sprintf" title="永久链接至标题"></a></h2>
+<p>格式化字符串复制</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">sprintf</span><span class="p">(</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">str</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">format</span><span class="p">,</span><span class="w"> </span><span class="p">...);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：sprintf()会根据参数format字符串来转换并格式化数据，然后将结果复制到参数str所指的字符串数组，直到出现字符串结束(’\0’)为止。关于参数format字符串的格式请参考printf()。</p></li>
+<li><p>返回值：成功则返回参数str字符串长度，失败则返回-1，错误原因存于errno中。</p></li>
+<li><p>附加说明：使用此函数得留意堆栈溢出，或改用 snprintf()。</p></li>
+<li><p>相关函数：printf，sprintf</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;This is string A!&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">buf</span><span class="p">[</span><span class="mi">80</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="n">sprintf</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;&gt;&gt;&gt; %s&lt;&lt;&lt;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">buf</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt;This is string A!<span class="o">&lt;&lt;&lt;</span>
+</pre></div>
+</div>
+</section>
+<section id="sscanf">
+<h2>sscanf<a class="headerlink" href="#sscanf" title="永久链接至标题"></a></h2>
+<p>格式化字符串输入</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">sscanf</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">str</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">format</span><span class="p">,</span><span class="w"> </span><span class="p">...);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：sscanf() 会将参数 str 的字符串根据参数 format 字符串来转换并格式化数据。格式转换形式请参考 scanf()。转换后的结果存于对应的参数内。</p></li>
+<li><p>返回值：成功则返回参数数目，失败则返回 -1，错误原因存于 errno 中。</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：scanf，fscanf</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">input</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;10 0x1b aaaaaaaa bbbbbbbb&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">s</span><span class="p">[</span><span class="mi">5</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="n">sscanf</span><span class="p">(</span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;%d %x %5[a-z] %*s %f&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="n">s</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d %d %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="n">s</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="m">10</span> <span class="m">27</span> aaaaa
+</pre></div>
+</div>
+</section>
+<section id="vfprintf">
+<h2>vfprintf<a class="headerlink" href="#vfprintf" title="永久链接至标题"></a></h2>
+<p>格式化输出数据至文件</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdarg.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">vfprintf</span><span class="p">(</span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="n">stream</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">format</span><span class="p">,</span><span class="w"> </span><span class="kt">va_list</span><span class="w"> </span><span class="n">ap</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：vfprintf() 会根据参数 format 字符串来转换并格式化数据，然后将结果输出到参数 stream 指定的文件中，直到出现字符串结束(’\0’)为止。关于参数 format 字符串的格式请参考 printf()。va_list 用法请参考附录 C 或 vprintf() 范例。</p></li>
+<li><p>返回值：成功则返回实际输出的字符数，失败则返回 -1，错误原因存于 errno 中。</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：printf，fscanf，fprintf</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<p>参考 fprintf() 及 vprintf()。</p>
+</section>
+<section id="vfscanf">
+<h2>vfscanf<a class="headerlink" href="#vfscanf" title="永久链接至标题"></a></h2>
+<p>格式化字符串输入</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">vfscanf</span><span class="p">(</span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">stream</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">format</span><span class="p">,</span><span class="w"> </span><span class="kt">va_list</span><span class="w"> </span><span class="n">ap</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：vfscanf() 会自参数 stream 的文件流中读取字符串，再根据参数 format 字符串来转换并格式化数据。格式转换形式请参考 scanf()。转换后的结果存于对应的参数内。va_list 用法请参考附录 C 或vprintf()。</p></li>
+<li><p>返回值：成功则返回参数数目，失败则返回 -1，错误原因存于 errno 中。</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：scanf，sscanf，fscanf</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<p>参考 fscanf() 及 vprintf()。</p>
+</section>
+<section id="vprintf">
+<h2>vprintf<a class="headerlink" href="#vprintf" title="永久链接至标题"></a></h2>
+<p>格式化输出数据</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdarg.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">vprintf</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">format</span><span class="p">,</span><span class="w"> </span><span class="kt">va_list</span><span class="w"> </span><span class="n">ap</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：vprintf() 作用和 printf() 相同，参数 format 格式也相同。va_list 为不定个数的参数列，用法及范例请参考附录 C。</p></li>
+<li><p>返回值：成功则返回实际输出的字符数，失败则返回 -1，错误原因存于 errno 中。</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：printf，vfprintf，vsprintf</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdarg.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">my_printf</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">format</span><span class="p">,</span><span class="w"> </span><span class="p">...)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">va_list</span><span class="w"> </span><span class="n">ap</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">retval</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">va_start</span><span class="p">(</span><span class="n">ap</span><span class="p">,</span><span class="w"> </span><span class="n">format</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;my_printf( ):&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">retval</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">vprintf</span><span class="p">(</span><span class="n">format</span><span class="p">,</span><span class="w"> </span><span class="n">ap</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">va_end</span><span class="p">(</span><span class="n">ap</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">retval</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">150</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-100</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">3.14159</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">my_printf</span><span class="p">(</span><span class="s">&quot;%d %f %x</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">my_printf</span><span class="p">(</span><span class="s">&quot;%2d %*d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>my_printf<span class="o">()</span> : -100 <span class="m">3</span>.14159 <span class="m">96</span>
+my_printf<span class="o">()</span> : <span class="m">150</span> <span class="m">150</span>
+</pre></div>
+</div>
+</section>
+<section id="vscanf">
+<h2>vscanf<a class="headerlink" href="#vscanf" title="永久链接至标题"></a></h2>
+<p>格式化字符串输入</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdarg.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">vscanf</span><span class="p">(</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">format</span><span class="p">,</span><span class="w"> </span><span class="kt">va_list</span><span class="w"> </span><span class="n">ap</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：vscanf() 会将输入的数据根据参数 format 字符串来转换并格式化数据。格式转换形式请参考 scanf()。转换后的结果存于对应的参数内。va_list 用法请参考附录 C 或 vprintf() 范例。</p></li>
+<li><p>返回值：成功则返回参数数目，失败则返回 -1，错误原因存于 errno 中。</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：vsscanf，vfscanf</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<p>请参考 scanf() 及 vprintf()。</p>
+</section>
+<section id="vsprintf">
+<h2>vsprintf<a class="headerlink" href="#vsprintf" title="永久链接至标题"></a></h2>
+<p>格式化字符串复制</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">vsprintf</span><span class="p">(</span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">str</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">format</span><span class="p">,</span><span class="w"> </span><span class="kt">va_list</span><span class="w"> </span><span class="n">ap</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：vsprintf() 会根据参数 format 字符串来转换并格式化数据，然后将结果复制到参数 str 所指的字符串数组，直到出现字符串结束(’\0’)为止。关于参数 format 字符串的格式请参考 printf()。va_list 用法请参考附录 C 或 vprintf() 范例。</p></li>
+<li><p>返回值：成功则返回参数 str 字符串长度，失败则返回 -1，错误原因存于 errno 中。</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：vnsprintf，vprintf，snprintf</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<p>请参考 vprintf() 及 vsprintf()。</p>
+</section>
+<section id="vsscanf">
+<h2>vsscanf<a class="headerlink" href="#vsscanf" title="永久链接至标题"></a></h2>
+<p>格式化字符串输入</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">vsscanf</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">str</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">format</span><span class="p">,</span><span class="w"> </span><span class="kt">va_list</span><span class="w"> </span><span class="n">ap</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：vsscanf() 会将参数 str 的字符串根据参数 format 字符串来转换并格式化数据。格式转换形式请参考附录 C 或 vprintf() 范例。</p></li>
+<li><p>返回值：成功则返回参数数目，失败则返回 -1，错误原因存于 errno 中。</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：vscanf，vfscanf</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<p>请参考 sscanf() 及 vprintf()。</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="permission.html" class="btn btn-neutral float-left" title="文件权限控制篇" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="ipcs.html" class="btn btn-neutral float-right" title="进程间通信篇" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2018-2023, 人人都懂物联网.</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用了 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a>开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

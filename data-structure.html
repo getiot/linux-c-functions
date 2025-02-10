@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>数据结构及算法篇 &mdash; Linux 常用 C 函数参考手册 v1.0 文档</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/translations.js"></script>
+        <script src="_static/js/baidutongji.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="文件操作篇" href="file.html" />
+    <link rel="prev" title="用户组篇" href="user-group.html" />
+    <link href="_static/main.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> Linux 常用 C 函数参考手册
+            <img src="_static/GetIoT_Logo_150px.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="在文档中搜索" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="char.html">字符测试篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="string-convert.html">字符串转换篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="memory.html">内存控制篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="time.html">日期时间篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="memory-string.html">内存及字符串操作篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="math.html">常用数学函数篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user-group.html">用户组篇</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">数据结构及算法篇</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#crypt">crypt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#bsearch">bsearch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#lfind">lfind</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#lsearch">lsearch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#qsort">qsort</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#rand">rand</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#srand">srand</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="file.html">文件操作篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="file-content.html">文件内容操作篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="permission.html">文件权限控制篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="process.html">进程操作篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ipcs.html">进程间通信篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pthreads.html">线程管理篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="signal.html">信号处理篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="network.html">网络接口篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="io-multiplexing.html">I/O 复用篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="env.html">环境变量篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tty.html">终端控制篇</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Linux 常用 C 函数参考手册</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>数据结构及算法篇</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/data-structure.md.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1>数据结构及算法篇<a class="headerlink" href="#id1" title="永久链接至标题"></a></h1>
+<section id="crypt">
+<h2>crypt<a class="headerlink" href="#crypt" title="永久链接至标题"></a></h2>
+<p>将密码或数据编码</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;crypt.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="nf">crypt</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">salt</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：crypt() 将使用 Data Encryption Standard(DES) 演算法将参数 key 所指的字符串加以编码，key 字符串长度仅取前 8 个字符，超过此长度的字符没有意义。参数 salt 为两个字符组成的字符串，由 a-z、A-Z、0-9，”.” 和 “/” 所组成，用来决定使用 4096 种不同内建表格的哪一个。函数执行成功后会返回指向编码过的字符串指针，参数 key 所指的字符串不会有所更动。编码过的字符串长度为 13 个字符，前两个字符为参数 salt 代表的字符串。</p></li>
+<li><p>返回值：返回一个指向 NULL 结尾的密码字符串。</p></li>
+<li><p>附加说明：使用 GCC 编译时需加 -lcrypt。</p></li>
+<li><p>相关函数：getpass</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">passwd</span><span class="p">[</span><span class="mi">13</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">key</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">slat</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="n">key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">getpass</span><span class="p">(</span><span class="s">&quot;Input First Password: &quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">slat</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">key</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="n">slat</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">key</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="n">strcpy</span><span class="p">(</span><span class="n">passwd</span><span class="p">,</span><span class="w"> </span><span class="n">crypt</span><span class="p">(</span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="n">slat</span><span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="n">key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">getpass</span><span class="p">(</span><span class="s">&quot;Input Second Password: &quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">slat</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">passwd</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="n">slat</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">passwd</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;After crypt(), 1st passwd: %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">passwd</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;After crypt(), 2nd passwd: %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">crypt</span><span class="p">(</span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="n">slat</span><span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>Input First Password:   <span class="c1"># 输入test，编码后存于passwd数组</span>
+Input Second Password:  <span class="c1"># 输入test，密码相同编码后也会相同</span>
+After crypt<span class="o">()</span>, 1st passwd: teH0wLIpW0gyQ
+After crypt<span class="o">()</span>, 2nd passwd: teH0wLIpW0gyQ
+</pre></div>
+</div>
+</section>
+<section id="bsearch">
+<h2>bsearch<a class="headerlink" href="#bsearch" title="永久链接至标题"></a></h2>
+<p>二元搜索</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="nf">bsearch</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">base</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">nmemb</span><span class="p">,</span><span class="w"></span>
+<span class="w">              </span><span class="n">size_tsize</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">compar</span><span class="p">)(</span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="p">,</span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="p">));</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：bsearch() 利用二元搜索从排好序的数组中查找数据。参数 key 指向欲查找的关键数据，参数 base 指向要被搜索的数组开头地址，参数 nmemb 代表数组中的元素数量，每一元素的大小则由参数 size 决定，最后一项参数 compar 为一函数指针，这个函数用来判断两个元素之间的大小关系，若传给 compar 的第一个参数所指的元素数据大于第二个参数所指的元素数据则必须回传大于 0 的值，两个元素数据相等则回传 0。</p></li>
+<li><p>返回值：找到关键数据则返回找到的地址，如果在数组中找不到关键数据则返回 NULL。</p></li>
+<li><p>相关函数：qsort</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span><span class="cp"></span>
+<span class="cp">#define NMEMB 5</span>
+<span class="cp">#define SIZE 10</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">compar</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">b</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="n">strcmp</span><span class="p">((</span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">b</span><span class="p">));</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">data</span><span class="p">[</span><span class="mi">50</span><span class="p">][</span><span class="n">SIZE</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="s">&quot;linux&quot;</span><span class="p">,</span><span class="s">&quot;freebsd&quot;</span><span class="p">,</span><span class="s">&quot;solaris&quot;</span><span class="p">,</span><span class="s">&quot;sunos&quot;</span><span class="p">,</span><span class="s">&quot;windows&quot;</span><span class="p">};</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">key</span><span class="p">[</span><span class="mi">80</span><span class="p">],</span><span class="w"> </span><span class="o">*</span><span class="n">base</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">offset</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">nmemb</span><span class="o">=</span><span class="n">NMEMB</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="o">=</span><span class="n">SIZE</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;&gt; &quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="n">fgets</span><span class="p">(</span><span class="n">key</span><span class="p">,</span><span class="k">sizeof</span><span class="p">(</span><span class="n">key</span><span class="p">),</span><span class="w"> </span><span class="n">stdin</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="n">key</span><span class="p">[</span><span class="n">strlen</span><span class="p">(</span><span class="n">key</span><span class="p">)</span><span class="mi">-1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sc">&#39;\0&#39;</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">strcmp</span><span class="p">(</span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;exit&quot;</span><span class="p">))</span><span class="w"></span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">strcmp</span><span class="p">(</span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;list&quot;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">&lt;</span><span class="n">nmemb</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
+<span class="w">                </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span><span class="w"></span>
+<span class="w">            </span><span class="k">continue</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">        </span><span class="n">base</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span><span class="w"></span>
+<span class="w">        </span><span class="n">qsort</span><span class="p">(</span><span class="n">base</span><span class="p">,</span><span class="w"> </span><span class="n">nmemb</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="p">,</span><span class="w"> </span><span class="n">compar</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="n">offset</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">bsearch</span><span class="p">(</span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="n">base</span><span class="p">,</span><span class="w"> </span><span class="n">nmemb</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="p">,</span><span class="w"> </span><span class="n">compar</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">offset</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s not found!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">key</span><span class="p">);</span><span class="w"></span>
+<span class="w">            </span><span class="n">strcpy</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">nmemb</span><span class="o">++</span><span class="p">],</span><span class="w"> </span><span class="n">key</span><span class="p">);</span><span class="w"></span>
+<span class="w">            </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Add %s to data array</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">key</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;found: %s </span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">offset</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>&gt; hello                   <span class="c1"># 输入 hello 字符串</span>
+hello not found!          <span class="c1"># 找不到 hello 字符串</span>
+Add hello to data array   <span class="c1"># 将 hello 字符串加入到数组</span>
+&gt; list                    <span class="c1"># 列出所有数据</span>
+freebsd
+linux
+solaris
+sunos
+windows
+hello
+&gt; hello                   <span class="c1"># 再次搜索 hello 字符串</span>
+found: hello
+</pre></div>
+</div>
+</section>
+<section id="lfind">
+<h2>lfind<a class="headerlink" href="#lfind" title="永久链接至标题"></a></h2>
+<p>线性搜索</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;search.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="nf">lfind</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">base</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="o">*</span><span class="n">nmemb</span><span class="p">,</span><span class="w"></span>
+<span class="w">             </span><span class="kt">size_t</span><span class="w"> </span><span class="n">size</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="p">(</span><span class="o">*</span><span class="n">compar</span><span class="p">)(</span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="p">));</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：lfind() 利用线性搜索在数组中从头至尾一项项查找数据。参数 key 指向欲查找的关键数据，参数 base 指向要被搜索的数组开头地址，参数 nmemb 代表数组中的元素数量，每一元素的大小则由参数 size 决定，最后一项参数 compar 为一函数指针，这个函数用来判断两个元素是否相同，若传给 compar 的第一个参数所指的元素数据和第二个参数所指的元素数据相同时则返回 0，两个元素数据不相同则返回非 0 值。lfind() 与 lsearch() 的不同点在于，当找不到关键数据时 lfind() 仅会返回 NULL，而不会主动把该笔数据加入数组尾端。</p></li>
+<li><p>返回值：找到关键数据则返回找到的该笔元素的地址，如果在数组中找不到关键数据则返回空指针 NULL。</p></li>
+<li><p>相关函数：lsearch</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<p>参考 <a class="reference external" href="#lsearch">lsearch()</a></p>
+</section>
+<section id="lsearch">
+<h2>lsearch<a class="headerlink" href="#lsearch" title="永久链接至标题"></a></h2>
+<p>线性搜索</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;search.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="nf">lsearch</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">base</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="o">*</span><span class="n">nmemb</span><span class="p">,</span><span class="w"></span>
+<span class="w">              </span><span class="kt">size_t</span><span class="w"> </span><span class="n">size</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="w"> </span><span class="n">compar</span><span class="p">)(</span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="p">));</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：lsearch() 利用线性搜索在数组中从头至尾一项项查找数据。参数 key 指向欲查找的关键数据，参数 base 指向要被搜索的数组开头地址，参数 nmemb 代表数组中的元素数量，每一元素的大小则由参数 size 决定，最后一项参数 compar 为一函数指针，这个函数用来判断两个元素是否相同，若传给 compar 的第一个参数所指的元素数据和第二个参数所指的元素数据相同时则返回 0，两个元素数据不相同则返回非 0 值。如果 lsearch() 找不到关键数据时会主动把该项数据加入数组里。</p></li>
+<li><p>返回值：找到关键数据则返回找到的该笔元素的地址，如果在数组中找不到关键数据则将此关键数据加入数组，再把加入数组后的地址返回。</p></li>
+<li><p>相关函数：lfind</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;search.h&gt;</span><span class="cp"></span>
+<span class="cp">#define NMEMB 50</span>
+<span class="cp">#define SIZE 10</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">compar</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">b</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="n">strcmp</span><span class="p">((</span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">b</span><span class="p">));</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">data</span><span class="p">[</span><span class="n">NMEMB</span><span class="p">][</span><span class="n">SIZE</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="s">&quot;linux&quot;</span><span class="p">,</span><span class="s">&quot;freebsd&quot;</span><span class="p">,</span><span class="s">&quot;solaris&quot;</span><span class="p">,</span><span class="s">&quot;sunos&quot;</span><span class="p">,</span><span class="s">&quot;windows&quot;</span><span class="p">};</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">key</span><span class="p">[</span><span class="mi">80</span><span class="p">],</span><span class="w"> </span><span class="o">*</span><span class="n">base</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">offset</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">long</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">nmemb</span><span class="o">=</span><span class="n">NMEMB</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="o">=</span><span class="n">SIZE</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">&lt;</span><span class="mi">5</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">fgets</span><span class="p">(</span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">key</span><span class="p">),</span><span class="w"> </span><span class="n">stdin</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="n">key</span><span class="p">[</span><span class="n">strlen</span><span class="p">(</span><span class="n">key</span><span class="p">)</span><span class="mi">-1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sc">&#39;\0&#39;</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="n">base</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span><span class="w"></span>
+<span class="w">        </span><span class="n">offset</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">lfind</span><span class="p">(</span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="n">base</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">nmemb</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="p">,</span><span class="w"> </span><span class="n">compar</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">offset</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">NULL</span><span class="p">){</span><span class="w"></span>
+<span class="w">            </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s not found!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">key</span><span class="p">);</span><span class="w"></span>
+<span class="w">            </span><span class="n">offset</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">lsearch</span><span class="p">(</span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="n">base</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">nmemb</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="p">,</span><span class="w"> </span><span class="n">compar</span><span class="p">);</span><span class="w"></span>
+<span class="w">            </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Add %s to data array</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">offset</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;found : %s </span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">offset</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>linux
+found:linux
+os/2
+os/2 not found!
+add os/2 to data array
+os/2
+found:os/2
+</pre></div>
+</div>
+</section>
+<section id="qsort">
+<h2>qsort<a class="headerlink" href="#qsort" title="永久链接至标题"></a></h2>
+<p>利用快速排序法排列数组</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">qsort</span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">base</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">nmemb</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">size</span><span class="p">,</span><span class="w"> </span>
+<span class="w">           </span><span class="kt">int</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">compar</span><span class="p">)(</span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="p">));</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：参数 base 指向欲排序的数组开头地址，参数 nmemb 代表数组中的元素数量，每一元素的大小则由参数 size 决定，最后一项参数 compar 为一函数指针，这个函数用来判断两个元素间的大小关系，若传给 compar 的第一个参数所指的元素数据大于第二个参数所指的元素数据则必须返回大于零的值，两个元素数据相等则返回 0。</p></li>
+<li><p>返回值：无</p></li>
+<li><p>相关函数：bsearch</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span><span class="cp"></span>
+<span class="cp">#define NMEMB 7</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">compar</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">b</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">aa</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">bb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">b</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="w"> </span><span class="o">*</span><span class="n">aa</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="o">*</span><span class="n">bb</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="w"> </span><span class="o">*</span><span class="n">aa</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="o">*</span><span class="n">bb</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="w"> </span><span class="o">*</span><span class="n">aa</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="o">*</span><span class="n">bb</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">base</span><span class="p">[</span><span class="n">NMEMB</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">102</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">-2</span><span class="p">,</span><span class="w"> </span><span class="mi">98</span><span class="p">,</span><span class="w"> </span><span class="mi">52</span><span class="p">,</span><span class="w"> </span><span class="mi">18</span><span class="p">};</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">&lt;</span><span class="n">NMEMB</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">base</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">qsort</span><span class="p">(</span><span class="n">base</span><span class="p">,</span><span class="w"> </span><span class="n">NMEMB</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">),</span><span class="w"> </span><span class="n">compar</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">&lt;</span><span class="n">NMEMB</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">base</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="m">3</span> <span class="m">102</span> <span class="m">5</span> -2 <span class="m">98</span> <span class="m">52</span> <span class="m">18</span>
+-2 <span class="m">3</span> <span class="m">5</span> <span class="m">18</span> <span class="m">52</span> <span class="m">98</span> <span class="m">102</span>
+</pre></div>
+</div>
+</section>
+<section id="rand">
+<h2>rand<a class="headerlink" href="#rand" title="永久链接至标题"></a></h2>
+<p>产生随机数</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">rand</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：rand() 会返回一随机数值，范围在 0 至 RAND_MAX 之间。在调用此函数产生随机数前，必须先利用 srand() 设好随机数种子，如果未设随机数种子，rand() 在调用时会自动设随机数种子为 1。关于随机数种子请参考 srand()。</p></li>
+<li><p>返回值：返回 0 至 RAND_MAX 之间的随机数值，RAND_MAX 定义在 stdlib.h，其值为 2147483647。</p></li>
+<li><p>相关函数：srand，random，srandom</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* 产生介于1到10的随机数值，本示例未设置随机数种子，完整的随机数产生请参考 srand() */</span><span class="w"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">&lt;</span><span class="mi">10</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="o">+</span><span class="p">(</span><span class="kt">int</span><span class="p">)(</span><span class="mf">10.0</span><span class="o">*</span><span class="n">rand</span><span class="p">()</span><span class="o">/</span><span class="p">(</span><span class="n">RAND_MAX</span><span class="o">+</span><span class="mf">1.0</span><span class="p">));</span><span class="w"></span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="m">9</span> <span class="m">4</span> <span class="m">8</span> <span class="m">8</span> <span class="m">10</span> <span class="m">2</span> <span class="m">4</span> <span class="m">8</span> <span class="m">3</span> <span class="m">6</span>
+<span class="m">9</span> <span class="m">4</span> <span class="m">8</span> <span class="m">8</span> <span class="m">10</span> <span class="m">2</span> <span class="m">4</span> <span class="m">8</span> <span class="m">3</span> <span class="m">6</span>
+</pre></div>
+</div>
+</section>
+<section id="srand">
+<h2>srand<a class="headerlink" href="#srand" title="永久链接至标题"></a></h2>
+<p>设置随机数种子</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">srand</span><span class="w"> </span><span class="p">(</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">seed</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：srand() 用来设置 rand() 产生随机数时的随机数种子。参数 seed 必须是个整数，通常可以利用 getpid() 或 time() 的返回值来当做 seed。如果每次 seed 都设相同值，rand() 所产生的随机数值每次就会一样。</p></li>
+<li><p>返回值：无</p></li>
+<li><p>相关函数：rand，random srandom</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* 产生介于1到10之间的随机数值，本示例与执行结果可与 rand() 参照 */</span><span class="w"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;time.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">srand</span><span class="p">((</span><span class="kt">int</span><span class="p">)</span><span class="n">time</span><span class="p">(</span><span class="mi">0</span><span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">&lt;</span><span class="mi">10</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">j</span><span class="o">=</span><span class="mi">1</span><span class="o">+</span><span class="p">(</span><span class="kt">int</span><span class="p">)(</span><span class="mf">10.0</span><span class="o">*</span><span class="n">rand</span><span class="p">()</span><span class="o">/</span><span class="p">(</span><span class="n">RAND_MAX</span><span class="o">+</span><span class="mf">1.0</span><span class="p">));</span><span class="w"></span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="m">5</span> <span class="m">8</span> <span class="m">8</span> <span class="m">8</span> <span class="m">10</span> <span class="m">2</span> <span class="m">10</span> <span class="m">8</span> <span class="m">9</span> <span class="m">9</span>
+<span class="m">2</span> <span class="m">9</span> <span class="m">7</span> <span class="m">4</span> <span class="m">10</span> <span class="m">3</span> <span class="m">2</span> <span class="m">10</span> <span class="m">8</span> <span class="m">7</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="user-group.html" class="btn btn-neutral float-left" title="用户组篇" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="file.html" class="btn btn-neutral float-right" title="文件操作篇" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2018-2023, 人人都懂物联网.</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用了 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a>开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

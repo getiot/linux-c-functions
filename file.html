@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>文件操作篇 &mdash; Linux 常用 C 函数参考手册 v1.0 文档</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/translations.js"></script>
+        <script src="_static/js/baidutongji.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="文件内容操作篇" href="file-content.html" />
+    <link rel="prev" title="数据结构及算法篇" href="data-structure.html" />
+    <link href="_static/main.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> Linux 常用 C 函数参考手册
+            <img src="_static/GetIoT_Logo_150px.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="在文档中搜索" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="char.html">字符测试篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="string-convert.html">字符串转换篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="memory.html">内存控制篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="time.html">日期时间篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="memory-string.html">内存及字符串操作篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="math.html">常用数学函数篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user-group.html">用户组篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data-structure.html">数据结构及算法篇</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">文件操作篇</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#close">close</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#creat">creat</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dup">dup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dup2">dup2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fcntl">fcntl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#flock">flock</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fsync">fsync</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#lseek">lseek</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#mkstemp">mkstemp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#open">open</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#read">read</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sync">sync</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#write">write</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="file-content.html">文件内容操作篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="permission.html">文件权限控制篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="process.html">进程操作篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ipcs.html">进程间通信篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pthreads.html">线程管理篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="signal.html">信号处理篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="network.html">网络接口篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="io-multiplexing.html">I/O 复用篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="env.html">环境变量篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tty.html">终端控制篇</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Linux 常用 C 函数参考手册</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>文件操作篇</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/file.md.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1>文件操作篇<a class="headerlink" href="#id1" title="永久链接至标题"></a></h1>
+<section id="close">
+<h2>close<a class="headerlink" href="#close" title="永久链接至标题"></a></h2>
+<p>关闭文件</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">close</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">fd</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：当使用完文件后若已不再需要则可使用 close() 关闭该文件，调用 close() 会让数据写回磁盘，并释放该文件所占用的资源。参数 fd 为先前由 open() 或 creat() 所返回的文件描述词。</p></li>
+<li><p>返回值：若文件顺利关闭则返回 0，发生错误时返回 -1。</p></li>
+<li><p>附加说明：虽然在进程结束时，系统会自动关闭已打开的文件，但仍建议自行关闭文件，并确实检查返回值。</p></li>
+<li><p>相关函数：open，fcntl，shutdown，unlink，fclose</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</section>
+<section id="creat">
+<h2>creat<a class="headerlink" href="#creat" title="永久链接至标题"></a></h2>
+<p>创建文件</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/stat.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;fcntl.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">creat</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">pathname</span><span class="p">,</span><span class="w"> </span><span class="n">mode_tmode</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：参数 pathname 指向欲建立的文件路径字符串。creat() 相当于使用下列的调用方式调用 open()。</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">open</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">pathname</span><span class="w"> </span><span class="p">,(</span><span class="n">O_CREAT</span><span class="o">|</span><span class="n">O_WRONLY</span><span class="o">|</span><span class="n">O_TRUNC</span><span class="p">));</span><span class="w"></span>
+</pre></div>
+</div>
+<p>关于参数 mode 请参考 <a class="reference external" href="#open">open()</a> 函数。</p>
+</li>
+<li><p>返回值：creat() 会返回新的文件描述词，若有错误发生则会返回 -1，并把错误代码设给 errno。</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">EEXIST</span></code> 参数 pathname 所指的文件已存在</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EACCESS</span></code> 参数 pathname 所指定的文件不符合所要求测试的权限</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EROFS</span></code> 欲打开写入权限的文件存在于只读文件系统内</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EFAULT</span></code> 参数 pathname 指针超出可存取的内存空间</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EINVAL</span></code> 参数 mode 不正确</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENAMETOOLONG</span></code> 参数 pathname 太长</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENOTDIR</span></code> 参数 pathname 为一目录</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENOMEM</span></code> 核心内存不足</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ELOOP</span></code> 参数 pathname 有过多符号连接问题</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EMFILE</span></code> 已达到进程可同时打开的文件数上限</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENFILE</span></code> 已达到系统可同时打开的文件数上限</p></li>
+</ul>
+</li>
+<li><p>附加说明：creat() 无法建立特别的设备文件，如果需要请使用 mknod()。</p></li>
+<li><p>相关函数：read，write，fcntl，close，link，stat，umask，unlink，fopen</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</section>
+<section id="dup">
+<h2>dup<a class="headerlink" href="#dup" title="永久链接至标题"></a></h2>
+<p>复制文件描述词</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">dup</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">oldfd</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：dup() 用来复制参数 oldfd 所指的文件描述词，并将它返回。此新的文件描述词和参数 oldfd 指的是同一个文件，共享所有的锁定、读写位置和各项权限或旗标。例如，当利用 lseek() 对某个文件描述词作用时，另一个文件描述词的读写位置也会随着改变。不过，文件描述词之间并不共享 close-on-exec 旗标。</p></li>
+<li><p>返回值：当复制成功时，则返回最小及尚未使用的文件描述词。若有错误则返回 -1，errno 会存放错误代码。错误代码 <code class="docutils literal notranslate"><span class="pre">EBADF</span></code> 参数 fd 非有效的文件描述词，或该文件已关闭。</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：open，close，fcntl，dup2</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</section>
+<section id="dup2">
+<h2>dup2<a class="headerlink" href="#dup2" title="永久链接至标题"></a></h2>
+<p>复制文件描述词</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">dup2</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">odlfd</span><span class="p">,</span><span class="kt">int</span><span class="w"> </span><span class="n">newfd</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：dup2() 用来复制参数 oldfd 所指的文件描述词，并将它拷贝至参数 newfd 后一块返回。若参数 newfd 为一已打开的文件描述词，则 newfd 所指的文件会先被关闭。dup2() 所复制的文件描述词，与原来的文件描述词共享各种文件状态，详情可参考 dup()。</p></li>
+<li><p>返回值：当复制成功时，则返回最小及尚未使用的文件描述词。若有错误则返回 -1，errno 会存放错误代码。</p></li>
+<li><p>附加说明：dup2() 相当于调用 <code class="docutils literal notranslate"><span class="pre">fcntl(oldfd，F_DUPFD，newfd)</span></code>；请参考 fcntl()。</p></li>
+<li><p>相关函数：open，close，fcntl，dup</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</section>
+<section id="fcntl">
+<h2>fcntl<a class="headerlink" href="#fcntl" title="永久链接至标题"></a></h2>
+<p>文件描述词操作</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;fcntl.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">fcntl</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">fd</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">cmd</span><span class="p">,</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="cm">/* arg */</span><span class="w"> </span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：fcntl() 用来操作文件描述词的一些特性。参数 fd 代表欲设置的文件描述词，参数 cmd 代表欲操作的指令。有以下几种情况：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">F_DUPFD</span></code> 用来查找大于或等于参数 arg 的最小且仍未使用的文件描述词，并且复制参数 fd 的文件描述词。执行成功则返回新复制的文件描述词。请参考 <a class="reference external" href="#dup2">dup2()</a>。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">F_GETFD</span></code> 取得 close-on-exec 旗标。若此旗标的 <code class="docutils literal notranslate"><span class="pre">FD_CLOEXEC</span></code> 位为 0，代表在调用 <code class="docutils literal notranslate"><span class="pre">exec()</span></code> 相关函数时文件将不会关闭。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">F_SETFD</span></code> 设置 close-on-exec 旗标。该旗标以参数 arg 的 <code class="docutils literal notranslate"><span class="pre">FD_CLOEXEC</span></code> 位决定。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">F_GETFL</span></code> 取得文件描述词状态旗标，此旗标为 <code class="docutils literal notranslate"><span class="pre">open()</span></code> 的参数 flags。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">F_SETFL</span></code> 设置文件描述词状态旗标，参数 arg 为新旗标，但只允许 <code class="docutils literal notranslate"><span class="pre">O_APPEND</span></code>、<code class="docutils literal notranslate"><span class="pre">O_NONBLOCK</span></code> 和 <code class="docutils literal notranslate"><span class="pre">O_ASYNC</span></code> 位的改变，其他位的改变将不受影响。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">F_GETLK</span></code> 取得文件锁定的状态。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">F_SETLK</span></code> 设置文件锁定的状态。此时 flcok 结构的 <code class="docutils literal notranslate"><span class="pre">l_type</span></code> 值必须是 <code class="docutils literal notranslate"><span class="pre">F_RDLCK</span></code>、<code class="docutils literal notranslate"><span class="pre">F_WRLCK</span></code> 或 <code class="docutils literal notranslate"><span class="pre">F_UNLCK</span></code>。如果无法建立锁定，则返回 -1，错误代码为 <code class="docutils literal notranslate"><span class="pre">EACCES</span></code> 或 <code class="docutils literal notranslate"><span class="pre">EAGAIN</span></code>。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">F_SETLKW</span></code> 和 <code class="docutils literal notranslate"><span class="pre">F_SETLK</span></code> 作用相同，但是无法建立锁定时，此调用会一直等到锁定动作成功为止。若在等待锁定的过程中被信号中断时，会立即返回 -1，错误代码为 <code class="docutils literal notranslate"><span class="pre">EINTR</span></code>。</p></li>
+</ul>
+<p>最后一个参数可以是 flock 结构指针，其定义如下：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">flcok</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">short</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">l_type</span><span class="p">;</span><span class="w">   </span><span class="cm">/* 锁定的状态 */</span><span class="w"></span>
+<span class="w">    </span><span class="kt">short</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">l_whence</span><span class="p">;</span><span class="w"> </span><span class="cm">/* 决定l_start位置 */</span><span class="w"></span>
+<span class="w">    </span><span class="kt">off_t</span><span class="w"> </span><span class="n">l_start</span><span class="p">;</span><span class="w">      </span><span class="cm">/* 锁定区域的开头位置 */</span><span class="w"></span>
+<span class="w">    </span><span class="kt">off_t</span><span class="w"> </span><span class="n">l_len</span><span class="p">;</span><span class="w">        </span><span class="cm">/* 锁定区域的大小 */</span><span class="w"></span>
+<span class="w">    </span><span class="kt">pid_t</span><span class="w"> </span><span class="n">l_pid</span><span class="p">;</span><span class="w">        </span><span class="cm">/* 锁定动作的进程 */</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+</pre></div>
+</div>
+<p>其中，<code class="docutils literal notranslate"><span class="pre">l_type</span></code> 有三种状态：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">F_RDLCK</span></code> 建立一个供读取用的锁定</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">F_WRLCK</span></code> 建立一个供写入用的锁定</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">F_UNLCK</span></code> 删除之前建立的锁定</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">l_whence</span></code> 也有三种方式：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">SEEK_SET</span></code> 以文件开头为锁定的起始位置</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SEEK_CUR</span></code> 以目前文件读写位置为锁定的起始位置</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SEEK_END</span></code> 以文件结尾为锁定的起始位置</p></li>
+</ul>
+</li>
+<li><p>返回值：成功则返回 0，若有错误则返回 -1，错误原因存于 errno。</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：<a class="reference external" href="#open">open</a>，<a class="reference external" href="#flock">flock</a></p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</section>
+<section id="flock">
+<h2>flock<a class="headerlink" href="#flock" title="永久链接至标题"></a></h2>
+<p>锁定文件或解除锁定</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/file.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">flock</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">fd</span><span class="p">,</span><span class="kt">int</span><span class="w"> </span><span class="n">operation</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：flock() 会依参数 operation 所指定的方式对参数 fd 所指的文件做各种锁定或解除锁定的动作。此函数只能锁定整个文件，无法锁定文件的某一区域。</p>
+<p>参数 operation有下列四种情况：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">LOCK_SH</span></code> 建立共享锁定。多个进程可同时对同一个文件作共享锁定。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LOCK_EX</span></code> 建立互斥锁定。一个文件同时只有一个互斥锁定。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LOCK_UN</span></code> 解除文件锁定状态。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LOCK_NB</span></code> 无法建立锁定时，此操作可不被阻断，马上返回进程。通常与 <code class="docutils literal notranslate"><span class="pre">LOCK_SH</span></code> 或 <code class="docutils literal notranslate"><span class="pre">LOCK_EX</span></code> 做 OR 组合。</p></li>
+</ul>
+<p>单一文件无法同时建立共享锁定和互斥锁定，而当使用 dup() 或 fork() 时文件描述词不会继承此种锁定。</p>
+</li>
+<li><p>返回值：返回0表示成功，若有错误则返回-1，错误代码存于errno。</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：open，fcntl</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</section>
+<section id="fsync">
+<h2>fsync<a class="headerlink" href="#fsync" title="永久链接至标题"></a></h2>
+<p>将缓冲区数据写回磁盘</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">fsync</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">fd</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：fsync() 负责将参数 fd 所指的文件数据，由系统缓冲区写回磁盘，以确保数据同步。</p></li>
+<li><p>返回值：成功则返回 0，失败返回 -1，errno 为错误代码。</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：sync</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</section>
+<section id="lseek">
+<h2>lseek<a class="headerlink" href="#lseek" title="永久链接至标题"></a></h2>
+<p>移动文件的读写位置</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">off_t</span><span class="w"> </span><span class="nf">lseek</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">fildes</span><span class="p">,</span><span class="kt">off_t</span><span class="w"> </span><span class="n">offset</span><span class="w"> </span><span class="p">,</span><span class="kt">int</span><span class="w"> </span><span class="n">whence</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：每一个已打开的文件都有一个读写位置，当打开文件时通常其读写位置是指向文件开头，若是以附加的方式打开文件（如 <code class="docutils literal notranslate"><span class="pre">O_APPEND</span></code>），则读写位置会指向文件尾。当 <code class="docutils literal notranslate"><span class="pre">read()</span></code> 或 <code class="docutils literal notranslate"><span class="pre">write()</span></code> 时，读写位置会随之增加，<code class="docutils literal notranslate"><span class="pre">lseek()</span></code> 便是用来控制该文件的读写位置。参数 fildes 为已打开的文件描述词，参数 offset 为根据参数 whence 来移动读写位置的位移数。</p>
+<p>参数 whence 为下列其中一种：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">SEEK_SET</span></code> 参数 offset 即为新的读写位置。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SEEK_CUR</span></code> 以目前的读写位置往后增加 offset 个位移量。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SEEK_END</span></code> 将读写位置指向文件尾后再增加 offset 个位移量。</p></li>
+</ul>
+<p>当 whence 值为 <code class="docutils literal notranslate"><span class="pre">SEEK_CUR</span></code> 或 <code class="docutils literal notranslate"><span class="pre">SEEK_END</span></code> 时，参数 offet 允许负值的出现。</p>
+<p>下列是几种特别的使用方式：</p>
+<ul class="simple">
+<li><p>欲将读写位置移到文件开头时：<code class="docutils literal notranslate"><span class="pre">lseek(int</span> <span class="pre">fildes,0,SEEK_SET);</span></code></p></li>
+<li><p>欲将读写位置移到文件尾时：<code class="docutils literal notranslate"><span class="pre">lseek(int</span> <span class="pre">fildes，0,SEEK_END);</span></code></p></li>
+<li><p>想要取得目前文件位置时：<code class="docutils literal notranslate"><span class="pre">lseek(int</span> <span class="pre">fildes，0,SEEK_CUR);</span></code></p></li>
+</ul>
+</li>
+<li><p>返回值：当调用成功时则返回目前的读写位置，也就是距离文件开头多少个字节。若有错误则返回 -1，errno 会存放错误代码。</p></li>
+<li><p>附加说明：Linux 系统不允许 <code class="docutils literal notranslate"><span class="pre">lseek()</span></code> 操作 tty 设备，此项动作会令 <code class="docutils literal notranslate"><span class="pre">lseek()</span></code> 返回 <code class="docutils literal notranslate"><span class="pre">ESPIPE</span></code>。</p></li>
+<li><p>相关函数：dup，open，fseek</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</section>
+<section id="mkstemp">
+<h2>mkstemp<a class="headerlink" href="#mkstemp" title="永久链接至标题"></a></h2>
+<p>建立唯一的临时文件</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">mkstemp</span><span class="p">(</span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">template</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：mkstemp() 用来建立唯一的临时文件。参数 template 所指的文件名称字符串中最后六个字符必须是 XXXXXX。<code class="docutils literal notranslate"><span class="pre">mkstemp()</span></code> 会以可读写模式和 0600 权限来打开该文件，如果该文件不存在则会建立该文件。打开该文件后其文件描述词会返回。文件顺利打开后返回可读写的文件描述词。若果文件打开失败则返回 <code class="docutils literal notranslate"><span class="pre">NULL</span></code>，并把错误代码存在 errno 中。</p></li>
+<li><p>返回值：<code class="docutils literal notranslate"><span class="pre">EINVAL</span></code> 参数 template 字符串最后六个字符非 XXXXXX。<code class="docutils literal notranslate"><span class="pre">EEXIST</span></code> 无法建立临时文件。</p></li>
+<li><p>附加说明：参数 template 所指的文件名称字符串必须声明为数组，如</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">char</span><span class="w"> </span><span class="n">template</span><span class="p">[</span><span class="w"> </span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;template-XXXXXX&quot;</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>千万不可以使用下列的表达方式</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">template</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;template-XXXXXX&quot;</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+</li>
+<li><p>相关函数：mktemp</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">fd</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">template</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;template-XXXXXX&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mkstemp</span><span class="p">(</span><span class="n">template</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;template file: %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">template</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">close</span><span class="p">(</span><span class="n">fd</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>template file: template-lgZcbo
+</pre></div>
+</div>
+</section>
+<section id="open">
+<h2>open<a class="headerlink" href="#open" title="永久链接至标题"></a></h2>
+<p>打开文件</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/stat.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;fcntl.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">open</span><span class="p">(</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">pathname</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">flags</span><span class="p">);</span><span class="w"></span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">open</span><span class="p">(</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">pathname</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">flags</span><span class="p">,</span><span class="w"> </span><span class="kt">mode_t</span><span class="w"> </span><span class="n">mode</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：参数 pathname 指向欲打开的文件路径字符串。下列是参数 flags 所能使用的旗标：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">O_RDONLY</span></code> 以只读方式打开文件</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">O_WRONLY</span></code> 以只写方式打开文件</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">O_RDWR</span></code> 以可读写方式打开文件。上述三种旗标是互斥的，也就是不可同时使用，但可与下列的旗标利用 OR 运算符组合。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">O_CREAT</span></code> 若欲打开的文件不存在则自动建立该文件。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">O_EXCL</span></code> 如果 <code class="docutils literal notranslate"><span class="pre">O_CREAT</span></code> 也被设置，此指令会去检查文件是否存在。文件若不存在则建立该文件，否则将导致打开文件错误。此外，若 <code class="docutils literal notranslate"><span class="pre">O_CREAT</span></code> 与 <code class="docutils literal notranslate"><span class="pre">O_EXCL</span></code> 同时设置，并且欲打开的文件为符号连接，则会打开文件失败。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">O_NOCTTY</span></code> 如果欲打开的文件为终端机设备时，则不会将该终端机当成进程控制终端机。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">O_TRUNC</span></code> 若文件存在并且以可写的方式打开时，此旗标会令文件长度清为 0，而原来存于该文件的资料也会消失。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">O_APPEND</span></code> 当读写文件时会从文件尾开始移动，也就是所写入的数据会以附加的方式加入到文件后面。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">O_NONBLOCK</span></code> 以不可阻断的方式打开文件，也就是无论有无数据读取或等待，都会立即返回进程之中。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">O_NDELAY</span></code> 同 <code class="docutils literal notranslate"><span class="pre">O_NONBLOCK</span></code>。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">O_SYNC</span></code> 以同步的方式打开文件。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">O_NOFOLLOW</span></code> 如果参数 pathname 所指的文件为一符号连接，则会令打开文件失败。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">O_DIRECTORY</span></code> 如果参数 pathname 所指的文件并非为一目录，则会令打开文件失败。</p></li>
+</ul>
+<p>此为 Linux 2.2 以后特有的旗标，以避免一些系统安全问题。参数 mode 则有下列数种组合，只有在建立新文件时才会生效，此外真正建文件时的权限会受到 umask 值所影响，因此该文件权限应该为（mode-umaks）。</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">S_IRWXU</span></code> 00700 权限，代表该文件所有者具有可读、可写及可执行的权限。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">S_IRUSR</span></code> 或 <code class="docutils literal notranslate"><span class="pre">S_IREAD</span></code>，00400权限，代表该文件所有者具有可读取的权限。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">S_IWUSR</span></code> 或 <code class="docutils literal notranslate"><span class="pre">S_IWRITE</span></code>，00200 权限，代表该文件所有者具有可写入的权限。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">S_IXUSR</span></code> 或 <code class="docutils literal notranslate"><span class="pre">S_IEXEC</span></code>，00100 权限，代表该文件所有者具有可执行的权限。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">S_IRWXG</span></code> 00070权限，代表该文件用户组具有可读、可写及可执行的权限。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">S_IRGRP</span></code> 00040 权限，代表该文件用户组具有可读的权限。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">S_IWGRP</span></code> 00020权限，代表该文件用户组具有可写入的权限。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">S_IXGRP</span></code> 00010 权限，代表该文件用户组具有可执行的权限。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">S_IRWXO</span></code> 00007权限，代表其他用户具有可读、可写及可执行的权限。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">S_IROTH</span></code> 00004 权限，代表其他用户具有可读的权限</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">S_IWOTH</span></code> 00002权限，代表其他用户具有可写入的权限。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">S_IXOTH</span></code> 00001 权限，代表其他用户具有可执行的权限。</p></li>
+</ul>
+</li>
+<li><p>返回值：若所有欲核查的权限都通过了检查则返回 0 值，表示成功，只要有一个权限被禁止则返回 -1。</p>
+<p>错误代码：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">EEXIST</span></code> 参数 pathname 所指的文件已存在，却使用了 <code class="docutils literal notranslate"><span class="pre">O_CREAT</span></code> 和 <code class="docutils literal notranslate"><span class="pre">O_EXCL</span></code> 旗标。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EACCESS</span></code> 参数 pathname 所指的文件不符合所要求测试的权限。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EROFS</span></code> 欲测试写入权限的文件存在于只读文件系统内。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EFAULT</span></code> 参数 pathname 指针超出可存取内存空间。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EINVAL</span></code> 参数 mode 不正确。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENAMETOOLONG</span></code> 参数 pathname 太长。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENOTDIR</span></code> 参数 pathname 不是目录。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENOMEM</span></code> 核心内存不足。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ELOOP</span></code> 参数 pathname 有过多符号连接问题。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EIO</span></code> I/O 存取错误。</p></li>
+</ul>
+</li>
+<li><p>附加说明：使用 <code class="docutils literal notranslate"><span class="pre">access()</span></code> 作用户认证方面的判断要特别小心，例如在 <code class="docutils literal notranslate"><span class="pre">access()</span></code> 后再作 <code class="docutils literal notranslate"><span class="pre">open()</span></code> 空文件可能会造成系统安全上的问题。</p></li>
+<li><p>相关函数：read, write, fcntl, close, link, stat, umask, unlink, fopen</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/stat.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;fcntl.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">fd</span><span class="p">,</span><span class="n">size</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">s</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Linux Programmer!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">buffer</span><span class="p">[</span><span class="mi">80</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="s">&quot;/tmp/temp&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">O_WRONLY</span><span class="o">|</span><span class="n">O_CREAT</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">write</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span><span class="w"> </span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">s</span><span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="n">close</span><span class="p">(</span><span class="n">fd</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="s">&quot;/tmp/temp&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">O_RDONLY</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">read</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span><span class="w"> </span><span class="n">buffer</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">buffer</span><span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="n">close</span><span class="p">(</span><span class="n">fd</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">buffer</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>Linux Programmer!
+</pre></div>
+</div>
+</section>
+<section id="read">
+<h2>read<a class="headerlink" href="#read" title="永久链接至标题"></a></h2>
+<p>由已打开的文件读取数据</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">ssize_t</span><span class="w"> </span><span class="nf">read</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">fd</span><span class="p">,</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">buf</span><span class="w"> </span><span class="p">,</span><span class="kt">size_t</span><span class="w"> </span><span class="n">count</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：read() 会把参数 fd 所指的文件传送 count 个字节到 buf 指针所指的内存中。若参数 count 为 0，则 read() 不会有作用并返回 0。</p></li>
+<li><p>返回值：返回值为实际读取到的字节数，如果返回 0，表示已到达文件尾或是无可读取的数据，此外文件读写位置会随读取到的字节移动。</p>
+<p>错误代码：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">EINTR</span></code> 此调用被信号所中断。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EAGAIN</span></code> 当使用不可阻断 I/O 时（<code class="docutils literal notranslate"><span class="pre">O_NONBLOCK</span></code>），若无数据可读取则返回此值。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EBADF</span></code> 参数 fd 非有效的文件描述词，或该文件已关闭。</p></li>
+</ul>
+</li>
+<li><p>附加说明：如果顺利 <code class="docutils literal notranslate"><span class="pre">read()</span></code> 会返回实际读到的字节数，最好能将返回值与参数 count 作比较，若返回的字节数比要求读取的字节数少，则有可能读到了文件尾、从管道（pipe）或终端机读取，或者是 <code class="docutils literal notranslate"><span class="pre">read()</span></code> 被信号中断了读取动作。当有错误发生时则返回 -1，错误代码存入 errno 中，而文件读写位置则无法预期。</p></li>
+<li><p>相关函数：readdir，write，fcntl，close，lseek，readlink，fread</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<p>参考 open()。</p>
+</section>
+<section id="sync">
+<h2>sync<a class="headerlink" href="#sync" title="永久链接至标题"></a></h2>
+<p>将缓冲区数据写回磁盘</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">sync</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：sync() 负责将系统缓冲区数据写回磁盘，以确保数据同步。</p></li>
+<li><p>返回值：返回 0。</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：fsync</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</section>
+<section id="write">
+<h2>write<a class="headerlink" href="#write" title="永久链接至标题"></a></h2>
+<p>将数据写入已打开的文件内</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">ssize_t</span><span class="w"> </span><span class="nf">write</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">fd</span><span class="p">,</span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">buf</span><span class="p">,</span><span class="kt">size_t</span><span class="w"> </span><span class="n">count</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：write() 会把参数 buf 所指的内存写入 count 个字节到参数 fd 所指的文件内。当然，文件读写位置也会随之移动。</p></li>
+<li><p>返回值：如果顺利 write() 会返回实际写入的字节数。当有错误发生时则返回 -1，错误代码存入 errno 中。</p>
+<p>错误代码：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">EINTR</span></code> 此调用被信号所中断。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EAGAIN</span></code> 当使用不可阻断 I/O 时（<code class="docutils literal notranslate"><span class="pre">O_NONBLOCK</span></code>），若无数据可读取则返回此值。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EADF</span></code> 参数fd非有效的文件描述词，或该文件已关闭。</p></li>
+</ul>
+</li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：open，read，fcntl，close，lseek，sync，fsync，fwrite</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<p>参考 open()。</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="data-structure.html" class="btn btn-neutral float-left" title="数据结构及算法篇" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="file-content.html" class="btn btn-neutral float-right" title="文件内容操作篇" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2018-2023, 人人都懂物联网.</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用了 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a>开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

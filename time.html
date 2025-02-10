@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>日期时间篇 &mdash; Linux 常用 C 函数参考手册 v1.0 文档</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/translations.js"></script>
+        <script src="_static/js/baidutongji.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="内存及字符串操作篇" href="memory-string.html" />
+    <link rel="prev" title="内存控制篇" href="memory.html" />
+    <link href="_static/main.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> Linux 常用 C 函数参考手册
+            <img src="_static/GetIoT_Logo_150px.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="在文档中搜索" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="char.html">字符测试篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="string-convert.html">字符串转换篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="memory.html">内存控制篇</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">日期时间篇</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#asctime">asctime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#clock-gettime">clock_gettime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ctime">ctime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#gettimeofday">gettimeofday</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#gmtime">gmtime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#localtime">localtime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#mktime">mktime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#settimeofday">settimeofday</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#time">time</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="memory-string.html">内存及字符串操作篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="math.html">常用数学函数篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user-group.html">用户组篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data-structure.html">数据结构及算法篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="file.html">文件操作篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="file-content.html">文件内容操作篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="permission.html">文件权限控制篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="process.html">进程操作篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ipcs.html">进程间通信篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pthreads.html">线程管理篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="signal.html">信号处理篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="network.html">网络接口篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="io-multiplexing.html">I/O 复用篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="env.html">环境变量篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tty.html">终端控制篇</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Linux 常用 C 函数参考手册</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>日期时间篇</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/time.md.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1>日期时间篇<a class="headerlink" href="#id1" title="永久链接至标题"></a></h1>
+<section id="asctime">
+<h2>asctime<a class="headerlink" href="#asctime" title="永久链接至标题"></a></h2>
+<p>将时间和日期以字符串格式表示</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;time.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="nf">asctime</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">tm</span><span class="w"> </span><span class="o">*</span><span class="n">tm</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：asctime() 将参数 tm 所指的 tm 结构体中的信息转换成真实世界所使用的时间日期表示方法，然后将结果以字符串形式返回。此函数已经由时区转换成当地时间，字符串格式为 “Mon Apr  6 05:20:01 1992\n”。若再调用相关的时间日期函数，此字符串可能会被破坏。此函数与 ctime 不同之处在于传入的参数是不同的结构体。</p></li>
+<li><p>返回值：返回一字符串表示目前当地的时间日期。</p></li>
+<li><p>相关函数：time，ctime，gmtime，localtime</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;time.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">time_t</span><span class="w"> </span><span class="n">timep</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">time</span><span class="p">(</span><span class="o">&amp;</span><span class="n">timep</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">asctime</span><span class="p">(</span><span class="n">gmtime</span><span class="p">(</span><span class="o">&amp;</span><span class="n">timep</span><span class="p">)));</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>Sun Jun <span class="m">20</span> <span class="m">05</span>:01:21 <span class="m">2021</span>
+</pre></div>
+</div>
+</section>
+<section id="clock-gettime">
+<h2>clock_gettime<a class="headerlink" href="#clock-gettime" title="永久链接至标题"></a></h2>
+<p>将时间和日期以字符串格式表示</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;time.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">clock_gettime</span><span class="p">(</span><span class="kt">clockid_t</span><span class="w"> </span><span class="n">clk_id</span><span class="p">,</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">timespec</span><span class="w"> </span><span class="o">*</span><span class="n">tp</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：</p></li>
+<li><p>返回值：</p></li>
+<li><p>相关函数：time, date, gettimeofday</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;time.h&gt;</span><span class="cp"></span>
+
+<span class="k">struct</span><span class="w"> </span><span class="nc">timespec</span><span class="w"> </span><span class="n">ts</span><span class="p">;</span><span class="w"></span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">clock_gettime</span><span class="p">(</span><span class="n">CLOCK_REALTIME</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">ts</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">-1</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="cm">/* handle error */</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="ctime">
+<h2>ctime<a class="headerlink" href="#ctime" title="永久链接至标题"></a></h2>
+<p>将时间和日期以字符串格式表示</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;time.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="nf">ctime</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">time_t</span><span class="w"> </span><span class="o">*</span><span class="n">timep</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：ctime() 将参数 timep 所指的 time_t 结构中的信息转换成真实世界所使用的时间日期表示方法，然后将结果以字符串形式返回。此函数已经由时区转换成当地时间，字符串格式为 “Mon Apr  6 05:20:01 1992\n”。若再调用相关的时间日期函数，此字符串可能会被破坏。</p></li>
+<li><p>返回值：返回一字符串表示目前当地的时间日期。</p></li>
+<li><p>相关函数：time，asctime，gmtime，localtime</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;time.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">time_t</span><span class="w"> </span><span class="n">timep</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">time</span><span class="p">(</span><span class="o">&amp;</span><span class="n">timep</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">ctime</span><span class="p">(</span><span class="o">&amp;</span><span class="n">timep</span><span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>Sun Jun <span class="m">20</span> <span class="m">13</span>:09:17 <span class="m">2021</span>
+</pre></div>
+</div>
+</section>
+<section id="gettimeofday">
+<h2>gettimeofday<a class="headerlink" href="#gettimeofday" title="永久链接至标题"></a></h2>
+<p>获取目前的时间</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/time.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">gettimeofday</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">timeval</span><span class="w"> </span><span class="o">*</span><span class="n">tv</span><span class="p">,</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">timezone</span><span class="w"> </span><span class="o">*</span><span class="n">tz</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：gettimeofday() 会把目前的时间由 tv 所指的结构返回，当地时区的信息则放到 tz 所指的结构中。</p>
+<p>timeval 结构体定义：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">timeval</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">long</span><span class="w"> </span><span class="n">tv_sec</span><span class="p">;</span><span class="w">   </span><span class="cm">/* 秒 */</span><span class="w"></span>
+<span class="w">    </span><span class="kt">long</span><span class="w"> </span><span class="n">tv_usec</span><span class="p">;</span><span class="w">  </span><span class="cm">/* 微秒 */</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+</pre></div>
+</div>
+<p>timezone 结构体定义：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">timezone</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">tz_minuteswest</span><span class="p">;</span><span class="w">  </span><span class="cm">/* 和格林尼治时间差了多少分钟 */</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">tz_dsttime</span><span class="p">;</span><span class="w">      </span><span class="cm">/* 时间的修正方式 */</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+</pre></div>
+</div>
+<p>上述两个结构体都定义在 /usr/include/sys/time.h，其中 tz_dsttime 所代表的状态如下：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">DST_NONE</span><span class="w">    </span><span class="cm">/* 不使用 */</span><span class="w"></span>
+<span class="n">DST_USA</span><span class="w">     </span><span class="cm">/* 美国 */</span><span class="w"></span>
+<span class="n">DST_AUST</span><span class="w">    </span><span class="cm">/* 澳洲 */</span><span class="w"></span>
+<span class="n">DST_WET</span><span class="w">     </span><span class="cm">/* 西欧 */</span><span class="w"></span>
+<span class="n">DST_MET</span><span class="w">     </span><span class="cm">/* 中欧 */</span><span class="w"></span>
+<span class="n">DST_EET</span><span class="w">     </span><span class="cm">/* 东欧 */</span><span class="w"></span>
+<span class="n">DST_CAN</span><span class="w">     </span><span class="cm">/* 加拿大 */</span><span class="w"></span>
+<span class="n">DST_GB</span><span class="w">      </span><span class="cm">/* 英国 */</span><span class="w"></span>
+<span class="n">DST_RUM</span><span class="w">     </span><span class="cm">/* 罗马尼亚 */</span><span class="w"></span>
+<span class="n">DST_TUR</span><span class="w">     </span><span class="cm">/* 土耳其 */</span><span class="w"></span>
+<span class="n">DST_AUSTALT</span><span class="w"> </span><span class="cm">/* 澳洲（1986年以后）*/</span><span class="w"></span>
+</pre></div>
+</div>
+</li>
+<li><p>返回值：成功则返回 0，失败返回 -1，错误代码存于 errno。</p></li>
+<li><p>附加说明：EFAULT 表示指针 tv 和 tz 所指的内存空间超出存取权限。</p></li>
+<li><p>相关函数：time，ctime，ftime，settimeofday</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/time.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">timeval</span><span class="w"> </span><span class="n">tv</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">timezone</span><span class="w"> </span><span class="n">tz</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">gettimeofday</span><span class="p">(</span><span class="o">&amp;</span><span class="n">tv</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">tz</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;tv_sec: %ld</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">tv</span><span class="p">.</span><span class="n">tv_sec</span><span class="p">)</span><span class="w"> </span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;tv_usec: %ld</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">tv</span><span class="p">.</span><span class="n">tv_usec</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;tz_minuteswest: %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">tz</span><span class="p">.</span><span class="n">tz_minuteswest</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;tz_dsttime: %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">tz</span><span class="p">.</span><span class="n">tz_dsttime</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>tv_sec: <span class="m">1624167233</span>
+tv_usec: <span class="m">499533</span>
+tz_minuteswest: <span class="m">0</span>
+tz_dsttime: <span class="m">0</span>
+</pre></div>
+</div>
+</section>
+<section id="gmtime">
+<h2>gmtime<a class="headerlink" href="#gmtime" title="永久链接至标题"></a></h2>
+<p>获取目前的时间和日期</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;time.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">tm</span><span class="w"> </span><span class="o">*</span><span class="n">gmtime</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">time_t</span><span class="w"> </span><span class="o">*</span><span class="n">timep</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：gmtime() 将参数 timep 所指的 time_t 结构中的信息转换成真实世界所使用的时间日期表示方法，然后将结果由结构 tm 返回。</p>
+<p>结构体 tm 的定义为：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">tm</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">tm_sec</span><span class="p">;</span><span class="w">    </span><span class="cm">/* 代表目前秒数，正常范围为0-59，但允许至61秒 */</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">tm_min</span><span class="p">;</span><span class="w">    </span><span class="cm">/* 代表目前分数，范围0-59 */</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">tm_hour</span><span class="p">;</span><span class="w">   </span><span class="cm">/* 从午夜算起的时数，范围为0-23 */</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">tm_mday</span><span class="p">;</span><span class="w">   </span><span class="cm">/* 目前月份的日数，范围01-31 */</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">tm_mon</span><span class="p">;</span><span class="w">    </span><span class="cm">/* 代表目前月份，从一月算起，范围从0-11 */</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">tm_year</span><span class="p">;</span><span class="w">   </span><span class="cm">/* 从1990年算起至今的年数 */</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">tm_wday</span><span class="p">;</span><span class="w">   </span><span class="cm">/* 一星期的日数，从星期一算起，范围为0-6 */</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">tm_yday</span><span class="p">;</span><span class="w">   </span><span class="cm">/* 从今年1月1日算起至今的天数，范围为0-365 */</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">tm_isdst</span><span class="p">;</span><span class="w">  </span><span class="cm">/* 日光节约时间（夏令时）的标志 */</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+</pre></div>
+</div>
+<p>此函数返回的时间日期未经时区转换，而是 UTC 时间。</p>
+</li>
+<li><p>返回值：返回结构 tm 代表目前 UTC 时间。</p></li>
+<li><p>相关函数：time,asctime,ctime,localtime</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;time.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">wday</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="s">&quot;Sun&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Mon&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Tue&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Wed&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Thu&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Fri&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Sat&quot;</span><span class="p">};</span><span class="w"></span>
+<span class="w">    </span><span class="kt">time_t</span><span class="w"> </span><span class="n">timep</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">tm</span><span class="w"> </span><span class="o">*</span><span class="n">p</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">time</span><span class="p">(</span><span class="o">&amp;</span><span class="n">timep</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">gmtime</span><span class="p">(</span><span class="o">&amp;</span><span class="n">timep</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d-%02d-%02d &quot;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="mi">1900</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">p</span><span class="o">-&gt;</span><span class="n">tm_year</span><span class="p">),</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">p</span><span class="o">-&gt;</span><span class="n">tm_mon</span><span class="p">),</span><span class="w"> </span><span class="n">p</span><span class="o">-&gt;</span><span class="n">tm_mday</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s %02d:%02d:%02d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">wday</span><span class="p">[</span><span class="n">p</span><span class="o">-&gt;</span><span class="n">tm_wday</span><span class="p">],</span><span class="w"> </span><span class="n">p</span><span class="o">-&gt;</span><span class="n">tm_hour</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="o">-&gt;</span><span class="n">tm_min</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="o">-&gt;</span><span class="n">tm_sec</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="m">2021</span>-06-20 Sun <span class="m">05</span>:46:51
+</pre></div>
+</div>
+</section>
+<section id="localtime">
+<h2>localtime<a class="headerlink" href="#localtime" title="永久链接至标题"></a></h2>
+<p>获取当地目前时间和日期</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;time.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">tm</span><span class="w"> </span><span class="o">*</span><span class="n">localtime</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">time_t</span><span class="w"> </span><span class="o">*</span><span class="n">timep</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：localtime() 将参数 timep 所指的 time_t 结构中的信息转换成真实世界所使用的时间日期表示方法，然后将结果以 tm 结构体形式返回（结构体 tm 的定义请参考 gmtime）。此函数已经由时区转换成当地时间。</p></li>
+<li><p>返回值：返回结构体 tm 代表目前的当地时间。</p></li>
+<li><p>相关函数：time, asctime, ctime, gmtime</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;time.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">wday</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="s">&quot;Sun&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Mon&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Tue&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Wed&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Thu&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Fri&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Sat&quot;</span><span class="p">};</span><span class="w"></span>
+<span class="w">    </span><span class="kt">time_t</span><span class="w"> </span><span class="n">timep</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">tm</span><span class="w"> </span><span class="o">*</span><span class="n">p</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">time</span><span class="p">(</span><span class="o">&amp;</span><span class="n">timep</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">localtime</span><span class="p">(</span><span class="o">&amp;</span><span class="n">timep</span><span class="p">);</span><span class="w">  </span><span class="cm">/* 获取当地时间 */</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d-%02d-%02d &quot;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="mi">1900</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">p</span><span class="o">-&gt;</span><span class="n">tm_year</span><span class="p">),</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">p</span><span class="o">-&gt;</span><span class="n">tm_mon</span><span class="p">),</span><span class="w"> </span><span class="n">p</span><span class="o">-&gt;</span><span class="n">tm_mday</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s %02d:%02d:%02d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">wday</span><span class="p">[</span><span class="n">p</span><span class="o">-&gt;</span><span class="n">tm_wday</span><span class="p">],</span><span class="w"> </span><span class="n">p</span><span class="o">-&gt;</span><span class="n">tm_hour</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="o">-&gt;</span><span class="n">tm_min</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="o">-&gt;</span><span class="n">tm_sec</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="m">2021</span>-06-20 Sun <span class="m">13</span>:53:23
+</pre></div>
+</div>
+</section>
+<section id="mktime">
+<h2>mktime<a class="headerlink" href="#mktime" title="永久链接至标题"></a></h2>
+<p>将时间结构数据转换成经过的秒数</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;time.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">time_t</span><span class="w"> </span><span class="nf">mktime</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">tm</span><span class="w"> </span><span class="o">*</span><span class="n">tm</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：mktime() 用来将参数 tm 所指的 tm 结构数据转换成从公元 1970年1月1日0时0分0秒算起至今的 UTC 时间所经过的秒数。</p></li>
+<li><p>返回值：返回经过的秒数。</p></li>
+<li><p>相关函数：time，asctime，gmtime，localtime</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* 用 time()取得时间（秒数），利用 localtime() 转换成 struct tm </span>
+<span class="cm"> * 再利用 mktime() 将 struct tm 转换成原来的秒数</span>
+<span class="cm"> */</span><span class="w"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;time.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">time_t</span><span class="w"> </span><span class="n">timep</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">tm</span><span class="w"> </span><span class="o">*</span><span class="n">p</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">time</span><span class="p">(</span><span class="o">&amp;</span><span class="n">timep</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;time() : %ld </span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">timep</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">localtime</span><span class="p">(</span><span class="o">&amp;</span><span class="n">timep</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">timep</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mktime</span><span class="p">(</span><span class="n">p</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;time()-&gt;localtime()-&gt;mktime() : %ld</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">timep</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>time<span class="o">()</span> : <span class="m">1624168857</span>
+time<span class="o">()</span>-&gt;localtime<span class="o">()</span>-&gt;mktime<span class="o">()</span> : <span class="m">1624168857</span>
+</pre></div>
+</div>
+</section>
+<section id="settimeofday">
+<h2>settimeofday<a class="headerlink" href="#settimeofday" title="永久链接至标题"></a></h2>
+<p>设置目前时间</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/time.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">settimeofday</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">timeval</span><span class="w"> </span><span class="o">*</span><span class="n">tv</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">timezone</span><span class="w"> </span><span class="o">*</span><span class="n">tz</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：settimeofday() 会把目前时间设成由 tv 所指的结构信息，当地时区信息则设成 tz 所指的结构。详细的说明请参考 gettimeofday()。注意，只有 root 权限才能使用此函数修改时间。</p></li>
+<li><p>返回值：成功则返回 0，失败返回 -1，错误代码存于 errno。错误代码如下：</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">EPERM</span></code> 权限不够，并非由 root 权限调用 settimeofday()；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EINVAL</span></code> 时区或某个数据是不正确的，无法正确设置时间。</p></li>
+</ul>
+</li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：time，ctime，ftime，gettimeofday</p></li>
+</ul>
+</section>
+<section id="time">
+<h2>time<a class="headerlink" href="#time" title="永久链接至标题"></a></h2>
+<p>获取目前的时间</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;time.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">time_t</span><span class="w"> </span><span class="nf">time</span><span class="p">(</span><span class="kt">time_t</span><span class="w"> </span><span class="o">*</span><span class="n">tloc</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：此函数会返回从公元 1970年1月1日0时0分0秒算起至今的 UTC 时间所经过的秒数。如果 tloc 并非空指针的话，此函数也会将返回值存到 tloc 指针所指的内存。</p></li>
+<li><p>返回值：成功则返回描述，失败则返回 ((time_t)-1) 值，错误原因存于 errno 中。</p></li>
+<li><p>相关函数：ctime，ftime，gettimeofday</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;time.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">seconds</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">time</span><span class="p">((</span><span class="kt">time_t</span><span class="o">*</span><span class="p">)</span><span class="nb">NULL</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">seconds</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="m">1624169441</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="memory.html" class="btn btn-neutral float-left" title="内存控制篇" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="memory-string.html" class="btn btn-neutral float-right" title="内存及字符串操作篇" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2018-2023, 人人都懂物联网.</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用了 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a>开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

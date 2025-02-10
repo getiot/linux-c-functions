@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>文件内容操作篇 &mdash; Linux 常用 C 函数参考手册 v1.0 文档</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/translations.js"></script>
+        <script src="_static/js/baidutongji.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="文件权限控制篇" href="permission.html" />
+    <link rel="prev" title="文件操作篇" href="file.html" />
+    <link href="_static/main.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> Linux 常用 C 函数参考手册
+            <img src="_static/GetIoT_Logo_150px.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="在文档中搜索" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="char.html">字符测试篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="string-convert.html">字符串转换篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="memory.html">内存控制篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="time.html">日期时间篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="memory-string.html">内存及字符串操作篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="math.html">常用数学函数篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user-group.html">用户组篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data-structure.html">数据结构及算法篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="file.html">文件操作篇</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">文件内容操作篇</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#clearerr">clearerr</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fclose">fclose</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fdopen">fdopen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#feof">feof</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fflush">fflush</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fgetc">fgetc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fgets">fgets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fileno">fileno</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fopen">fopen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fputc">fputc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fputs">fputs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fread">fread</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#freopen">freopen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fseek">fseek</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ftell">ftell</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fwrite">fwrite</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#getc">getc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#getchar">getchar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#gets">gets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#mktemp">mktemp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#putc">putc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#putchar">putchar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#rewind">rewind</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#setbuf">setbuf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#setbuffer">setbuffer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#setlinebuf">setlinebuf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#setvbuf">setvbuf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ungetc">ungetc</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="permission.html">文件权限控制篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="process.html">进程操作篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ipcs.html">进程间通信篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pthreads.html">线程管理篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="signal.html">信号处理篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="network.html">网络接口篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="io-multiplexing.html">I/O 复用篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="env.html">环境变量篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tty.html">终端控制篇</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Linux 常用 C 函数参考手册</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>文件内容操作篇</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/file-content.md.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1>文件内容操作篇<a class="headerlink" href="#id1" title="永久链接至标题"></a></h1>
+<section id="clearerr">
+<h2>clearerr<a class="headerlink" href="#clearerr" title="永久链接至标题"></a></h2>
+<p>清除文件流的错误标志</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">clearerr</span><span class="p">(</span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">stream</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：clearerr() 清除参数 stream 指定的文件流所使用的错误旗标。</p></li>
+<li><p>返回值：无。</p></li>
+<li><p>相关函数：feof</p></li>
+</ul>
+</section>
+<section id="fclose">
+<h2>fclose<a class="headerlink" href="#fclose" title="永久链接至标题"></a></h2>
+<p>关闭文件</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">fclose</span><span class="p">(</span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">stream</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：fclose() 用来关闭先前 fopen() 打开的文件。此动作会让缓冲区内的数据写入文件中，并释放系统所提供的文件资源。</p></li>
+<li><p>返回值：若关文件动作成功则返回 0，有错误发生时则返回 EOF 并把错误代码存到 errno。</p></li>
+<li><p>错误代码：<code class="docutils literal notranslate"><span class="pre">EBADF</span></code> 表示参数 stream 非已打开的文件。</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：close，fflush，fopen，setbuf</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<p>请参考 fopen()。</p>
+</section>
+<section id="fdopen">
+<h2>fdopen<a class="headerlink" href="#fdopen" title="永久链接至标题"></a></h2>
+<p>将文件描述词转为文件指针</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nf">fdopen</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">fildes</span><span class="p">,</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">mode</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：fdopen() 会将参数 fildes 的文件描述词，转换为对应的文件指针后返回。参数 mode 字符串则代表着文件指针的流形态，此形态必须和原先文件描述词读写模式相同。关于 mode 字符串格式请参考 fopen()。</p></li>
+<li><p>返回值：转换成功时返回指向该流的文件指针。失败则返回 NULL，并把错误代码存在 errno 中。</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：fopen，open，fclose</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">fp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fdopen</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;w+&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">fprintf</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;%s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;hello!&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">fclose</span><span class="p">(</span><span class="n">fp</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>hello!
+</pre></div>
+</div>
+</section>
+<section id="feof">
+<h2>feof<a class="headerlink" href="#feof" title="永久链接至标题"></a></h2>
+<p>检查文件流是否读到了文件尾</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">feof</span><span class="p">(</span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">stream</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：feof() 用来侦测是否读取到了文件尾，尾数 stream 为 fopen() 所返回之文件指针。如果已到文件尾则返回非零值，其他情况返回 0。</p></li>
+<li><p>返回值：返回非零值代表已到达文件尾。</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：fopen，fgetc，fgets，fread</p></li>
+</ul>
+</section>
+<section id="fflush">
+<h2>fflush<a class="headerlink" href="#fflush" title="永久链接至标题"></a></h2>
+<p>更新缓冲区</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">fflush</span><span class="p">(</span><span class="kt">FILE</span><span class="o">*</span><span class="w"> </span><span class="n">stream</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：fflush() 会强迫将缓冲区内的数据写回参数 stream 指定的文件中。如果参数 stream 为 NULL，fflush() 会将所有打开的文件数据更新。</p></li>
+<li><p>返回值：成功返回 0，失败返回 EOF，错误代码存于 errno 中。</p></li>
+<li><p>错误代码：EBADF 参数 stream 指定的文件未被打开，或打开状态为只读。其它错误代码参考 write()。</p></li>
+<li><p>相关函数：write，fopen，fclose，setbuf</p></li>
+</ul>
+</section>
+<section id="fgetc">
+<h2>fgetc<a class="headerlink" href="#fgetc" title="永久链接至标题"></a></h2>
+<p>由文件中读取一个字符</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">fgetc</span><span class="p">(</span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">stream</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：fgetc() 从参数 stream 所指的文件中读取一个字符。若读到文件尾而无数据时便返回 EOF。</p></li>
+<li><p>返回值：getc() 会返回读取到的字符，若返回 EOF 则表示到了文件尾。</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：open，fread，fscanf，getc</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="n">fp</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">c</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">fp</span><span class="o">=</span><span class="n">fopen</span><span class="p">(</span><span class="s">&quot;exist&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;r&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">while</span><span class="p">((</span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fgetc</span><span class="p">(</span><span class="n">fp</span><span class="p">))</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">EOF</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%c&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">fclose</span><span class="p">(</span><span class="n">fp</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="fgets">
+<h2>fgets<a class="headerlink" href="#fgets" title="永久链接至标题"></a></h2>
+<p>由文件中读取一字符串</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nf">fgets</span><span class="p">(</span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">s</span><span class="p">,</span><span class="kt">int</span><span class="w"> </span><span class="n">size</span><span class="p">,</span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">stream</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：fgets() 用来从参数 stream 所指的文件内读入字符并存到参数 s 所指的内存空间，直到出现换行字符、读到文件尾或是已读了 size-1 个字符为止，最后会加上 NULL 作为字符串结束。</p></li>
+<li><p>返回值：gets() 若成功则返回s指针，返回 NULL 则表示有错误发生。</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：open，fread，fscanf，getc</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">s</span><span class="p">[</span><span class="mi">80</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="n">fputs</span><span class="p">(</span><span class="n">fgets</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="mi">80</span><span class="p">,</span><span class="n">stdin</span><span class="p">),</span><span class="n">stdout</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>this is a <span class="nb">test</span> <span class="c1"># 输入</span>
+this is a <span class="nb">test</span> <span class="c1"># 输出</span>
+</pre></div>
+</div>
+</section>
+<section id="fileno">
+<h2>fileno<a class="headerlink" href="#fileno" title="永久链接至标题"></a></h2>
+<p>返回文件流所使用的文件描述词</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">fileno</span><span class="p">(</span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">stream</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：fileno() 用来取得参数 stream 指定的文件流所使用的文件描述词。</p></li>
+<li><p>返回值：返回文件描述词。</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：open，fopen</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">fp</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">fd</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">fp</span><span class="o">=</span><span class="n">fopen</span><span class="p">(</span><span class="s">&quot;/etc/passwd&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;r&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">fd</span><span class="o">=</span><span class="n">fileno</span><span class="p">(</span><span class="n">fp</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;fd=%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">fd</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">fclose</span><span class="p">(</span><span class="n">fp</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nv">fd</span><span class="o">=</span><span class="m">3</span>
+</pre></div>
+</div>
+</section>
+<section id="fopen">
+<h2>fopen<a class="headerlink" href="#fopen" title="永久链接至标题"></a></h2>
+<p>打开文件</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="nf">fopen</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">path</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">mode</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：参数 path 字符串包含欲打开的文件路径及文件名，参数 mode 字符串则代表着文本流的形态，有下列几种形态字符串。</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">r</span></code> 打开只读文件，该文件必须存在。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">r+</span></code> 打开可读写的文件，该文件必须存在。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">w</span></code> 打开只写文件，若文件存在则文件长度清为零，即该文件内容会消失；若文件不存在则建立该文件。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">w+</span></code> 打开可读写文件，若文件存在则文件长度清为零，即该文件内容会消失；若文件不存在则建立该文件。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">a</span></code> 以附加的方式打开只写文件，若文件不存在，则会建立该文件；若文件存在，写入的数据会被加到文件尾，即文件原先的内容会被保留。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">a+</span></code> 以附加方式打开可读写的文件，若文件不存在，则会建立该文件；若文件存在，写入的数据会被加到文件尾，即文件原先的内容会被保留。</p></li>
+<li><p>上述的形态字符串都可以再加一个 b 字符，如 <code class="docutils literal notranslate"><span class="pre">rb</span></code>、<code class="docutils literal notranslate"><span class="pre">w+b</span></code> 或 <code class="docutils literal notranslate"><span class="pre">ab+</span></code> 等组合，加入 b 字符用来告诉函数库打开的文件为二进制文件，而非纯文字文件。不过在 POSIX 系统，包括 Linux 都会忽略该字符。由 fopen() 所建立的新文件会具有 <code class="docutils literal notranslate"><span class="pre">S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP|S_IROTH|S_IWOTH(0666)</span></code> 权限，此文件权限也会参考 umask 值。</p></li>
+</ul>
+</li>
+<li><p>返回值：文件顺利打开后，指向该流的文件指针就会被返回。若文件打开失败则返回 NULL，并把错误代码存在 errno 中。</p></li>
+<li><p>附加说明：一般而言，打开文件后会做一些文件读取或写入的动作，若打开文件失败，接下来的读写动作也无法顺利进行，所以在 fopen() 后请作错误判断及处理。</p></li>
+<li><p>相关函数：open, fclose</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">fp</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">fp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fopen</span><span class="p">(</span><span class="s">&quot;noexist&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;a+&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">fp</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="k">return</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">fclose</span><span class="p">(</span><span class="n">fp</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="fputc">
+<h2>fputc<a class="headerlink" href="#fputc" title="永久链接至标题"></a></h2>
+<p>将一指定字符写入文件流中</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">fputc</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">c</span><span class="p">,</span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">stream</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：fputc 会将参数 c 转为 unsigned char 后写入参数 stream 指定的文件中。</p></li>
+<li><p>返回值：fputc() 会返回写入成功的字符，即参数 c。若返回 EOF 则代表写入失败。</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：fopen，fwrite，fscanf，putc</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">fp</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="mi">26</span><span class="p">]</span><span class="o">=</span><span class="s">&quot;abcdefghijklmnopqrstuvwxyz&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">fp</span><span class="o">=</span><span class="w"> </span><span class="n">fopen</span><span class="p">(</span><span class="s">&quot;noexist&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;w&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">&lt;</span><span class="mi">26</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="n">fputc</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="w"> </span><span class="n">fp</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">fclose</span><span class="p">(</span><span class="n">fp</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="fputs">
+<h2>fputs<a class="headerlink" href="#fputs" title="永久链接至标题"></a></h2>
+<p>将一指定的字符串写入文件内</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">fputs</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">stream</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：fputs() 用来将参数 s 所指的字符串写入到参数 stream 所指的文件内。</p></li>
+<li><p>返回值：若成功则返回写出的字符个数，返回 EOF 则表示有错误发生。</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：fopen，fwrite，fscanf，fputc，putc</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<p>请参考 fgets()。</p>
+</section>
+<section id="fread">
+<h2>fread<a class="headerlink" href="#fread" title="永久链接至标题"></a></h2>
+<p>从文件流读取数据</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">size_t</span><span class="w"> </span><span class="nf">fread</span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">ptr</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">size</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">nmemb</span><span class="p">,</span><span class="w"> </span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">stream</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：fread() 用来从文件流中读取数据。参数 stream 为已打开的文件指针，参数 ptr 指向欲存放读取进来的数据空间，读取的字符数以参数 size*nmemb 来决定。fread() 会返回实际读取到的 nmemb 数目，如果此值比参数 nmemb 来得小，则代表可能读到了文件尾或有错误发生，这时必须用 feof() 或 ferror() 来决定发生什么情况。</p></li>
+<li><p>返回值：返回实际读取到的 nmemb 数目。</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：fopen，fwrite，fseek，fscanf</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#define nmemb 3</span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">test</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">name</span><span class="p">[</span><span class="mi">20</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">size</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="n">s</span><span class="p">[</span><span class="n">nmemb</span><span class="p">];</span><span class="w"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">stream</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">stream</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fopen</span><span class="p">(</span><span class="s">&quot;/tmp/fwrite&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;r&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">fread</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">test</span><span class="p">),</span><span class="w"> </span><span class="n">nmemb</span><span class="p">,</span><span class="w"> </span><span class="n">stream</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">fclose</span><span class="p">(</span><span class="n">stream</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">&lt;</span><span class="n">nmemb</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;name[%d]=%-20s:size[%d]=%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">size</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>name<span class="o">[</span><span class="m">0</span><span class="o">]=</span>Linux! size<span class="o">[</span><span class="m">0</span><span class="o">]=</span><span class="m">6</span>
+name<span class="o">[</span><span class="m">1</span><span class="o">]=</span>FreeBSD! size<span class="o">[</span><span class="m">1</span><span class="o">]=</span><span class="m">8</span>
+name<span class="o">[</span><span class="m">2</span><span class="o">]=</span>Windows2000 size<span class="o">[</span><span class="m">2</span><span class="o">]=</span><span class="m">11</span>
+</pre></div>
+</div>
+</section>
+<section id="freopen">
+<h2>freopen<a class="headerlink" href="#freopen" title="永久链接至标题"></a></h2>
+<p>打开文件</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nf">freopen</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">path</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">mode</span><span class="p">,</span><span class="w"> </span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">stream</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：参数 path 字符串包含欲打开的文件路径及文件名，参数 mode 请参考 fopen() 说明。参数 stream 为已打开的文件指针。freopen() 会将原 stream 所打开的文件流关闭，然后打开参数 path 的文件。</p></li>
+<li><p>返回值：文件顺利打开后，指向该流的文件指针就会被返回。如果文件打开失败则返回 NULL，并把错误代码存在 errno 中。</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：fopen，fclose</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">fp</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">fp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fopen</span><span class="p">(</span><span class="s">&quot;/etc/passwd&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;r&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">fp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">freopen</span><span class="p">(</span><span class="s">&quot;/etc/group&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;r&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">fp</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">fclose</span><span class="p">(</span><span class="n">fp</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="fseek">
+<h2>fseek<a class="headerlink" href="#fseek" title="永久链接至标题"></a></h2>
+<p>移动文件流的读写位置</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">fseek</span><span class="p">(</span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">stream</span><span class="p">,</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">offset</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">whence</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：fseek() 用来移动文件流的读写位置。参数 stream 为已打开的文件指针，参数 offset 为根据参数 whence 来移动读写位置的位移数。参数 whence 为下列其中一种：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">SEEK_SET</span></code> 从距文件开头 offset 位移量为新的读写位置。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SEEK_CUR</span></code> 以目前的读写位置往后增加 offset 个位移量。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SEEK_END</span></code> 将读写位置指向文件尾后再增加 offset 个位移量。</p></li>
+</ul>
+<p>当 whence 值为 <code class="docutils literal notranslate"><span class="pre">SEEK_CUR</span></code> 或 <code class="docutils literal notranslate"><span class="pre">SEEK_END</span></code> 时，参数 offset 允许负值的出现。</p>
+<p>下列是较特别的使用方式：</p>
+<ol class="simple">
+<li><p>欲将读写位置移动到文件开头时：<code class="docutils literal notranslate"><span class="pre">fseek(FILE</span> <span class="pre">*stream,</span> <span class="pre">0,</span> <span class="pre">SEEK_SET);</span></code></p></li>
+<li><p>欲将读写位置移动到文件尾时：<code class="docutils literal notranslate"><span class="pre">fseek(FILE</span> <span class="pre">*stream,</span> <span class="pre">0,</span> <span class="pre">SEEK_END);</span></code></p></li>
+</ol>
+</li>
+<li><p>返回值：当调用成功时则返回 0，若有错误则返回 -1，errno 会存放错误代码。</p></li>
+<li><p>附加说明：fseek() 不像 lseek() 会返回读写位置，因此必须使用 ftell() 来取得目前读写的位置。</p></li>
+<li><p>相关函数：rewind，ftell，fgetpos，fsetpos，lseek</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">stream</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">long</span><span class="w"> </span><span class="n">offset</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">fpos_t</span><span class="w"> </span><span class="n">pos</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">stream</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fopen</span><span class="p">(</span><span class="s">&quot;/etc/passwd&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;r&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">fseek</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="n">SEEK_SET</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;offset = %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">ftell</span><span class="p">(</span><span class="n">stream</span><span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="n">rewind</span><span class="p">(</span><span class="n">stream</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">fgetpos</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">pos</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;offset = %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">pos</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">pos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">fsetpos</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">pos</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;offset = %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">ftell</span><span class="p">(</span><span class="n">stream</span><span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="n">fclose</span><span class="p">(</span><span class="n">stream</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nv">offset</span> <span class="o">=</span> <span class="m">5</span>
+<span class="nv">offset</span> <span class="o">=</span> <span class="m">0</span>
+<span class="nv">offset</span> <span class="o">=</span> <span class="m">10</span>
+</pre></div>
+</div>
+</section>
+<section id="ftell">
+<h2>ftell<a class="headerlink" href="#ftell" title="永久链接至标题"></a></h2>
+<p>取得文件流的读取位置</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">long</span><span class="w"> </span><span class="nf">ftell</span><span class="p">(</span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">stream</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：ftell() 用来取得文件流目前的读写位置。参数 stream 为已打开的文件指针。</p></li>
+<li><p>返回值：当调用成功时则返回目前的读写位置，若有错误则返回 -1，errno 会存放错误代码。</p></li>
+<li><p>错误代码：<code class="docutils literal notranslate"><span class="pre">EBADF</span></code> 表示参数 stream 无效或可移动读写位置的文件流。</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：fseek，rewind，fgetpos，fsetpos</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<p>参考 fseek()。</p>
+</section>
+<section id="fwrite">
+<h2>fwrite<a class="headerlink" href="#fwrite" title="永久链接至标题"></a></h2>
+<p>将数据写至文件流</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">size_t</span><span class="w"> </span><span class="nf">fwrite</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">ptr</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">size</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">nmemb</span><span class="p">,</span><span class="w"> </span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">stream</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：fwrite() 用来将数据写入文件流中。参数 stream 为已打开的文件指针，参数 ptr 指向欲写入的数据地址，总共写入的字符数以参数 size*nmemb 来决定。fwrite() 会返回实际写入的 nmemb 数目。</p></li>
+<li><p>返回值：返回实际写入的 nmemb 数目。</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：fopen，fread，fseek，fscanf</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#define set_s (x,y) {strcoy(s[x].name,y);s[x].size=strlen(y);}</span>
+<span class="cp">#define nmemb 3</span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">test</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">name</span><span class="p">[</span><span class="mi">20</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">size</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="n">s</span><span class="p">[</span><span class="n">nmemb</span><span class="p">];</span><span class="w"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">stream</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">set_s</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Linux!&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">set_s</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;FreeBSD!&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">set_s</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Windows2000.&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">stream</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fopen</span><span class="p">(</span><span class="s">&quot;/tmp/fwrite&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;w&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">fwrite</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">test</span><span class="p">),</span><span class="w"> </span><span class="n">nmemb</span><span class="p">,</span><span class="w"> </span><span class="n">stream</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">fclose</span><span class="p">(</span><span class="n">stream</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="getc">
+<h2>getc<a class="headerlink" href="#getc" title="永久链接至标题"></a></h2>
+<p>由文件中读取一个字符</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">getc</span><span class="p">(</span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">stream</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：getc() 用来从参数 stream 所指的文件中读取一个字符。若读到文件尾而无数据时便返回 EOF。虽然 getc() 与 fgetc() 作用相同，但 getc() 为宏定义，非真正的函数调用。</p></li>
+<li><p>返回值：getc() 会返回读取到的字符，若返回 EOF 则表示到了文件尾。</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：read，fopen，fread，fgetc</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<p>参考 fgetc()。</p>
+</section>
+<section id="getchar">
+<h2>getchar<a class="headerlink" href="#getchar" title="永久链接至标题"></a></h2>
+<p>由标准输入设备内读进一字符</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">getchar</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：getchar() 用来从标准输入设备中读取一个字符。然后将该字符从 unsigned char 转换成 int 后返回。</p></li>
+<li><p>返回值：getchar() 会返回读取到的字符，若返回 EOF 则表示有错误发生。</p></li>
+<li><p>附加说明：getchar() 非真正函数，而是 <code class="docutils literal notranslate"><span class="pre">getc(stdin)</span></code> 的宏定义。</p></li>
+<li><p>相关函数：fopen，fread，fscanf，getc</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">fp</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">&lt;</span><span class="mi">5</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">getchar</span><span class="p">();</span><span class="w"></span>
+<span class="w">        </span><span class="n">putchar</span><span class="p">(</span><span class="n">c</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="m">1234</span> <span class="c1"># 输入</span>
+<span class="m">1234</span> <span class="c1"># 输出</span>
+</pre></div>
+</div>
+</section>
+<section id="gets">
+<h2>gets<a class="headerlink" href="#gets" title="永久链接至标题"></a></h2>
+<p>由标准输入设备内读进一字符串</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nf">gets</span><span class="p">(</span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">s</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：gets() 用来从标准设备读入字符并存到参数 s 所指的内存空间，直到出现换行字符或读到文件尾为止，最后加上 <code class="docutils literal notranslate"><span class="pre">NULL</span></code> 作为字符串结束。</p></li>
+<li><p>返回值：gets() 若成功则返回 s 指针，返回 <code class="docutils literal notranslate"><span class="pre">NULL</span></code> 则表示有错误发生。</p></li>
+<li><p>附加说明：由于 gets() 无法知道字符串 s 的大小，必须遇到换行字符或文件尾才会结束输入，因此容易造成缓冲溢出的安全性问题。建议使用 fgets() 取代。</p></li>
+<li><p>相关函数：fopen，fread，fscanf，fgets</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<p>参考 fgets()。</p>
+</section>
+<section id="mktemp">
+<h2>mktemp<a class="headerlink" href="#mktemp" title="永久链接至标题"></a></h2>
+<p>产生唯一的临时文件名</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nf">mktemp</span><span class="p">(</span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">template</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：mktemp() 用来产生唯一的临时文件名。参数 template 所指的文件名称字符串中最后六个字符必须是 XXXXXX。产生后的文件名会借字符串指针返回。</p></li>
+<li><p>返回值：文件顺利打开后，指向该流的文件指针就会被返回。如果文件打开失败则返回 NULL，并把错误代码存在 errno 中。</p></li>
+<li><p>附加说明：参数 template 所指的文件名称字符串必须声明为数组，如 <code class="docutils literal notranslate"><span class="pre">char</span> <span class="pre">template[]</span> <span class="pre">=</span> <span class="pre">&quot;template-XXXXXX&quot;;</span></code>，不可用 <code class="docutils literal notranslate"><span class="pre">char</span> <span class="pre">*</span> <span class="pre">template</span> <span class="pre">=</span> <span class="pre">&quot;template-XXXXXX&quot;;</span></code>。</p></li>
+<li><p>相关函数：tmpfile, mkstemp, mkdtemp</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">template</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;template-XXXXXX&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">mktemp</span><span class="p">(</span><span class="n">template</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;template file: %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">template</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>template file: template-GESbly
+</pre></div>
+</div>
+</section>
+<section id="putc">
+<h2>putc<a class="headerlink" href="#putc" title="永久链接至标题"></a></h2>
+<p>将一指定字符写入文件中</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">putc</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">stream</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：putc() 会将参数 c 转为 unsigned char 后写入参数 stream 指定的文件中。虽然 putc() 与 fputc() 作用相同，但 putc() 为宏定义，非真正的函数调用。</p></li>
+<li><p>返回值：putc()会返回写入成功的字符，即参数c。若返回EOF则代表写入失败。</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：fopen，fwrite，fscanf，fputc</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<p>参考 fputc()。</p>
+</section>
+<section id="putchar">
+<h2>putchar<a class="headerlink" href="#putchar" title="永久链接至标题"></a></h2>
+<p>将指定的字符写到标准输出设备</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">putchar</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">c</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：putchar() 用来将参数 c 字符写到标准输出设备。</p></li>
+<li><p>返回值：putchar() 会返回输出成功的字符，即参数 c。若返回 EOF 则代表输出失败。</p></li>
+<li><p>附加说明：putchar() 非真正函数，而是 <code class="docutils literal notranslate"><span class="pre">putc(c,</span> <span class="pre">stdout)</span></code> 的宏定义。</p></li>
+<li><p>相关函数：fopen，fwrite，fscanf，fputc</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<p>参考 getchar()。</p>
+</section>
+<section id="rewind">
+<h2>rewind<a class="headerlink" href="#rewind" title="永久链接至标题"></a></h2>
+<p>重设文件流的读写位置为文件开头</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">rewind</span><span class="p">(</span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">stream</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：rewind() 用来把文件流的读写位置移至文件开头。参数 stream 为已打开的文件指针。此函数相当于调用 <code class="docutils literal notranslate"><span class="pre">fseek(stream,</span> <span class="pre">0,</span> <span class="pre">SEEK_SET)</span></code>。</p></li>
+<li><p>返回值：无</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：fseek，ftell，fgetpos，fsetpos</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<p>参考 fseek()。</p>
+</section>
+<section id="setbuf">
+<h2>setbuf<a class="headerlink" href="#setbuf" title="永久链接至标题"></a></h2>
+<p>设置文件流的缓冲区</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">setbuf</span><span class="p">(</span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">stream</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">buf</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：在打开文件流后，读取内容之前，调用 setbuf() 可以用来设置文件流的缓冲区。参数 stream 为指定的文件流，参数 buf 指向自定的缓冲区起始地址。如果参数 buf 为 NULL 指针，则为无缓冲 IO。setbuf() 相当于调用 <code class="docutils literal notranslate"><span class="pre">setvbuf(stream,</span> <span class="pre">buf,</span> <span class="pre">buf</span> <span class="pre">?</span> <span class="pre">_IOFBF</span> <span class="pre">:</span> <span class="pre">_IONBF,</span> <span class="pre">BUFSIZ)</span></code></p></li>
+<li><p>返回值：无</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：setbuffer，setlinebuf，setvbuf</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</section>
+<section id="setbuffer">
+<h2>setbuffer<a class="headerlink" href="#setbuffer" title="永久链接至标题"></a></h2>
+<p>设置文件流的缓冲区</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">setbuffer</span><span class="p">(</span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">stream</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">buf</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">size</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：在打开文件流后，读取内容之前，调用 setbuffer() 可用来设置文件流的缓冲区。参数 stream 为指定的文件流，参数 buf 指向自定的缓冲区起始地址，参数 size 为缓冲区大小。</p></li>
+<li><p>返回值：无</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：setlinebuf，setbuf，setvbuf</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</section>
+<section id="setlinebuf">
+<h2>setlinebuf<a class="headerlink" href="#setlinebuf" title="永久链接至标题"></a></h2>
+<p>设置文件流为行缓冲区</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">setlinebuf</span><span class="p">(</span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">stream</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：setlinebuf() 用来设置文件流以换行为依据的无缓冲 IO。相当于调用 <code class="docutils literal notranslate"><span class="pre">setvbuf(stream,</span> <span class="pre">(char</span> <span class="pre">*</span> <span class="pre">)NULL,</span> <span class="pre">_IOLBF,</span> <span class="pre">0);</span></code>。</p></li>
+<li><p>返回值：无</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：setbuffer，setbuf，setvbuf</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<p>请参考 setvbuf()。</p>
+</section>
+<section id="setvbuf">
+<h2>setvbuf<a class="headerlink" href="#setvbuf" title="永久链接至标题"></a></h2>
+<p>设置文件流的缓冲区</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">setvbuf</span><span class="p">(</span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">stream</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">buf</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">mode</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">size</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：在打开文件流后，读取内容之前，调用 setvbuf() 可以用来设置文件流的缓冲区。参数 stream 为指定的文件流，参数 buf 指向自定的缓冲区起始地址，参数 size 为缓冲区大小，参数 mode 有下列几种：</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">_IONBF</span></code> 无缓冲 IO</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">_IOLBF</span></code> 以换行为依据的无缓冲 IO</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">_IOFBF</span></code> 完全无缓冲 IO。如果参数 buf 为 NULL 指针，则为无缓冲 IO。</p></li>
+</ul>
+</li>
+<li><p>返回值：成功时返回 0；失败返回非零，并把错误代码存在 errno 中。</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：setbuffer，setlinebuf，setbuf</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</section>
+<section id="ungetc">
+<h2>ungetc<a class="headerlink" href="#ungetc" title="永久链接至标题"></a></h2>
+<p>将指定字符写回文件流中</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">ungetc</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">stream</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：ungetc() 将参数 c 字符写回参数 stream 所指定的文件流。这个写回的字符会由下一个读取文件流的函数取得。</p></li>
+<li><p>返回值：成功则返回 c 字符，若有错误则返回 EOF。</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：fputc，getchar，getc</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="file.html" class="btn btn-neutral float-left" title="文件操作篇" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="permission.html" class="btn btn-neutral float-right" title="文件权限控制篇" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2018-2023, 人人都懂物联网.</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用了 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a>开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

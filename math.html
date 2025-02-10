@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>常用数学函数篇 &mdash; Linux 常用 C 函数参考手册 v1.0 文档</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/translations.js"></script>
+        <script src="_static/js/baidutongji.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="用户组篇" href="user-group.html" />
+    <link rel="prev" title="内存及字符串操作篇" href="memory-string.html" />
+    <link href="_static/main.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> Linux 常用 C 函数参考手册
+            <img src="_static/GetIoT_Logo_150px.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="在文档中搜索" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="char.html">字符测试篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="string-convert.html">字符串转换篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="memory.html">内存控制篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="time.html">日期时间篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="memory-string.html">内存及字符串操作篇</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">常用数学函数篇</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#abs">abs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#acos">acos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#asin">asin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#atan">atan</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#atan2">atan2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ceil">ceil</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#cos">cos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#cosh">cosh</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#exp">exp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#frexp">frexp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ldexp">ldexp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#log">log</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#log10">log10</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pow">pow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sin">sin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sinh">sinh</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sqrt">sqrt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tan">tan</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tanh">tanh</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="user-group.html">用户组篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data-structure.html">数据结构及算法篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="file.html">文件操作篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="file-content.html">文件内容操作篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="permission.html">文件权限控制篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="process.html">进程操作篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ipcs.html">进程间通信篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pthreads.html">线程管理篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="signal.html">信号处理篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="network.html">网络接口篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="io-multiplexing.html">I/O 复用篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="env.html">环境变量篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tty.html">终端控制篇</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Linux 常用 C 函数参考手册</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>常用数学函数篇</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/math.md.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1>常用数学函数篇<a class="headerlink" href="#id1" title="永久链接至标题"></a></h1>
+<section id="abs">
+<h2>abs<a class="headerlink" href="#abs" title="永久链接至标题"></a></h2>
+<p>计算整型数的绝对值</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">abs</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：abs() 用来计算参数 j 的绝对值，然后将结果返回。</p></li>
+<li><p>返回值：返回参数 j 的绝对值结果。</p></li>
+<li><p>相关函数：labs, fabs</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">answer</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">answer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">abs</span><span class="p">(</span><span class="mi">-12</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;|-12| = %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">answer</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="p">|</span>-12<span class="p">|</span> <span class="o">=</span> <span class="m">12</span>
+</pre></div>
+</div>
+</section>
+<section id="acos">
+<h2>acos<a class="headerlink" href="#acos" title="永久链接至标题"></a></h2>
+<p>取反余弦函数数值</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;math.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">double</span><span class="w"> </span><span class="nf">acos</span><span class="w"> </span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">x</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：acos() 用来计算参数x的反余弦值，然后将结果返回。参数 x 范围为 -1 至 1 之间，超过此范围则会失败。</p></li>
+<li><p>返回值：返回 0 至 PI 之间的计算结果，单位为弧度，在函数库中角度均以弧度来表示。错误代码：</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">EDOM</span></code>：参数 x 超出范围。</p></li>
+</ul>
+</li>
+<li><p>附加说明：使用 GCC 编译时请加入 <code class="docutils literal notranslate"><span class="pre">-lm</span></code>。</p></li>
+<li><p>相关函数：asin , atan , atan2 , cos , sin , tan</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;math.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">angle</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">acos</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;angle = %f</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">angle</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">angle</span> <span class="o">=</span> <span class="m">1</span>.047198
+</pre></div>
+</div>
+</section>
+<section id="asin">
+<h2>asin<a class="headerlink" href="#asin" title="永久链接至标题"></a></h2>
+<p>取反正弦函数值</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;math.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">double</span><span class="w"> </span><span class="nf">asin</span><span class="w"> </span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">x</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：asin() 用来计算参数x的反正弦值，然后将结果返回。参数 x 范围为 -1 至 1 之间，超过此范围则会失败。</p></li>
+<li><p>返回值：返回 -PI/2 至 PI/2 之间的计算结果。错误代码：</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">EDOM</span></code>：参数 x 超出范围</p></li>
+</ul>
+</li>
+<li><p>附加说明：使用 GCC 编译时请加入 <code class="docutils literal notranslate"><span class="pre">-lm</span></code></p></li>
+<li><p>相关函数：acos , atan , atan2 , cos , sin , tan</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;math.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">	</span><span class="kt">double</span><span class="w"> </span><span class="n">angle</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="n">angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">asin</span><span class="w"> </span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;angle = %f</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">angle</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nv">angle</span> <span class="o">=</span> <span class="m">0</span>.523599
+</pre></div>
+</div>
+</section>
+<section id="atan">
+<h2>atan<a class="headerlink" href="#atan" title="永久链接至标题"></a></h2>
+<p>取反正切函数值</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;math.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">double</span><span class="w"> </span><span class="nf">atan</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">x</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：atan() 用来计算参数 x 的反正切值，然后将结果返回。</p></li>
+<li><p>返回值：返回 -PI/2 至 PI/2 之间的计算结果。</p></li>
+<li><p>附加说明：使用 GCC 编译时请加入 <code class="docutils literal notranslate"><span class="pre">-lm</span></code></p></li>
+<li><p>相关函数：acos，asin，atan2，cos，sin，tan</p></li>
+</ul>
+<p>示例</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;math.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">	</span><span class="kt">double</span><span class="w"> </span><span class="n">angle</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="n">angle</span><span class="w"> </span><span class="o">=</span><span class="n">atan</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;angle = %f</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">angle</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nv">angle</span> <span class="o">=</span> <span class="m">1</span>.570796
+</pre></div>
+</div>
+</section>
+<section id="atan2">
+<h2>atan2<a class="headerlink" href="#atan2" title="永久链接至标题"></a></h2>
+<p>取得反正切函数值</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;math.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">double</span><span class="w"> </span><span class="nf">atan2</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">x</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：atan2() 用来计算参数 y/x 的反正切值，然后将结果返回。</p></li>
+<li><p>返回值：返回 -PI/2 至 PI/2 之间的计算结果。</p></li>
+<li><p>附加说明：使用 GCC 编译时请加入 <code class="docutils literal notranslate"><span class="pre">-lm</span></code></p></li>
+<li><p>相关函数：acos，asin，atan，cos，sin，tan</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;math.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">	</span><span class="kt">double</span><span class="w"> </span><span class="n">angle</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="n">angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">atan2</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;angle = %f</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">angle</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nv">angle</span> <span class="o">=</span> <span class="m">0</span>.463648
+</pre></div>
+</div>
+</section>
+<section id="ceil">
+<h2>ceil<a class="headerlink" href="#ceil" title="永久链接至标题"></a></h2>
+<p>取不小于参数的最小整型数</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;math.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">double</span><span class="w"> </span><span class="nf">ceil</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">x</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：ceil() 会返回不小于参数 x 的最小整数值，结果以 double 形态返回。</p></li>
+<li><p>返回值：返回不小于参数 x 的最小整数值。</p></li>
+<li><p>附加说明：使用 GCC 编译时请加入 <code class="docutils literal notranslate"><span class="pre">-lm</span></code></p></li>
+<li><p>相关函数：fabs</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;math.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">	</span><span class="kt">double</span><span class="w"> </span><span class="n">value</span><span class="p">[</span><span class="w"> </span><span class="p">]</span><span class="o">=</span><span class="p">{</span><span class="mf">4.8</span><span class="p">,</span><span class="mf">1.12</span><span class="p">,</span><span class="mf">-2.2</span><span class="p">,</span><span class="mi">0</span><span class="p">};</span><span class="w"></span>
+<span class="w">	</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">value</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">!=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%f =&gt; %f</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">value</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">ceil</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="n">i</span><span class="p">]));</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="m">4</span>.800000 <span class="o">=</span>&gt; <span class="m">5</span>.000000
+<span class="m">1</span>.120000 <span class="o">=</span>&gt; <span class="m">2</span>.000000
+-2.200000 <span class="o">=</span>&gt; -2.000000
+</pre></div>
+</div>
+</section>
+<section id="cos">
+<h2>cos<a class="headerlink" href="#cos" title="永久链接至标题"></a></h2>
+<p>取余玄函数值</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;math.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">double</span><span class="w"> </span><span class="nf">cos</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">x</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：cos() 用来计算参数 x 的余玄值，然后将结果返回。</p></li>
+<li><p>返回值：返回 -1 至 1 之间的计算结果。</p></li>
+<li><p>附加说明：使用 GCC 编译时请加入 <code class="docutils literal notranslate"><span class="pre">-lm</span></code></p></li>
+<li><p>相关函数：acos，asin，atan，atan2，sin，tan</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;math.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">	</span><span class="kt">double</span><span class="w"> </span><span class="n">answer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cos</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;cos (0.5) = %f</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">answer</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>cos<span class="o">(</span><span class="m">0</span>.5<span class="o">)</span> <span class="o">=</span> <span class="m">0</span>.877583
+</pre></div>
+</div>
+</section>
+<section id="cosh">
+<h2>cosh<a class="headerlink" href="#cosh" title="永久链接至标题"></a></h2>
+<p>取双曲线余玄函数值</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;math.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">double</span><span class="w"> </span><span class="nf">cosh</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">x</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：cosh() 用来计算参数 x 的双曲线余玄值，然后将结果返回。数学定义式为 (exp(x)+exp(-x))/2。</p></li>
+<li><p>返回值：返回参数x的双曲线余玄值。</p></li>
+<li><p>附加说明：使用 GCC 编译时请加入 <code class="docutils literal notranslate"><span class="pre">-lm</span></code></p></li>
+<li><p>相关函数：sinh，tanh</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;math.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">	</span><span class="kt">double</span><span class="w"> </span><span class="n">answer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cosh</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;cosh(0.5) = %f</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">answer</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>cosh<span class="o">(</span><span class="m">0</span>.5<span class="o">)</span> <span class="o">=</span> <span class="m">1</span>.127626
+</pre></div>
+</div>
+</section>
+<section id="exp">
+<h2>exp<a class="headerlink" href="#exp" title="永久链接至标题"></a></h2>
+<p>计算指数</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;math.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">double</span><span class="w"> </span><span class="nf">exp</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">x</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：exp() 用来计算以 e 为底的 x 次方值，即 ex 值，然后将结果返回。</p></li>
+<li><p>返回值：返回 e 的 x 次方计算结果。</p></li>
+<li><p>附加说明：使用 GCC 编译时请加入 <code class="docutils literal notranslate"><span class="pre">-lm</span></code></p></li>
+<li><p>相关函数：log，log10，pow</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;math.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">	</span><span class="kt">double</span><span class="w"> </span><span class="n">answer</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="n">answer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">exp</span><span class="w"> </span><span class="p">(</span><span class="mi">10</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;e^10 =%f</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">answer</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>e^10 <span class="o">=</span> <span class="m">22026</span>.465795
+</pre></div>
+</div>
+</section>
+<section id="frexp">
+<h2>frexp<a class="headerlink" href="#frexp" title="永久链接至标题"></a></h2>
+<p>将浮点型数分为底数与指数</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;math.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">double</span><span class="w"> </span><span class="nf">frexp</span><span class="p">(</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">exp</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：frexp() 用来将参数 x 的浮点型数切割成底数和指数。底数部分直接返回，指数部分则借参数 exp 指针返回，将返回值乘以 2 的 exp 次方即为 x 的值。</p></li>
+<li><p>返回值：返回参数 x 的底数部分，指数部分则存于 exp 指针所指的地址。</p></li>
+<li><p>附加说明：使用 GCC 编译时请加入 <code class="docutils literal notranslate"><span class="pre">-lm</span></code></p></li>
+<li><p>相关函数：ldexp，modf</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;math.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">	</span><span class="kt">int</span><span class="w"> </span><span class="n">exp</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="kt">double</span><span class="w"> </span><span class="n">fraction</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="n">fraction</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">frexp</span><span class="w"> </span><span class="p">(</span><span class="mi">1024</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">exp</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;exp = %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">exp</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;fraction = %f</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">fraction</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nv">exp</span> <span class="o">=</span> <span class="m">11</span>
+<span class="nv">fraction</span> <span class="o">=</span> <span class="m">0</span>.500000 <span class="c1"># 0.5*(2^11)=1024</span>
+</pre></div>
+</div>
+</section>
+<section id="ldexp">
+<h2>ldexp<a class="headerlink" href="#ldexp" title="永久链接至标题"></a></h2>
+<p>计算 2 的次方值</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="cpf">&lt;math.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">double</span><span class="w"> </span><span class="nf">ldexp</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">exp</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：ldexp() 用来将参数 x 乘上 2 的 exp 次方值，即 x*2exp。</p></li>
+<li><p>返回值：返回计算结果。</p></li>
+<li><p>附加说明：使用 GCC 编译时请加入 <code class="docutils literal notranslate"><span class="pre">-lm</span></code></p></li>
+<li><p>相关函数：frexp</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* 计算3*(2^2)＝12 */</span><span class="w"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;math.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">	</span><span class="kt">int</span><span class="w"> </span><span class="n">exp</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="kt">double</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="n">answer</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="n">answer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ldexp</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;3*2^(2) = %f</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">answer</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="m">3</span>*2^<span class="o">(</span><span class="m">2</span><span class="o">)</span> <span class="o">=</span> <span class="m">12</span>.000000
+</pre></div>
+</div>
+</section>
+<section id="log">
+<h2>log<a class="headerlink" href="#log" title="永久链接至标题"></a></h2>
+<p>计算以 e 为底的对数值</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;math.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">double</span><span class="w"> </span><span class="nf">log</span><span class="w"> </span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">x</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：log() 用来计算以 e 为底的 x 对数值，然后将结果返回。</p></li>
+<li><p>返回值：返回参数 x 的自然对数值。</p>
+<p>错误代码：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">EDOM</span></code> 参数 x 为负数</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ERANGE</span></code> 参数 x 为零值，零的对数值无定义</p></li>
+</ul>
+</li>
+<li><p>附加说明：使用 GCC 编译时请加入 <code class="docutils literal notranslate"><span class="pre">-lm</span></code></p></li>
+<li><p>相关函数：exp，log10，pow</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;math.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">	</span><span class="kt">double</span><span class="w"> </span><span class="n">answer</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="n">answer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">log</span><span class="w"> </span><span class="p">(</span><span class="mi">100</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;log(100) = %f</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">answer</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>log<span class="o">(</span><span class="m">100</span><span class="o">)</span> <span class="o">=</span> <span class="m">4</span>.605170
+</pre></div>
+</div>
+</section>
+<section id="log10">
+<h2>log10<a class="headerlink" href="#log10" title="永久链接至标题"></a></h2>
+<p>计算以 10 为底的对数值</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;math.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">double</span><span class="w"> </span><span class="nf">log10</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">x</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：log10() 用来计算以 10 为底的x对数值，然后将结果返回。</p></li>
+<li><p>返回值：返回参数 x 以 10 为底的对数值。</p>
+<p>错误代码：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">EDOM</span></code> 参数 x 为负数</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ERANGE</span></code> 参数 x 为零值，零的对数值无定义</p></li>
+</ul>
+</li>
+<li><p>附加说明：使用 GCC 编译时请加入 <code class="docutils literal notranslate"><span class="pre">-lm</span></code></p></li>
+<li><p>相关函数：exp，log，pow</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;math.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">	</span><span class="kt">double</span><span class="w"> </span><span class="n">answer</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="n">answer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">log10</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;log10(100) = %f</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">answer</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>log10<span class="o">(</span><span class="m">100</span><span class="o">)</span> <span class="o">=</span> <span class="m">2</span>.000000
+</pre></div>
+</div>
+</section>
+<section id="pow">
+<h2>pow<a class="headerlink" href="#pow" title="永久链接至标题"></a></h2>
+<p>计算次方值</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;math.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">double</span><span class="w"> </span><span class="nf">pow</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">y</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：pow() 用来计算以 x 为底的 y 次方值，即 xy 值，然后将结果返回。</p></li>
+<li><p>返回值：返回 x 的 y 次方计算结果。</p>
+<p>错误代码：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">EDOM</span></code> 参数 x 为负数且参数 y 不是整数。</p></li>
+</ul>
+</li>
+<li><p>附加说明：使用 GCC 编译时请加入 <code class="docutils literal notranslate"><span class="pre">-lm</span></code></p></li>
+<li><p>相关函数：exp，log，log10</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;math.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">	</span><span class="kt">double</span><span class="w"> </span><span class="n">answer</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="n">answer</span><span class="w"> </span><span class="o">=</span><span class="n">pow</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">10</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;2^10 = %f</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">answer</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="m">2</span>^10 <span class="o">=</span> <span class="m">1024</span>.000000
+</pre></div>
+</div>
+</section>
+<section id="sin">
+<h2>sin<a class="headerlink" href="#sin" title="永久链接至标题"></a></h2>
+<p>取正玄函数值</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;math.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">double</span><span class="w"> </span><span class="nf">sin</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">x</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：sin() 用来计算参数 x 的正玄值，然后将结果返回。</p></li>
+<li><p>返回值：返回 -1 至 1 之间的计算结果。</p></li>
+<li><p>附加说明：使用 GCC 编译时请加入 <code class="docutils literal notranslate"><span class="pre">-lm</span></code></p></li>
+<li><p>相关函数：acos，asin，atan，atan2，cos，tan</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;math.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">	</span><span class="kt">double</span><span class="w"> </span><span class="n">answer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sin</span><span class="w"> </span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;sin(0.5) = %f</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">answer</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>sin<span class="o">(</span><span class="m">0</span>.5<span class="o">)</span> <span class="o">=</span> <span class="m">0</span>.479426
+</pre></div>
+</div>
+</section>
+<section id="sinh">
+<h2>sinh<a class="headerlink" href="#sinh" title="永久链接至标题"></a></h2>
+<p>取双曲线正玄函数值</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;math.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">double</span><span class="w"> </span><span class="nf">sinh</span><span class="p">(</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">x</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：sinh() 用来计算参数 x 的双曲线正玄值，然后将结果返回。数学定义式为 (exp(x)-exp(-x))/2。</p></li>
+<li><p>返回值：返回参数 x 的双曲线正玄值。</p></li>
+<li><p>附加说明：使用 GCC 编译时请加入 <code class="docutils literal notranslate"><span class="pre">-lm</span></code></p></li>
+<li><p>相关函数：cosh，tanh</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;math.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">	</span><span class="kt">double</span><span class="w"> </span><span class="n">answer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sinh</span><span class="w"> </span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;sinh(0.5) = %f</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">answer</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>sinh<span class="o">(</span><span class="m">0</span>.5<span class="o">)</span> <span class="o">=</span> <span class="m">0</span>.521095
+</pre></div>
+</div>
+</section>
+<section id="sqrt">
+<h2>sqrt<a class="headerlink" href="#sqrt" title="永久链接至标题"></a></h2>
+<p>计算平方根值</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;math.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">double</span><span class="w"> </span><span class="nf">sqrt</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">x</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：sqrt() 用来计算参数 x 的平方根，然后将结果返回。参数 x 必须为正数。</p></li>
+<li><p>返回值：返回参数 x 的平方根值。</p>
+<p>错误代码：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">EDOM</span></code> 参数 x 为负数。</p></li>
+</ul>
+</li>
+<li><p>附加说明：使用 GCC 编译时请加入 <code class="docutils literal notranslate"><span class="pre">-lm</span></code></p></li>
+<li><p>相关函数：hypotq</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* 计算200的平方根值*/</span><span class="w"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;math.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">	</span><span class="kt">double</span><span class="w"> </span><span class="n">root</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="n">root</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sqrt</span><span class="w"> </span><span class="p">(</span><span class="mi">200</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;answer is %f</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">root</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>answer is <span class="m">14</span>.142136
+</pre></div>
+</div>
+</section>
+<section id="tan">
+<h2>tan<a class="headerlink" href="#tan" title="永久链接至标题"></a></h2>
+<p>取正切函数值</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;math.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">double</span><span class="w"> </span><span class="nf">tan</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">x</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：tan() 用来计算参数 x 的正切值，然后将结果返回。</p></li>
+<li><p>返回值：返回参数 x 的正切值。</p></li>
+<li><p>附加说明：使用 GCC 编译时请加入 <code class="docutils literal notranslate"><span class="pre">-lm</span></code></p></li>
+<li><p>相关函数：atan，atan2，cos，sin</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;math.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">	</span><span class="kt">double</span><span class="w"> </span><span class="n">answer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tan</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;tan (0.5) = %f</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">answer</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>tan<span class="o">(</span><span class="m">0</span>.5<span class="o">)</span> <span class="o">=</span> <span class="m">0</span>.546302
+</pre></div>
+</div>
+</section>
+<section id="tanh">
+<h2>tanh<a class="headerlink" href="#tanh" title="永久链接至标题"></a></h2>
+<p>取双曲线正切函数值</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;math.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">double</span><span class="w"> </span><span class="nf">tanh</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">x</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：tanh() 用来计算参数x的双曲线正切值，然后将结果返回。数学定义式为 sinh(x)/cosh(x)。</p></li>
+<li><p>返回值：返回参数 x 的双曲线正切值。</p></li>
+<li><p>附加说明：使用 GCC 编译时请加入 <code class="docutils literal notranslate"><span class="pre">-lm</span></code></p></li>
+<li><p>相关函数：cosh，sinh</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;math.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">answer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tanh</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;tanh(0.5) = %f</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">answer</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>tanh<span class="o">(</span><span class="m">0</span>.5<span class="o">)</span> <span class="o">=</span> <span class="m">0</span>.462117
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="memory-string.html" class="btn btn-neutral float-left" title="内存及字符串操作篇" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="user-group.html" class="btn btn-neutral float-right" title="用户组篇" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2018-2023, 人人都懂物联网.</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用了 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a>开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

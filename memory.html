@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>内存控制篇 &mdash; Linux 常用 C 函数参考手册 v1.0 文档</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/translations.js"></script>
+        <script src="_static/js/baidutongji.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="日期时间篇" href="time.html" />
+    <link rel="prev" title="字符串转换篇" href="string-convert.html" />
+    <link href="_static/main.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> Linux 常用 C 函数参考手册
+            <img src="_static/GetIoT_Logo_150px.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="在文档中搜索" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="char.html">字符测试篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="string-convert.html">字符串转换篇</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">内存控制篇</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#calloc">calloc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#free">free</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#getpagesize">getpagesize</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#malloc">malloc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#mmap">mmap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#munmap">munmap</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="time.html">日期时间篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="memory-string.html">内存及字符串操作篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="math.html">常用数学函数篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user-group.html">用户组篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data-structure.html">数据结构及算法篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="file.html">文件操作篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="file-content.html">文件内容操作篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="permission.html">文件权限控制篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="process.html">进程操作篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ipcs.html">进程间通信篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pthreads.html">线程管理篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="signal.html">信号处理篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="network.html">网络接口篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="io-multiplexing.html">I/O 复用篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="env.html">环境变量篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tty.html">终端控制篇</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Linux 常用 C 函数参考手册</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>内存控制篇</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/memory.md.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1>内存控制篇<a class="headerlink" href="#id1" title="永久链接至标题"></a></h1>
+<section id="calloc">
+<h2>calloc<a class="headerlink" href="#calloc" title="永久链接至标题"></a></h2>
+<p>配置内存空间</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="nf">calloc</span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">nmemb</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">size</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：calloc() 用来配置 nmemb 个相邻的内存单位，每一单位的大小为 size，并返回指向第一个元素的指针。这和使用 <code class="docutils literal notranslate"><span class="pre">malloc(nmemb*size)</span></code> 的方式效果相同，不过，在 calloc() 配置内存时会将内存内容初始化为 0。</p></li>
+<li><p>返回值：若配置成功则返回一指针，失败则返回 NULL。</p></li>
+<li><p>相关函数：malloc, free, realloc, brk</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* 动态配置 10 个 struct test 空间 */</span><span class="w"></span>
+<span class="cp">#include</span><span class="cpf">&lt;stdlib.h&gt;</span><span class="cp"></span>
+
+<span class="k">struct</span><span class="w"> </span><span class="nc">test</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="mi">10</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">b</span><span class="p">[</span><span class="mi">20</span><span class="p">];</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="n">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">test</span><span class="w"> </span><span class="o">*</span><span class="n">ptr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">calloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">test</span><span class="p">),</span><span class="w"> </span><span class="mi">10</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="free">
+<h2>free<a class="headerlink" href="#free" title="永久链接至标题"></a></h2>
+<p>释放原先配置的内存</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">free</span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">ptr</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：参数 ptr 为指向先前由 malloc()、calloc() 或 realloc() 所返回的内存指针。调用 free() 后 ptr 所指的内存空间便会被收回。假若参数 ptr 所指的内存空间已被收回或是未知的内存地址，则调用 free() 可能会有无法预期的情况发生。若参数 ptr 为 NULL，则 free() 不会有任何作用。</p></li>
+<li><p>返回值：无</p></li>
+<li><p>相关函数：malloc, calloc, realloc, brk</p></li>
+</ul>
+</section>
+<section id="getpagesize">
+<h2>getpagesize<a class="headerlink" href="#getpagesize" title="永久链接至标题"></a></h2>
+<p>取得内存分页大小</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">size_t</span><span class="w"> </span><span class="nf">getpagesize</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：返回一分页的大小，单位为字节（byte）。此为系统的分页大小，不一定会和硬件分页大小相同。</p></li>
+<li><p>返回值：内存分页大小。</p></li>
+<li><p>附加说明：在 Intel x86 上其返回值应为 4096 bytes。</p></li>
+<li><p>相关函数：sbrk</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;page size = %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">getpagesize</span><span class="p">());</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="malloc">
+<h2>malloc<a class="headerlink" href="#malloc" title="永久链接至标题"></a></h2>
+<p>配置内存空间</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nf">malloc</span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">size</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：malloc() 用来配置内存空间，其大小由指定的 size 决定。</p></li>
+<li><p>返回值：若配置成功则返回一指针，失败则返回 NULL。</p></li>
+<li><p>相关函数：calloc, free, realloc, brk</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">malloc</span><span class="p">(</span><span class="mi">1024</span><span class="p">);</span><span class="w"> </span><span class="cm">/* 配置 1k 的内存 */</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="mmap">
+<h2>mmap<a class="headerlink" href="#mmap" title="永久链接至标题"></a></h2>
+<p>建立内存映射</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/mman.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="nf">mmap</span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">start</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">length</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">prot</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">flags</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">fd</span><span class="p">,</span><span class="w"> </span><span class="kt">off_t</span><span class="w"> </span><span class="n">offset</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：mmap() 用来将某个文件内容映射到内存中，对该内存区域的存取即是直接对该文件内容的读写。</p></li>
+<li><p>参数：</p>
+<ul>
+<li><p>参数 <strong>start</strong> 指向欲对应的内存起始地址，通常设为 NULL，代表让系统自动选定地址，对应成功后该地址会返回。</p></li>
+<li><p>参数 <strong>length</strong> 代表将文件中多大的部分对应到内存。</p></li>
+<li><p>参数 <strong>prot</strong> 代表映射区域的保护方式，有下列组合：</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">PROT_EXEC</span></code> 映射区域可被执行</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PROT_READ</span></code> 映射区域可被读取</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PROT_WRITE</span></code> 映射区域可被写入</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PROT_NONE</span></code> 映射区域不能存取</p></li>
+</ul>
+</li>
+<li><p>参数 <strong>flags</strong> 会影响映射区域的各种特性</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">MAP_FIXED</span></code> 如果参数 start 所指的地址无法成功建立映射时，则放弃映射，不对地址做修正。通常不鼓励用此标志。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MAP_SHARED</span></code> 对映射区域的写入数据会复制回文件内，而且允许其他映射该文件的进程共享。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MAP_PRIVATE</span></code> 对映射区域的写入操作会产生一个映射文件的复制，即私人的“写入时复制”（copy on write），对此区域作的任何修改都不会写回原来的文件内容。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MAP_ANONYMOUS</span></code> 建立匿名映射。此时会忽略参数 fd，不涉及文件，而且映射区域无法和其他进程共享。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MAP_DENYWRITE</span></code> 只允许对映射区域的写入操作，其他对文件直接写入的操作将会被拒绝。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MAP_LOCKED</span></code> 将映射区域锁定住，这表示该区域不会被置换（swap）。</p></li>
+<li><p>在调用 mmap() 时必须要指定 <code class="docutils literal notranslate"><span class="pre">MAP_SHARED</span></code> 或 <code class="docutils literal notranslate"><span class="pre">MAP_PRIVATE</span></code>。</p></li>
+</ul>
+</li>
+<li><p>参数 <strong>fd</strong> 为 open() 返回的文件描述符，代表欲映射到内存的文件。</p></li>
+<li><p>参数 <strong>offset</strong> 为文件映射的偏移量，通常设置为 0，代表从文件最前方开始对应，offset 必须是分页大小的整数倍。</p></li>
+</ul>
+</li>
+<li><p>返回值：若映射成功则返回映射区域的内存起始地址，否则返回 <code class="docutils literal notranslate"><span class="pre">MAP_FAILED</span></code> (-1)，错误原因存于 errno 中。错误代码可能如下：</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">EBADF</span></code> 参数 fd 不是有效的文件描述符。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EACCES</span></code> 存取权限有误。如果是 <code class="docutils literal notranslate"><span class="pre">MAP_PRIVATE</span></code> 情況下文件必须可读，使用 <code class="docutils literal notranslate"><span class="pre">MAP_SHARED</span></code> 则要有 <code class="docutils literal notranslate"><span class="pre">PROT_WRITE</span></code> 以及该文件要能写入。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EINVAL</span></code> 参数 start、length 或 offset 有一个不合法。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EAGAIN</span></code> 文件被锁住，或是有太多内存被锁住。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENOMEM</span></code> 内存不足。</p></li>
+</ul>
+</li>
+<li><p>相关函数：munmap, open</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* 利用 mmap() 来读取 /etc/passwd 文件内容 */</span><span class="w"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/stat.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;fcntl.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/mman.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">fd</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">start</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">stat</span><span class="w"> </span><span class="n">sb</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="s">&quot;/etc/passwd&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">O_RDONLY</span><span class="p">);</span><span class="w">  </span><span class="cm">/* 打开 /etc/passwd */</span><span class="w"></span>
+<span class="w">    </span><span class="n">fstat</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">sb</span><span class="p">);</span><span class="w">  </span><span class="cm">/* 取得文件大小 */</span><span class="w"></span>
+<span class="w">    </span><span class="n">start</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mmap</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="n">sb</span><span class="p">.</span><span class="n">st_size</span><span class="p">,</span><span class="w"> </span><span class="n">PROT_READ</span><span class="p">,</span><span class="w"> </span><span class="n">MAP_PRIVATE</span><span class="p">,</span><span class="w"> </span><span class="n">fd</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">start</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">MAP_FAILED</span><span class="p">)</span><span class="w">  </span><span class="cm">/* 判断是否映射成功 */</span><span class="w"></span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">start</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">munmap</span><span class="p">(</span><span class="n">start</span><span class="p">,</span><span class="w"> </span><span class="n">sb</span><span class="p">.</span><span class="n">st_size</span><span class="p">);</span><span class="w">  </span><span class="cm">/* 解除映射 */</span><span class="w"></span>
+<span class="w">    </span><span class="n">closed</span><span class="p">(</span><span class="n">fd</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>root : x : <span class="m">0</span> : root : /root : /bin/bash
+bin : x : <span class="m">1</span> : <span class="m">1</span> : bin : /bin :
+daemon : x : <span class="m">2</span> : <span class="m">2</span> :daemon : /sbin
+adm : x : <span class="m">3</span> : <span class="m">4</span> : adm : /var/adm :
+lp : x :4 :7 : lp : /var/spool/lpd :
+sync : x : <span class="m">5</span> : <span class="m">0</span> : sync : /sbin : bin/sync :
+shutdown : x : <span class="m">6</span> : <span class="m">0</span> : shutdown : /sbin : /sbin/shutdown
+halt : x : <span class="m">7</span> : <span class="m">0</span> : halt : /sbin : /sbin/halt
+mail : x : <span class="m">8</span> : <span class="m">12</span> : mail : /var/spool/mail :
+news : x :9 :13 : news : /var/spool/news :
+uucp : x :10 :14 : uucp : /var/spool/uucp :
+operator : x : <span class="m">11</span> : <span class="m">0</span> :operator : /root:
+games : x : <span class="m">12</span> :100 : games :/usr/games:
+gopher : x : <span class="m">13</span> : <span class="m">30</span> : gopher : /usr/lib/gopher-data:
+ftp : x : <span class="m">14</span> : <span class="m">50</span> : FTP User : /home/ftp:
+nobody : x :99: <span class="m">99</span>: Nobody : /:
+xfs :x :100 :101 : X Font Server : /etc/xll/fs : /bin/false
+gdm : x : <span class="m">42</span> :42 : : /home/gdm: /bin/bash
+kids : x : <span class="m">500</span> :500 :/home/kids : /bin/bash
+</pre></div>
+</div>
+</section>
+<section id="munmap">
+<h2>munmap<a class="headerlink" href="#munmap" title="永久链接至标题"></a></h2>
+<p>解除内存映射</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/mman.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">munmap</span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">start</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">length</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：munmap() 用来取消参数 start 所指的映射内存起始地址，参数 length 则是欲取消的内存大小。当进程结束或利用 exec 相关函数来执行其他程序时，映射内存会自动解除，但关闭对应的文件描述符时不会解除映射。</p></li>
+<li><p>返回值：如果解除映射成功则返回 0，否则返回 -1，错误原因存于 errno 中（错误代码 EINVAL）。</p></li>
+<li><p>相关函数：mmap</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<p>参考 <a class="reference external" href="#mmap">mmap()</a></p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="string-convert.html" class="btn btn-neutral float-left" title="字符串转换篇" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="time.html" class="btn btn-neutral float-right" title="日期时间篇" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2018-2023, 人人都懂物联网.</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用了 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a>开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>信号处理篇 &mdash; Linux 常用 C 函数参考手册 v1.0 文档</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/translations.js"></script>
+        <script src="_static/js/baidutongji.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="网络接口篇" href="network.html" />
+    <link rel="prev" title="线程管理篇" href="pthreads.html" />
+    <link href="_static/main.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> Linux 常用 C 函数参考手册
+            <img src="_static/GetIoT_Logo_150px.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="在文档中搜索" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="char.html">字符测试篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="string-convert.html">字符串转换篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="memory.html">内存控制篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="time.html">日期时间篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="memory-string.html">内存及字符串操作篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="math.html">常用数学函数篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user-group.html">用户组篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data-structure.html">数据结构及算法篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="file.html">文件操作篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="file-content.html">文件内容操作篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="permission.html">文件权限控制篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="process.html">进程操作篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ipcs.html">进程间通信篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pthreads.html">线程管理篇</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">信号处理篇</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#alarm">alarm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#kill">kill</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pause">pause</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sigaction">sigaction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sigaddset">sigaddset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sigdelset">sigdelset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sigemptyset">sigemptyset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sigfillset">sigfillset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sigismember">sigismember</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#signal">signal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sigpending">sigpending</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sigprocmask">sigprocmask</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sleep">sleep</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ferror">ferror</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#perror">perror</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#strerror">strerror</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#mkfifo">mkfifo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pclose">pclose</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pipe">pipe</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#popen">popen</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="network.html">网络接口篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="io-multiplexing.html">I/O 复用篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="env.html">环境变量篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tty.html">终端控制篇</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Linux 常用 C 函数参考手册</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>信号处理篇</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/signal.md.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1>信号处理篇<a class="headerlink" href="#id1" title="永久链接至标题"></a></h1>
+<section id="alarm">
+<h2>alarm<a class="headerlink" href="#alarm" title="永久链接至标题"></a></h2>
+<p>设置信号传送闹钟</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">alarm</span><span class="p">(</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">seconds</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：alarm() 用来设置信号 <code class="docutils literal notranslate"><span class="pre">SIGALRM</span></code> 在经过参数 seconds 指定的秒数后传送给目前的进程。如果参数 seconds 为 0，则之前设置的闹钟会被取消，并将剩下的时间返回。</p></li>
+<li><p>返回值：返回之前闹钟的剩余秒数，如果之前未设闹钟则返回 0。</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：signal，sleep</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;signal.h&gt;</span><span class="cp"></span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">handler</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;hello</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">signal</span><span class="p">(</span><span class="n">SIGALRM</span><span class="p">,</span><span class="w"> </span><span class="n">handler</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">alarm</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span>
+<span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">&lt;</span><span class="mi">7</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;sleep %d ...</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">i</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>sleep <span class="m">1</span> ...
+sleep <span class="m">2</span> ...
+sleep <span class="m">3</span> ...
+sleep <span class="m">4</span> ...
+sleep <span class="m">5</span> ...
+hello
+sleep <span class="m">6</span> ...
+</pre></div>
+</div>
+</section>
+<section id="kill">
+<h2>kill<a class="headerlink" href="#kill" title="永久链接至标题"></a></h2>
+<p>传送信号给指定的进程</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;signal.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">kill</span><span class="p">(</span><span class="kt">pid_t</span><span class="w"> </span><span class="n">pid</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">sig</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：kill() 可以用来送参数 sig 指定的信号给参数 pid 指定的进程。</p>
+<p>参数 pid 有几种情况：</p>
+<ul class="simple">
+<li><p>pid&gt;0 将信号传给进程识别码为 pid 的进程。</p></li>
+<li><p>pid=0 将信号传给和目前进程相同进程组的所有进程</p></li>
+<li><p>pid=-1 将信号广播传送给系统内所有的进程</p></li>
+<li><p>pid&lt;0 将信号传给进程组识别码为 pid 绝对值的所有进程</p></li>
+</ul>
+<p>参数 sig 代表的信号编号可参考附录 D</p>
+</li>
+<li><p>返回值：执行成功则返回 0，如果有错误则返回 -1。</p>
+<p>错误代码：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">EINVAL</span></code> 参数 sig 不合法</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ESRCH</span></code> 参数 pid 所指定的进程或进程组不存在</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EPERM</span></code> 权限不够无法传送信号给指定进程</p></li>
+</ul>
+</li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：raise，signal</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;signal.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/wait.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">pid_t</span><span class="w"> </span><span class="n">pid</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">status</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">pid</span><span class="o">=</span><span class="w"> </span><span class="n">fork</span><span class="p">()))</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Hi I am child process!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="n">sleep</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="k">return</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="k">else</span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;send signal to child process (%d) </span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">pid</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="n">kill</span><span class="p">(</span><span class="n">pid</span><span class="w"> </span><span class="p">,</span><span class="n">SIGABRT</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="n">wait</span><span class="p">(</span><span class="o">&amp;</span><span class="n">status</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">WIFSIGNALED</span><span class="p">(</span><span class="n">status</span><span class="p">))</span><span class="w"></span>
+<span class="w">            </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;chile process receive signal %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">WTERMSIG</span><span class="p">(</span><span class="n">status</span><span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>sen signal to child process<span class="o">(</span><span class="m">3170</span><span class="o">)</span>
+Hi I am child process!
+child process receive signal <span class="m">6</span>
+</pre></div>
+</div>
+</section>
+<section id="pause">
+<h2>pause<a class="headerlink" href="#pause" title="永久链接至标题"></a></h2>
+<p>让进程暂停直到信号出现</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">pause</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：pause() 会令目前的进程暂停（进入睡眠状态），直到被信号(signal)所中断。</p></li>
+<li><p>返回值：只返回-1。</p>
+<p>错误代码：<code class="docutils literal notranslate"><span class="pre">EINTR</span></code> 有信号到达中断了此函数。</p>
+</li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：kill，signal，sleep</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</section>
+<section id="sigaction">
+<h2>sigaction<a class="headerlink" href="#sigaction" title="永久链接至标题"></a></h2>
+<p>查询或设置信号处理方式</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;signal.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">sigaction</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">signum</span><span class="p">,</span><span class="k">const</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">sigaction</span><span class="w"> </span><span class="o">*</span><span class="n">act</span><span class="p">,</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">sigaction</span><span class="w"> </span><span class="o">*</span><span class="n">oldact</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：sigaction()会依参数signum指定的信号编号来设置该信号的处理函数。参数signum可以指定SIGKILL和SIGSTOP以外的所有信号。</p>
+<p>如参数结构sigaction定义如下：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">sigaction</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">sa_handler</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="kt">sigset_t</span><span class="w"> </span><span class="n">sa_mask</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">sa_flags</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">sa_restorer</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>sa_handler 此参数和 signal() 的参数 handler 相同，代表新的信号处理函数，其他意义请参考 signal()。
+sa_mask 用来设置在处理该信号时暂时将 sa_mask 指定的信号搁置。
+sa_restorer 此参数没有使用。
+sa_flags 用来设置信号处理的其他相关操作，下列的数值可用。</p>
+<p>OR 运算（|）组合
+<code class="docutils literal notranslate"><span class="pre">A_NOCLDSTOP</span></code>：如果参数 signum 为 <code class="docutils literal notranslate"><span class="pre">SIGCHLD</span></code>，则当子进程暂停时并不会通知父进程
+<code class="docutils literal notranslate"><span class="pre">SA_ONESHOT</span></code>/<code class="docutils literal notranslate"><span class="pre">SA_RESETHAND</span></code>:当调用新的信号处理函数前，将此信号处理方式改为系统预设的方式。
+<code class="docutils literal notranslate"><span class="pre">SA_RESTART</span></code>:被信号中断的系统调用会自行重启
+<code class="docutils literal notranslate"><span class="pre">SA_NOMASK</span></code>/<code class="docutils literal notranslate"><span class="pre">SA_NODEFER</span></code>:在处理此信号未结束前不理会此信号的再次到来。
+如果参数oldact不是 NULL 指针，则原来的信号处理方式会由此结构sigaction 返回。</p>
+</li>
+<li><p>返回值：执行成功则返回0，如果有错误则返回-1。</p>
+<p>错误代码：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">EINVAL</span></code> 参数 signum 不合法， 或是试图拦截 <code class="docutils literal notranslate"><span class="pre">SIGKILL</span></code>/<code class="docutils literal notranslate"><span class="pre">SIGSTOPSIGKILL</span></code> 信号</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EFAULT</span></code> 参数 act，oldact 指针地址无法存取。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EINTR</span></code> 此调用被中断</p></li>
+</ul>
+</li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：signal，sigprocmask，sigpending，sigsuspend</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;signal.h&gt;</span><span class="cp"></span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">show_handler</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">sigaction</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">act</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">act</span><span class="o">-&gt;</span><span class="n">sa_flags</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="nl">SIG_DFL</span><span class="p">:</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Default action</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="k">break</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="nl">SIG_IGN</span><span class="p">:</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Ignore the signal</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="k">break</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">default</span><span class="o">:</span><span class="w"> </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;0x%x</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">act</span><span class="o">-&gt;</span><span class="n">sa_handler</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">sigaction</span><span class="w"> </span><span class="n">act</span><span class="p">,</span><span class="n">oldact</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">act</span><span class="p">.</span><span class="n">sa_handler</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">show_handler</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">act</span><span class="p">.</span><span class="n">sa_flags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SA_ONESHOT</span><span class="o">|</span><span class="n">SA_NOMASK</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">sigaction</span><span class="p">(</span><span class="n">SIGUSR1</span><span class="p">,</span><span class="o">&amp;</span><span class="n">act</span><span class="p">,</span><span class="o">&amp;</span><span class="n">oldact</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">5</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="mi">15</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;sa_handler of signal %2d =&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="n">sigaction</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="nb">NULL</span><span class="p">,</span><span class="o">&amp;</span><span class="n">oldact</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>sa_handler of signal <span class="nv">5</span> <span class="o">=</span> Default action
+sa_handler of signal <span class="nv">6</span><span class="o">=</span> Default action
+sa_handler of signal <span class="nv">7</span> <span class="o">=</span> Default action
+sa_handler of signal <span class="nv">8</span> <span class="o">=</span> Default action
+sa_handler of signal <span class="nv">9</span> <span class="o">=</span> Default action
+sa_handler of signal <span class="nv">10</span> <span class="o">=</span> 0x8048400
+sa_handler of signal <span class="nv">11</span> <span class="o">=</span> Default action
+sa_handler of signal <span class="nv">12</span> <span class="o">=</span> Default action
+sa_handler of signal <span class="nv">13</span> <span class="o">=</span> Default action
+sa_handler of signal <span class="nv">14</span> <span class="o">=</span> Default action
+</pre></div>
+</div>
+</section>
+<section id="sigaddset">
+<h2>sigaddset<a class="headerlink" href="#sigaddset" title="永久链接至标题"></a></h2>
+<p>增加一个信号至信号集</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;signal.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">sigaddset</span><span class="p">(</span><span class="kt">sigset_t</span><span class="w"> </span><span class="o">*</span><span class="n">set</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">signum</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：sigaddset()用来将参数signum 代表的信号加入至参数set 信号集里。</p></li>
+<li><p>返回值：执行成功则返回0，如果有错误则返回-1。</p>
+<p>错误代码：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">EFAULT</span></code> 参数set指针地址无法存取</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EINVAL</span></code> 参数signum非合法的信号编号</p></li>
+</ul>
+</li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：sigemptyset，sigfillset，sigdelset，sigismember</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</section>
+<section id="sigdelset">
+<h2>sigdelset<a class="headerlink" href="#sigdelset" title="永久链接至标题"></a></h2>
+<p>从信号集里删除一个信号</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;signal.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">sigdelset</span><span class="p">(</span><span class="kt">sigset_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">set</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">signum</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：sigdelset()用来将参数signum代表的信号从参数set信号集里删除。</p></li>
+<li><p>返回值：执行成功则返回0，如果有错误则返回-1。</p>
+<p>错误代码：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">EFAULT</span></code> 参数 set 指针地址无法存取</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EINVAL</span></code> 参数 signum 非合法的信号编号</p></li>
+</ul>
+</li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：sigemptyset，sigfillset，sigaddset，sigismember</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</section>
+<section id="sigemptyset">
+<h2>sigemptyset<a class="headerlink" href="#sigemptyset" title="永久链接至标题"></a></h2>
+<p>初始化信号集</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;signal.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">sigemptyset</span><span class="p">(</span><span class="kt">sigset_t</span><span class="w"> </span><span class="o">*</span><span class="n">set</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：sigemptyset() 用来将参数 set 信号集初始化并清空。</p></li>
+<li><p>返回值：执行成功则返回0，如果有错误则返回-1。</p>
+<p>错误代码：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">EFAULT</span></code> 参数set指针地址无法存取</p></li>
+</ul>
+</li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：sigaddset，sigfillset，sigdelset，sigismember</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</section>
+<section id="sigfillset">
+<h2>sigfillset<a class="headerlink" href="#sigfillset" title="永久链接至标题"></a></h2>
+<p>将所有信号加入至信号集</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;signal.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">sigfillset</span><span class="p">(</span><span class="kt">sigset_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">set</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：sigfillset()用来将参数set信号集初始化，然后把所有的信号加入到此信号集里。</p></li>
+<li><p>返回值：执行成功则返回0，如果有错误则返回-1。</p>
+<p>错误代码：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">EFAULT</span></code> 参数set指针地址无法存取</p></li>
+</ul>
+</li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：sigempty，sigaddset，sigdelset，sigismember</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</section>
+<section id="sigismember">
+<h2>sigismember<a class="headerlink" href="#sigismember" title="永久链接至标题"></a></h2>
+<p>测试某个信号是否已加入至信号集里</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;signal.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">sigismember</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">sigset_t</span><span class="w"> </span><span class="o">*</span><span class="n">set</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">signum</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：sigismember()用来测试参数signum 代表的信号是否已加入至参数set信号集里。如果信号集里已有该信号则返回1，否则返回0。</p></li>
+<li><p>返回值：信号集已有该信号则返回1，没有则返回0。如果有错误则返回-1。</p>
+<p>错误代码：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">EFAULT</span></code> 参数set指针地址无法存取</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EINVAL</span></code> 参数signum 非合法的信号编号</p></li>
+</ul>
+</li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：sigemptyset，sigfillset，sigaddset，sigdelset</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</section>
+<section id="signal">
+<h2>signal<a class="headerlink" href="#signal" title="永久链接至标题"></a></h2>
+<p>设置信号处理方式</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;signal.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">signal</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">signum</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="p">(</span><span class="o">*</span><span class="w"> </span><span class="n">handler</span><span class="p">)(</span><span class="kt">int</span><span class="p">)))(</span><span class="kt">int</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：signal()会依参数signum 指定的信号编号来设置该信号的处理函数。当指定的信号到达时就会跳转到参数handler指定的函数执行。如果参数handler不是函数指针，则必须是下列两个常数之一：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">SIG_IGN</span></code> 忽略参数signum指定的信号。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SIG_DFL</span></code> 将参数signum 指定的信号重设为核心预设的信号处理方式。</p></li>
+</ul>
+<p>关于信号的编号和说明，请参考附录D</p>
+</li>
+<li><p>返回值：返回先前的信号处理函数指针，如果有错误则返回SIG_ERR(-1)。</p></li>
+<li><p>附加说明：在信号发生跳转到自定的handler处理函数执行后，系统会自动将此处理函数换回原来系统预设的处理方式，如果要改变此操作请改用sigaction()。</p></li>
+<li><p>相关函数：sigaction，kill，raise</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<p>参考 alarm() 或 raise()。</p>
+</section>
+<section id="sigpending">
+<h2>sigpending<a class="headerlink" href="#sigpending" title="永久链接至标题"></a></h2>
+<p>查询被搁置的信号</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;signal.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">sigpending</span><span class="p">(</span><span class="kt">sigset_t</span><span class="w"> </span><span class="o">*</span><span class="n">set</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：sigpending()会将被搁置的信号集合由参数set指针返回。</p></li>
+<li><p>返回值：执行成功则返回0，如果有错误则返回-1。</p>
+<p>错误代码：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">EFAULT</span></code> 参数 set 指针地址无法存取</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EINTR</span></code> 此调用被中断。</p></li>
+</ul>
+</li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：signal，sigaction，sigprocmask，sigsuspend</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</section>
+<section id="sigprocmask">
+<h2>sigprocmask<a class="headerlink" href="#sigprocmask" title="永久链接至标题"></a></h2>
+<p>查询或设置信号遮罩</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;signal.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">sigprocmask</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">how</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">sigset_t</span><span class="w"> </span><span class="o">*</span><span class="n">set</span><span class="p">,</span><span class="w"> </span><span class="kt">sigset_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">oldset</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：sigprocmask()可以用来改变目前的信号遮罩，其操作依参数how来决定</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">SIG_BLOCK</span></code> 新的信号遮罩由目前的信号遮罩和参数set 指定的信号遮罩作联集</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SIG_UNBLOCK</span></code> 将目前的信号遮罩删除掉参数set指定的信号遮罩</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SIG_SETMASK</span></code> 将目前的信号遮罩设成参数set指定的信号遮罩。</p></li>
+</ul>
+<p>如果参数oldset不是NULL指针，那么目前的信号遮罩会由此指针返回。</p>
+</li>
+<li><p>返回值：执行成功则返回0，如果有错误则返回-1。</p>
+<p>错误代码：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">EFAULT</span></code> 参数set，oldset指针地址无法存取。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EINTR</span></code> 此调用被中断</p></li>
+</ul>
+</li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：signal，sigaction，sigpending，sigsuspend</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</section>
+<section id="sleep">
+<h2>sleep<a class="headerlink" href="#sleep" title="永久链接至标题"></a></h2>
+<p>让进程暂停执行一段时间</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">sleep</span><span class="p">(</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">seconds</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：sleep()会令目前的进程暂停，直到达到参数seconds 所指定的时间，或是被信号所中断。</p></li>
+<li><p>返回值：若进程暂停到参数 seconds 所指定的时间则返回0，若有信号中断则返回剩余秒数。</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：signal，alarm</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</section>
+<section id="ferror">
+<h2>ferror<a class="headerlink" href="#ferror" title="永久链接至标题"></a></h2>
+<p>检查文件流是否有错误发生</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">ferror</span><span class="p">(</span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="n">stream</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：ferror()用来检查参数stream所指定的文件流是否发生了错误情况，如有错误发生则返回非0值。</p></li>
+<li><p>返回值：如果文件流有错误发生则返回非0值。</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：clearerr，perror</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</section>
+<section id="perror">
+<h2>perror<a class="headerlink" href="#perror" title="永久链接至标题"></a></h2>
+<p>打印出错误原因信息字符串</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">perror</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">s</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：perror()用来将上一个函数发生错误的原因输出到标准错误(stderr)。参数s所指的字符串会先打印出，后面再加上错误原因字符串。此错误原因依照全局变量errno的值来决定要输出的字符串。</p></li>
+<li><p>返回值：无</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：strerror</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="n">fp</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">fp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fopen</span><span class="p">(</span><span class="s">&quot;/tmp/noexist&quot;</span><span class="p">,</span><span class="s">&quot;r+&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">fp</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"> </span>
+<span class="w">        </span><span class="n">perror</span><span class="p">(</span><span class="s">&quot;fopen&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ ./perror_example
+fopen : No such file or diretory
+</pre></div>
+</div>
+</section>
+<section id="strerror">
+<h2>strerror<a class="headerlink" href="#strerror" title="永久链接至标题"></a></h2>
+<p>返回错误原因的描述字符串</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nf">strerror</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">errnum</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：strerror()用来依参数errnum的错误代码来查询其错误原因的描述字符串，然后将该字符串指针返回。</p></li>
+<li><p>返回值：返回描述错误原因的字符串指针。</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：perror</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* 显示错误代码0 至9 的错误原因描述*/</span><span class="w"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="mi">10</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d : %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">strerror</span><span class="p">(</span><span class="n">i</span><span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="m">0</span> : Success
+<span class="m">1</span> : Operation not permitted
+<span class="m">2</span> : No such file or directory
+<span class="m">3</span> : No such process
+<span class="m">4</span> : Interrupted system call
+<span class="m">5</span> : Input/output error
+<span class="m">6</span> : Device not configured
+<span class="m">7</span> : Argument list too long
+<span class="m">8</span> : Exec format error
+<span class="m">9</span> : Bad file descriptor
+</pre></div>
+</div>
+</section>
+<section id="mkfifo">
+<h2>mkfifo<a class="headerlink" href="#mkfifo" title="永久链接至标题"></a></h2>
+<p>建立具名管道</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/stat.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">mkfifo</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">pathname</span><span class="p">,</span><span class="w"> </span><span class="kt">mode_t</span><span class="w"> </span><span class="n">mode</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：mkfifo()会依参数pathname建立特殊的FIFO文件，该文件必须不存在，而参数mode为该文件的权限（mode%~umask），因此umask值也会影响到FIFO文件的权限。mkfifo()建立的 FIFO 文件其他进程都可以用读写一般文件的方式存取。</p>
+<p>当使用 open() 来打开FIFO文件时，<code class="docutils literal notranslate"><span class="pre">O_NONBLOCK</span></code> 旗标会有影响：</p>
+<ol class="simple">
+<li><p>当使用O_NONBLOCK 旗标时，打开FIFO 文件来读取的操作会立刻返回，但是若还没有其他进程打开FIFO 文件来读取，则写入的操作会返回ENXIO 错误代码。</p></li>
+<li><p>没有使用O_NONBLOCK 旗标时，打开FIFO 来读取的操作会等到其他进程打开FIFO文件来写入才正常返回。同样地，打开FIFO文件来写入的操作会等到其他进程打开FIFO 文件来读取后才正常返回。</p></li>
+</ol>
+</li>
+<li><p>返回值：若成功则返回0，否则返回-1，错误原因存于errno中。</p>
+<p>错误代码：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">EACCESS</span></code> 参数 pathname 所指定的目录路径无可执行的权限</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EEXIST</span></code> 参数 pathname 所指定的文件已存在。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENAMETOOLONG</span></code> 参数 pathname 的路径名称太长。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENOENT</span></code> 参数 pathname 包含的目录不存在</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENOSPC</span></code> 文件系统的剩余空间不足</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENOTDIR</span></code> 参数 pathname 路径中的目录存在但却非真正的目录。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EROFS</span></code> 参数 pathname 指定的文件存在于只读文件系统内。</p></li>
+</ul>
+</li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：pipe，popen，open，umask</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/stat.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;fcntl.h&gt;</span><span class="cp"></span>
+
+<span class="cp">#define FIFO &quot;GETIOT&quot;</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">buffer</span><span class="p">[</span><span class="mi">80</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">fd</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">unlink</span><span class="p">(</span><span class="n">FIFO</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">mkfifo</span><span class="p">(</span><span class="n">FIFO</span><span class="p">,</span><span class="w"> </span><span class="mo">0666</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">fork</span><span class="p">()</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="kt">char</span><span class="w"> </span><span class="n">s</span><span class="p">[</span><span class="w"> </span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;hello!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="n">FIFO</span><span class="p">,</span><span class="w"> </span><span class="n">O_WRONLY</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="n">write</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span><span class="w"> </span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">s</span><span class="p">));</span><span class="w"></span>
+<span class="w">        </span><span class="n">close</span><span class="p">(</span><span class="n">fd</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">fd</span><span class="o">=</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="n">FIFO</span><span class="p">,</span><span class="w"> </span><span class="n">O_RDONLY</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="n">read</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span><span class="w"> </span><span class="n">buffer</span><span class="p">,</span><span class="w"> </span><span class="mi">80</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">buffer</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="n">close</span><span class="p">(</span><span class="n">fd</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>hello!
+</pre></div>
+</div>
+</section>
+<section id="pclose">
+<h2>pclose<a class="headerlink" href="#pclose" title="永久链接至标题"></a></h2>
+<p>关闭管道 I/O</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">pclose</span><span class="p">(</span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">stream</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：pclose() 用来关闭由 popen 所建立的管道及文件指针。参数 stream 为先前由 popen() 所返回的文件指针。</p></li>
+<li><p>返回值：返回子进程的结束状态。如果有错误则返回-1，错误原因存于errno中。</p>
+<p>错误代码：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ECHILD</span></code> pclose()无法取得子进程的结束状态。</p></li>
+</ul>
+</li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：popen</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<p>参考 popen()。</p>
+</section>
+<section id="pipe">
+<h2>pipe<a class="headerlink" href="#pipe" title="永久链接至标题"></a></h2>
+<p>建立管道</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">pipe</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">filedes</span><span class="p">[</span><span class="mi">2</span><span class="p">]);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：pipe()会建立管道，并将文件描述词由参数filedes数组返回。filedes[0]为管道里的读取端，filedes[1]则为管道的写入端。</p></li>
+<li><p>返回值：若成功则返回零，否则返回-1，错误原因存于errno中。</p>
+<p>错误代码：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">EMFILE</span></code> 进程已用完文件描述词最大量。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENFILE</span></code> 系统已无文件描述词可用。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EFAULT</span></code> 参数filedes数组地址不合法。</p></li>
+</ul>
+</li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：mkfifo，popen，read，write，fork</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* 父进程借管道将字符串&quot;hello!\n&quot;传给子进程并显示*/</span><span class="w"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">filedes</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">buffer</span><span class="p">[</span><span class="mi">80</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="n">pipe</span><span class="p">(</span><span class="n">filedes</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">fork</span><span class="p">()</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="cm">/* 父进程*/</span><span class="w"></span>
+<span class="w">        </span><span class="kt">char</span><span class="w"> </span><span class="n">s</span><span class="p">[</span><span class="w"> </span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;hello!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="n">write</span><span class="p">(</span><span class="n">filedes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">s</span><span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="cm">/*子进程*/</span><span class="w"></span>
+<span class="w">        </span><span class="n">read</span><span class="p">(</span><span class="n">filedes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="n">buffer</span><span class="p">,</span><span class="w"> </span><span class="mi">80</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">buffer</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ ./pipe_example 
+hello!
+</pre></div>
+</div>
+</section>
+<section id="popen">
+<h2>popen<a class="headerlink" href="#popen" title="永久链接至标题"></a></h2>
+<p>建立管道 I/O</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nf">popen</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">command</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">type</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：popen()会调用fork()产生子进程，然后从子进程中调用/bin/sh -c来执行参数command的指令。参数type可使用“r”代表读取，“w”代表写入。依照此type值，popen()会建立管道连到子进程的标准输出设备或标准输入设备，然后返回一个文件指针。随后进程便可利用此文件指针来读取子进程的输出设备或是写入到子进程的标准输入设备中。此外，所有使用文件指针(FILE*)操作的函数也都可以使用，除了fclose()以外。</p></li>
+<li><p>返回值：若成功则返回文件指针，否则返回NULL，错误原因存于errno中。</p></li>
+<li><p>附加说明：在编写具SUID/SGID权限的程序时请尽量避免使用popen()，popen()会继承环境变量，通过环境变量可能会造成系统安全的问题。</p></li>
+<li><p>相关函数：pipe，mkfifo，pclose，fork，system，fopen</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">fp</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">buffer</span><span class="p">[</span><span class="mi">80</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="n">fp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">popen</span><span class="p">(</span><span class="s">&quot;cat /etc/passwd&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;r&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">fgets</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">buffer</span><span class="p">),</span><span class="w"> </span><span class="n">fp</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">buffer</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">pclose</span><span class="p">(</span><span class="n">fp</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ ./popen_example 
+root:x:0:0:root:/root:/bin/bash
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="pthreads.html" class="btn btn-neutral float-left" title="线程管理篇" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="network.html" class="btn btn-neutral float-right" title="网络接口篇" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2018-2023, 人人都懂物联网.</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用了 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a>开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

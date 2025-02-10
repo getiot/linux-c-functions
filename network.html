@@ -1,0 +1,1402 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>网络接口篇 &mdash; Linux 常用 C 函数参考手册 v1.0 文档</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/translations.js"></script>
+        <script src="_static/js/baidutongji.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="I/O 复用篇" href="io-multiplexing.html" />
+    <link rel="prev" title="信号处理篇" href="signal.html" />
+    <link href="_static/main.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> Linux 常用 C 函数参考手册
+            <img src="_static/GetIoT_Logo_150px.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="在文档中搜索" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="char.html">字符测试篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="string-convert.html">字符串转换篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="memory.html">内存控制篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="time.html">日期时间篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="memory-string.html">内存及字符串操作篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="math.html">常用数学函数篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user-group.html">用户组篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data-structure.html">数据结构及算法篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="file.html">文件操作篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="file-content.html">文件内容操作篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="permission.html">文件权限控制篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="process.html">进程操作篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ipcs.html">进程间通信篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pthreads.html">线程管理篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="signal.html">信号处理篇</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">网络接口篇</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#accept">accept</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#bind">bind</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#connect">connect</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#endprotoent">endprotoent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#endservent">endservent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#gethostbyname">gethostbyname</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#getsockopt">getsockopt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#htonl">htonl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#htons">htons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#inet-addr">inet_addr</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#inet-aton">inet_aton</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#inet-ntoa">inet_ntoa</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#listen">listen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ntohl">ntohl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ntohs">ntohs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#recv">recv</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#recvfrom">recvfrom</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#recvmsg">recvmsg</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#send">send</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sendto">sendto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sendmsg">sendmsg</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#setprotoent">setprotoent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#setservent">setservent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#setsockopt">setsockopt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#shutdown">shutdown</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#socket">socket</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#res-ninit">res_ninit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#res-nclose">res_nclose</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#res-nquery">res_nquery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#res-nsearch">res_nsearch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#res-nquerydomain">res_nquerydomain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#res-nmkquery">res_nmkquery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#res-nsend">res_nsend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dn-comp">dn_comp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dn-expand">dn_expand</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="io-multiplexing.html">I/O 复用篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="env.html">环境变量篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tty.html">终端控制篇</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Linux 常用 C 函数参考手册</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>网络接口篇</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/network.md.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1>网络接口篇<a class="headerlink" href="#id1" title="永久链接至标题"></a></h1>
+<section id="accept">
+<h2>accept<a class="headerlink" href="#accept" title="永久链接至标题"></a></h2>
+<p>接受 socket 连接</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/socket.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">accept</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">sockfd</span><span class="p">,</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">sockaddr</span><span class="w"> </span><span class="o">*</span><span class="n">addr</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">addrlen</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：accept() 用来接受参数 sockfd 的 socket 连线。参数 sockfd 的 socket 必须先经 bind()、listen() 函数处理过，当有连线进来时 accept() 会返回一个新的 socket 处理代码，往后的数据传送与读取就是经由新的 socket 处理，而原来参数 sockfd 的 socket 能继续使用 accept() 来接受新的连线要求。连线成功时，参数 addr 所指的结构体会被系统填入远程主机的地址数据，参数 addrlen 为 scokaddr 的结构体长度。关于结构体 sockaddr 的定义请参考 bind()。</p></li>
+<li><p>返回值：成功则返回新的 socket 处理代码，失败返回 -1，错误原因存于 errno 中。错误代码如下：</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">EBADF</span></code> 参数 sockfd 非合法 socket 处理代码；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EFAULT</span></code> 参数 addr 指针指向无法存取的内存空间；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENOTSOCK</span></code> 参数 sockfd 为一文件描述符，非 socket；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EOPNOTSUPP</span></code> 指定的 socket 并非 <code class="docutils literal notranslate"><span class="pre">SOCK_STREAM</span></code>；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EPERM</span></code> 防火墙拒绝此连接；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENOBUFS</span></code> 系统的缓冲内存不足；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENOMEM</span></code> 核心内存不足。</p></li>
+</ul>
+</li>
+<li><p>相关函数：socket, bind, listen, connect</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<p>参考 <a class="reference external" href="#listen">listen()</a></p>
+</section>
+<section id="bind">
+<h2>bind<a class="headerlink" href="#bind" title="永久链接至标题"></a></h2>
+<p>绑定 socket</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/socket.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">bind</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">sockfd</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">sockaddr</span><span class="w"> </span><span class="o">*</span><span class="n">addr</span><span class="p">,</span><span class="w"> </span><span class="kt">socklen_t</span><span class="w"> </span><span class="n">addrlen</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：bind() 用来给参数 sockfd 的 socket 绑定一个 IP 地址，该地址由参数 addr 指向一 sockaddr 结构体，对于不同的 socket domain 定义了一个通用的数据结构。参数 addrlen 为 sockaddr 的结构长度。</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">sockaddr</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">short</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">sa_family</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">sa_data</span><span class="p">[</span><span class="mi">14</span><span class="p">];</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+</pre></div>
+</div>
+<p>sa_family 为调用 socket() 时的 domain 参数，即 AF_XXX 值；sa_data 最多使用 14 个字符长度。</p>
+<p>此 sockaddr 结构体会因为使用不同的 socket domain 而有不同结构定义，例如使用 AF_INET domain，其 socketaddr 结构体定义如下：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">socketaddr_in</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">short</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">sin_family</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">sin_port</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">in_addr</span><span class="w"> </span><span class="n">sin_addr</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">sin_zero</span><span class="p">[</span><span class="mi">8</span><span class="p">];</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">in_addr</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">s_addr</span><span class="p">;</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+</pre></div>
+</div>
+<p>其中，sin_family 即为 sa_family，sin_port 为使用的 port 编号，sin_addr.s_addr 为 IP 地址，sin_zero 未使用。</p>
+</li>
+<li><p>返回值：成功则返回 0，失败返回 -1，错误原因存于 errno 中。错误代码如下：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">EBADF</span></code> 参数 sockfd 非合法 socket 处理代码；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EACCESS</span></code> 权限不足；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENOTSOCK</span></code> 参数 sockfd 为一文件描述符，非 socket。</p></li>
+</ul>
+</li>
+<li><p>相关函数：socket, accept, connect, listen</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<p>参考 <a class="reference external" href="#listen">listen()</a></p>
+</section>
+<section id="connect">
+<h2>connect<a class="headerlink" href="#connect" title="永久链接至标题"></a></h2>
+<p>建立 socket 连接</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/socket.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">connect</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">sockfd</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">sockaddr</span><span class="w"> </span><span class="o">*</span><span class="n">addr</span><span class="p">,</span><span class="w"> </span><span class="kt">socklen_t</span><span class="w"> </span><span class="n">addrlen</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：connect() 用来将参数 sockfd 对应的 socket 连接到参数 addr 指定的网络地址。结构体 sockaddr 请参考 bind()，参数 addrlen 为 sockaddr 的结构长度。</p></li>
+<li><p>返回值：成功则返回 0，失败返回 -1，错误原因存于 errno 中。错误代码如下：</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">EBADF</span></code> 参数 sockfd 非合法 socket 处理代码；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EFAULT</span></code> 参数 serv_addr 指针指向无法存取的内存空间；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENOTSOCK</span></code> 参数 sockfd 为一文件描述符，非 socket；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EISCONN</span></code> 参数 sockfd 的 socket 已是连接状态；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ECONNREFUSED</span></code> 连接要求被 server 端拒绝；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ETIMEDOUT</span></code> 企图连接的操作超过限定时间仍未有响应；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENETUNREACH</span></code> 无法传送数据包至指定的主机；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EAFNOSUPPORT</span></code> sockaddr 结构的 sa_family 不正确；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EALREADY</span></code> socket 为不可阻断且先前的连接操作还未完成。</p></li>
+</ul>
+</li>
+<li><p>相关函数：socket, bind, listen</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* </span>
+<span class="cm"> * 此程序将创建 TCP client，连接 TCP server，并将键盘输入的字符串传送给 server</span>
+<span class="cm"> * TCP server 示例请参考 listen()</span>
+<span class="cm"> */</span><span class="w"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/stat.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;fcntl.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/socket.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;netinet/in.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;arpa/inet.h&gt;</span><span class="cp"></span>
+
+<span class="cp">#define PORT 12345</span>
+<span class="cp">#define SERVER_IP &quot;127.0.0.1&quot;</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">s</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">sockaddr_in</span><span class="w"> </span><span class="n">addr</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">buffer</span><span class="p">[</span><span class="mi">256</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="p">((</span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">socket</span><span class="p">(</span><span class="n">AF_INET</span><span class="p">,</span><span class="w"> </span><span class="n">SOCK_STREAM</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">))</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">perror</span><span class="p">(</span><span class="s">&quot;socket&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="cm">/* 填写sockaddr_in结构*/</span><span class="w"></span>
+<span class="w">    </span><span class="n">bzero</span><span class="p">(</span><span class="o">&amp;</span><span class="n">addr</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">addr</span><span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="n">addr</span><span class="p">.</span><span class="n">sin_family</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AF_INET</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">addr</span><span class="p">.</span><span class="n">sin_port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">htons</span><span class="p">(</span><span class="n">PORT</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">addr</span><span class="p">.</span><span class="n">sin_addr</span><span class="p">.</span><span class="n">s_addr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">inet_addr</span><span class="p">(</span><span class="n">SERVER_IP</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="cm">/* 尝试连接 */</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">connect</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">addr</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">addr</span><span class="p">))</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">perror</span><span class="p">(</span><span class="s">&quot;connect&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="cm">/* 接收由server端传来的信息*/</span><span class="w"></span>
+<span class="w">    </span><span class="n">recv</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="n">buffer</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">buffer</span><span class="p">),</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">buffer</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">bzero</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">buffer</span><span class="p">));</span><span class="w"></span>
+<span class="w">        </span><span class="cm">/* 从标准输入设备获取字符串 */</span><span class="w"></span>
+<span class="w">        </span><span class="n">read</span><span class="p">(</span><span class="n">STDIN_FILENO</span><span class="p">,</span><span class="w"> </span><span class="n">buffer</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">buffer</span><span class="p">));</span><span class="w"></span>
+<span class="w">        </span><span class="cm">/* 将字符串传给server端 */</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">send</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="n">buffer</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">buffer</span><span class="p">),</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="n">perror</span><span class="p">(</span><span class="s">&quot;send&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">            </span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ ./connect
+Welcome to server!
+hi I am client! <span class="c1"># 键盘输入</span>
+<span class="c1"># 按&lt;Ctrl+C&gt;中断程序</span>
+</pre></div>
+</div>
+</section>
+<section id="endprotoent">
+<h2>endprotoent<a class="headerlink" href="#endprotoent" title="永久链接至标题"></a></h2>
+<p>结束网络协议数据的读取</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;netdb.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">endprotoent</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：endprotoent() 用来关闭由 getprotoent() 打开的文件。</p></li>
+<li><p>返回值：无</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：getprotoent，getprotobyname，getprotobynumber，setprotoent</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<p>参考 <a class="reference external" href="#getprotoent">getprotoent()</a></p>
+</section>
+<section id="endservent">
+<h2>endservent<a class="headerlink" href="#endservent" title="永久链接至标题"></a></h2>
+<p>结束网络服务数据的读取</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;netdb.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">endservent</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：endservent() 用来关闭由 getservent() 所打开的文件。</p></li>
+<li><p>返回值：无</p></li>
+<li><p>相关函数：getservent，getservbyname，getservbyport，setservent</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<p>参考 <a class="reference external" href="#getservent">getservent()</a></p>
+</section>
+<section id="gethostbyname">
+<h2>gethostbyname<a class="headerlink" href="#gethostbyname" title="永久链接至标题"></a></h2>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">The</span><span class="w"> </span><span class="n">hostent</span><span class="w"> </span><span class="n">structure</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">defined</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="o">&lt;</span><span class="n">netdb</span><span class="p">.</span><span class="n">h</span><span class="o">&gt;</span><span class="w"> </span><span class="n">as</span><span class="w"> </span><span class="n">follows</span><span class="o">:</span><span class="w"></span>
+
+<span class="w">           </span><span class="k">struct</span><span class="w"> </span><span class="nc">hostent</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">               </span><span class="kt">char</span><span class="w">  </span><span class="o">*</span><span class="n">h_name</span><span class="p">;</span><span class="w">            </span><span class="cm">/* official name of host */</span><span class="w"></span>
+<span class="w">               </span><span class="kt">char</span><span class="w"> </span><span class="o">**</span><span class="n">h_aliases</span><span class="p">;</span><span class="w">         </span><span class="cm">/* alias list */</span><span class="w"></span>
+<span class="w">               </span><span class="kt">int</span><span class="w">    </span><span class="n">h_addrtype</span><span class="p">;</span><span class="w">        </span><span class="cm">/* host address type */</span><span class="w"></span>
+<span class="w">               </span><span class="kt">int</span><span class="w">    </span><span class="n">h_length</span><span class="p">;</span><span class="w">          </span><span class="cm">/* length of address */</span><span class="w"></span>
+<span class="w">               </span><span class="kt">char</span><span class="w"> </span><span class="o">**</span><span class="n">h_addr_list</span><span class="p">;</span><span class="w">       </span><span class="cm">/* list of addresses */</span><span class="w"></span>
+<span class="w">           </span><span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="getsockopt">
+<h2>getsockopt<a class="headerlink" href="#getsockopt" title="永久链接至标题"></a></h2>
+<p>获取 socket 状态</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/socket.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">getsockopt</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">sockfd</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">level</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">optname</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">optval</span><span class="p">,</span><span class="w"> </span><span class="kt">socklen_t</span><span class="w"> </span><span class="o">*</span><span class="n">optlen</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：getsockopt() 会将参数 sockfd 所指定的 socket 状态返回。参数 optname 代表欲获取何种选项状态，而参数 optval 则指向欲保存结果的內存地址，参数 optlen 则为该空间的大小。参数 level、optname 请参考 setsockopt()。</p></li>
+<li><p>返回值：成功则返回0，出错返回 -1，错误原因存于 errno。错误代码如下：</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">EBADF</span></code> 参数 sockfd 并非合法的 socket 处理代码；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENOTSOCK</span></code> 参数 sockfd 为一文件描述符，非 socket；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENOPROTOOPT</span></code> 参数 optname 指定的选项不正确；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EFAULT</span></code> 参数 optval 指针指向无法存取的内存空间。</p></li>
+</ul>
+</li>
+<li><p>相关函数：setsockopt</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="cpf">&lt;sys/socket.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="n">optval</span><span class="p">,</span><span class="w"> </span><span class="n">optlen</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">((</span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">socket</span><span class="p">(</span><span class="n">AF_INET</span><span class="p">,</span><span class="w"> </span><span class="n">SOCK_STREAM</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">))</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="n">perror</span><span class="p">(</span><span class="s">&quot;socket&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">getsockopt</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="n">SOL_SOCKET</span><span class="p">,</span><span class="w"> </span><span class="n">SO_TYPE</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">optval</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">optlen</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;optval = %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">optval</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">close</span><span class="p">(</span><span class="n">s</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nv">optval</span> <span class="o">=</span> <span class="m">1</span> <span class="c1"># SOCK_STREAM 的定义正是此值</span>
+</pre></div>
+</div>
+</section>
+<section id="htonl">
+<h2>htonl<a class="headerlink" href="#htonl" title="永久链接至标题"></a></h2>
+<p>将32位主机字节序转换成网络字节序</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;netinet/in.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">htonl</span><span class="p">(</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">hostlong</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：htonl() 用来将参数指定的32位 hostlong 转换成网络字节序。</p></li>
+<li><p>返回值：返回对应的网络字节序。</p></li>
+<li><p>相关函数：htons，ntohl，ntohs</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<p>参考 <a class="reference external" href="#getservbyport">getservbyport()</a> 或 <a class="reference external" href="#connect">connect()</a>。</p>
+</section>
+<section id="htons">
+<h2>htons<a class="headerlink" href="#htons" title="永久链接至标题"></a></h2>
+<p>将16位主机字节序转换成网络字节序</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;netinet/in.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">short</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">htons</span><span class="p">(</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">short</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">hostshort</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：htons() 用来将参数指定的16位 hostshort 转换成网络字节序。</p></li>
+<li><p>返回值：返回对应的网络字节序。</p></li>
+<li><p>相关函数：htonl，ntohl，ntohs</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<p>参考 <a class="reference external" href="#connect">connect()</a></p>
+</section>
+<section id="inet-addr">
+<h2>inet_addr<a class="headerlink" href="#inet-addr" title="永久链接至标题"></a></h2>
+<p>将网络地址转成二进制的数字</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/socket.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;netinet/in.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;arpa/inet.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">inet_addr</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">cp</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：inet_addr() 用来将参数 cp 所指的网络地址字符串转换成网络所使用的二进制数字。网络地址字符串是以数字和点组成的字符串，例如 “42.192.64.149”。</p></li>
+<li><p>返回值：成功则返回对应的网络二进制的数字，失败返回 -1。</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：inet_aton，inet_ntoa</p></li>
+</ul>
+</section>
+<section id="inet-aton">
+<h2>inet_aton<a class="headerlink" href="#inet-aton" title="永久链接至标题"></a></h2>
+<p>将网络地址转成网络二进制的数字</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/scoket.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;netinet/in.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;arpa/inet.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">inet_aton</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">cp</span><span class="p">,</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">in_addr</span><span class="w"> </span><span class="o">*</span><span class="n">inp</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：inet_aton() 用来将参数 cp 所指的网络地址字符串转换成网络使用的二进制的数字，然后存于参数 inp 所指的 in_addr 结构中。结构 in_addr 定义如下：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">in_addr</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">s_addr</span><span class="p">;</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+</pre></div>
+</div>
+</li>
+<li><p>返回值：成功则返回非 0 值，失败返回 0。</p></li>
+<li><p>相关函数：inet_addr，inet_ntoa</p></li>
+</ul>
+</section>
+<section id="inet-ntoa">
+<h2>inet_ntoa<a class="headerlink" href="#inet-ntoa" title="永久链接至标题"></a></h2>
+<p>将网络二进制的数字转换成网络地址</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/socket.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;netinet/in.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;arpa/inet.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="nf">inet_ntoa</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">in_addr</span><span class="w"> </span><span class="n">in</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：inet_ntoa() 用来将参数 in 所指的网络二进制的数字转换成网络地址，然后将指向此网络地址字符串的指针返回。</p></li>
+<li><p>返回值：成功则返回字符串指针，失败则返回 NULL。</p></li>
+<li><p>相关函数：inet_addr，inet_aton</p></li>
+</ul>
+</section>
+<section id="listen">
+<h2>listen<a class="headerlink" href="#listen" title="永久链接至标题"></a></h2>
+<p>等待 socket 连接</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/socket.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">listen</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">sockfd</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">backlog</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：listen() 用来等待参数 sockfd 的 socket 连接。参数 backlog 指定同时能处理的最大连接要求，如果连接数目达此上限则 client 端将收到 <code class="docutils literal notranslate"><span class="pre">ECONNREFUSED</span></code> 的错误。listen() 并未开始接收连接，只是设置 socket 为 listen 模式，真正接收 client 端连接的是 accept()。通常 listen() 会在 socket()、bind() 之后调用，接着才调用 accept()。</p></li>
+<li><p>返回值：成功则返回 0，失败返回 -1，错误原因存于 errno。错误代码如下：</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">EBADF</span></code> 参数 sockfd 非合法 socket 处理代码；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EACCESS</span></code> 权限不足；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EOPNOTSUPP</span></code> 指定的 socket 并未支持 listen 模式。</p></li>
+</ul>
+</li>
+<li><p>附加说明：listen() 只适用 <code class="docutils literal notranslate"><span class="pre">SOCK_STREAM</span></code> 或 <code class="docutils literal notranslate"><span class="pre">SOCK_SEQPACKET</span></code> 的 socket 类型。如果 socket 为 <code class="docutils literal notranslate"><span class="pre">AF_INET</span></code> 则参数 backlog 最大值可设至 128。</p></li>
+<li><p>相关函数：socket，bind，accept，connect</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="cpf">&lt;sys/socket.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="cpf">&lt;netinet/in.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="cpf">&lt;arpa/inet.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+
+<span class="cp">#define PORT      12345</span>
+<span class="cp">#define MAXSOCKFD 10</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">sockfd</span><span class="p">,</span><span class="w"> </span><span class="n">newsockfd</span><span class="p">,</span><span class="w"> </span><span class="n">is_connected</span><span class="p">[</span><span class="n">MAXSOCKFD</span><span class="p">],</span><span class="w"> </span><span class="n">fd</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">sockaddr_in</span><span class="w"> </span><span class="n">addr</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">addr_len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">sockaddr_in</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">fd_set</span><span class="w"> </span><span class="n">readfds</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">buffer</span><span class="p">[</span><span class="mi">256</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">msg</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Welcome to server!&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">((</span><span class="n">sockfd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">socket</span><span class="p">(</span><span class="n">AF_INET</span><span class="p">,</span><span class="w"> </span><span class="n">SOCK_STREAM</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">))</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">perror</span><span class="p">(</span><span class="s">&quot;socket&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="n">bzero</span><span class="p">(</span><span class="o">&amp;</span><span class="n">addr</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">addr</span><span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="n">addr</span><span class="p">.</span><span class="n">sin_family</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AF_INET</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">addr</span><span class="p">.</span><span class="n">sin_port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">htons</span><span class="p">(</span><span class="n">PORT</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">addr</span><span class="p">.</span><span class="n">sin_addr</span><span class="p">.</span><span class="n">s_addr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">htonl</span><span class="p">(</span><span class="n">INADDR_ANY</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">bind</span><span class="p">(</span><span class="n">sockfd</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">addr</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">addr</span><span class="p">))</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">perror</span><span class="p">(</span><span class="s">&quot;connect&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">listen</span><span class="p">(</span><span class="n">sockfd</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">perror</span><span class="p">(</span><span class="s">&quot;listen&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">fd</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">fd</span><span class="o">&lt;</span><span class="n">MAXSOCKFD</span><span class="p">;</span><span class="w"> </span><span class="n">fd</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="n">is_connected</span><span class="p">[</span><span class="n">fd</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">FD_ZERO</span><span class="p">(</span><span class="o">&amp;</span><span class="n">readfds</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="n">FD_SET</span><span class="p">(</span><span class="n">sockfd</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">readfds</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="k">for</span><span class="p">(</span><span class="n">fd</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">fd</span><span class="o">&lt;</span><span class="n">MAXSOCKFD</span><span class="p">;</span><span class="w"> </span><span class="n">fd</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">is_connected</span><span class="p">[</span><span class="n">fd</span><span class="p">])</span><span class="w"></span>
+<span class="w">                </span><span class="n">FD_SET</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">readfds</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">select</span><span class="p">(</span><span class="n">MAXSOCKFD</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">readfds</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">))</span><span class="w"></span>
+<span class="w">            </span><span class="k">continue</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">fd</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">fd</span><span class="o">&lt;</span><span class="n">MAXSOCKFD</span><span class="p">;</span><span class="w"> </span><span class="n">fd</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">FD_ISSET</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">readfds</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sockfd</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">fd</span><span class="p">){</span><span class="w"></span>
+<span class="w">                    </span><span class="k">if</span><span class="w"> </span><span class="p">((</span><span class="n">newsockfd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">accept</span><span class="p">(</span><span class="n">sockfd</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">addr</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">addr_len</span><span class="p">))</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"></span>
+<span class="w">                        </span><span class="n">perror</span><span class="p">(</span><span class="s">&quot;accept&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">                    </span><span class="n">write</span><span class="p">(</span><span class="n">newsockfd</span><span class="p">,</span><span class="w"> </span><span class="n">msg</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">msg</span><span class="p">));</span><span class="w"></span>
+<span class="w">                    </span><span class="n">is_connected</span><span class="p">[</span><span class="n">newsockfd</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
+<span class="w">                    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;connect from %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">inet_ntoa</span><span class="p">(</span><span class="n">addr</span><span class="p">.</span><span class="n">sin_addr</span><span class="p">));</span><span class="w"></span>
+<span class="w">                </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">                    </span><span class="n">bzero</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">buffer</span><span class="p">));</span><span class="w"></span>
+<span class="w">                    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">read</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span><span class="w"> </span><span class="n">buffer</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">buffer</span><span class="p">))</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">                        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;connect closed.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">                        </span><span class="n">is_connected</span><span class="p">[</span><span class="n">fd</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="w">                        </span><span class="n">close</span><span class="p">(</span><span class="n">fd</span><span class="p">);</span><span class="w"></span>
+<span class="w">                    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"></span>
+<span class="w">                        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">buffer</span><span class="p">);</span><span class="w"></span>
+<span class="w">                </span><span class="p">}</span><span class="w"></span>
+<span class="w">            </span><span class="p">}</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ ./listen
+connect from <span class="m">127</span>.0.0.1
+hi I am client
+connected closed.
+</pre></div>
+</div>
+</section>
+<section id="ntohl">
+<h2>ntohl<a class="headerlink" href="#ntohl" title="永久链接至标题"></a></h2>
+<p>将32位网络字节序转换成主机字节序</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;netinet/in.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">ntohl</span><span class="p">(</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">netlong</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：ntohl() 用来将参数指定的32位 netlong 转换成主机字节序。</p></li>
+<li><p>返回值：返回对应的主机字节序。</p></li>
+<li><p>相关函数：htonl，htons，ntohs</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<p>参考 <a class="reference external" href="#getservent">getservent()</a></p>
+</section>
+<section id="ntohs">
+<h2>ntohs<a class="headerlink" href="#ntohs" title="永久链接至标题"></a></h2>
+<p>将16位网络字节序转换成主机字节序</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;netinet/in.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">short</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">ntohs</span><span class="p">(</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">short</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">netshort</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：ntohs() 用来将参数指定的16位 netshort 转换成主机字节序。</p></li>
+<li><p>返回值：返回对应的主机字节序。</p></li>
+<li><p>相关函数：htonl，htons，ntohl</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<p>参考 <a class="reference external" href="#getservent">getservent()</a></p>
+</section>
+<section id="recv">
+<h2>recv<a class="headerlink" href="#recv" title="永久链接至标题"></a></h2>
+<p>经 socket 接收数据</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="cpf">&lt;sys/socket.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">ssize_t</span><span class="w"> </span><span class="nf">recv</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">sockfd</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">buf</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">len</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">flags</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：recv() 用来接收远端主机经指定的 socket 传来的数据，并把数据存到由参数 buf 指向的内存空间，参数 len 为可接收数据的最大长度。参数 flags 一般设为 0，其可用定义如下：</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">MSG_OOB</span></code> 接收以 out-of-band 送出的数据；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MSG_PEEK</span></code> 返回来的数据并不会在系统内删除，如果再调用 recv() 会返回相同的数据内容；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MSG_WAITALL</span></code> 强迫接收到 len 大小的数据后才能返回，除非有错误或信号产生；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MSG_NOSIGNAL</span></code> 此操作不愿被 SIGPIPE 信号中断。</p></li>
+</ul>
+</li>
+<li><p>返回值：成功则返回接收到的字符数，失败返回 -1，错误原因存于 errno 中。错误代码如下：</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">EBADF</span></code> 参数 sockfd 非合法的 socket 处理代码</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EFAULT</span></code> 参数中有一指针指向无法存取的内存空间</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENOTSOCK</span></code> 参数 sockfd 为一文件描述符，非 socket</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EINTR</span></code> 被信号所中断</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EAGAIN</span></code> 此动作会令进程阻断，但参数 sockfd 为不可阻断</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENOBUFS</span></code> 系统的缓冲内存不足</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENOMEM</span></code> 系统内存不足</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EINVAL</span></code> 传给系统调用的参数不正确</p></li>
+</ul>
+</li>
+<li><p>附加说明：recv() 主要用于 TCP 通信。</p></li>
+<li><p>相关函数：recvfrom，recvmsg，send，sendto，socket</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<p>参考 <a class="reference external" href="#listen">listen()</a></p>
+</section>
+<section id="recvfrom">
+<h2>recvfrom<a class="headerlink" href="#recvfrom" title="永久链接至标题"></a></h2>
+<p>经 socket 接收数据</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/socket.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">ssize_t</span><span class="w"> </span><span class="nf">recvfrom</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">sockfd</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">buf</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">len</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">flags</span><span class="p">,</span><span class="w"></span>
+<span class="w">                 </span><span class="k">struct</span><span class="w"> </span><span class="nc">sockaddr</span><span class="w"> </span><span class="o">*</span><span class="n">src_addr</span><span class="p">,</span><span class="w"> </span><span class="kt">socklen_t</span><span class="w"> </span><span class="o">*</span><span class="n">addrlen</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：recvfrom() 用来接收远程主机经指定的 socket 传来的数据，并把数据存到由参数 buf 指向的内存空间，参数 len 为可接收数据的最大长度。参数 flags 一般设为 0，其他数值定义请参考 <a class="reference external" href="#recv"><code class="docutils literal notranslate"><span class="pre">recv()</span></code></a>。参数 src_addr 用来指定欲传送的网络地址，结构体 sockaddr 请参考 <a class="reference external" href="#bind"><code class="docutils literal notranslate"><span class="pre">bind()</span></code></a>。参数 addrlen 为 sockaddr 的结构长度。</p></li>
+<li><p>返回值：成功则返回接收到的字符数，失败则返回 -1，错误原因存于 errno 中。错误代码如下：</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">EBADF</span></code> 参数 sockfd 非合法的 socket 处理代码</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EFAULT</span></code> 参数中有一指针指向无法存取的内存空间</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENOTSOCK</span></code> 参数 sockfd 为一文件描述符，非 socket</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EINTR</span></code> 被信号所中断</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EAGAIN</span></code> 此动作会令进程阻断，但参数 sockfd 为不可阻断</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENOBUFS</span></code> 系统的缓冲内存不足</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENOMEM</span></code> 系统内存不足</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EINVAL</span></code> 传给系统调用的参数不正确</p></li>
+</ul>
+</li>
+<li><p>附加说明：recvfrom() 主要用于 UDP 通信。</p></li>
+<li><p>相关函数：recv，recvmsg，send，sendto，socket</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/*</span>
+<span class="cm"> * 此程序创建UDP client，连接UDP server，并将键盘输入的字符串传给server</span>
+<span class="cm"> * UDP server 示例请参考 sendto()</span>
+<span class="cm">*/</span><span class="w"></span>
+<span class="cp">#include</span><span class="cpf">&lt;sys/stat.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="cpf">&lt;fcntl.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="cpf">&lt;sys/typs.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="cpf">&lt;sys/socket.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="cpf">&lt;netinet/in.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="cpf">&lt;arpa/inet.h&gt;</span><span class="cp"></span>
+
+<span class="cp">#define PORT      23456</span>
+<span class="cp">#define SERVER_IP &quot;127.0.0.1&quot;</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">s</span><span class="p">,</span><span class="n">len</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">sockaddr_in</span><span class="w"> </span><span class="n">addr</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">addr_len</span><span class="w"> </span><span class="o">=</span><span class="k">sizeof</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">sockaddr_in</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">buffer</span><span class="p">[</span><span class="mi">256</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="cm">/* 建立socket*/</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="p">((</span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">socket</span><span class="p">(</span><span class="n">AF_INET</span><span class="p">,</span><span class="n">SOCK_DGRAM</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">){</span><span class="w"></span>
+<span class="w">        </span><span class="n">perror</span><span class="p">(</span><span class="s">&quot;socket&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="cm">/* 填写sockaddr_in*/</span><span class="w"></span>
+<span class="w">    </span><span class="n">bzero</span><span class="p">(</span><span class="o">&amp;</span><span class="n">addr</span><span class="p">,</span><span class="k">sizeof</span><span class="p">(</span><span class="n">addr</span><span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="n">addr</span><span class="p">.</span><span class="n">sin_family</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AF_INET</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">addr</span><span class="p">.</span><span class="n">sin_port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">htons</span><span class="p">(</span><span class="n">PORT</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">addr</span><span class="p">.</span><span class="n">sin_addr</span><span class="p">.</span><span class="n">s_addr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">inet_addr</span><span class="p">(</span><span class="n">SERVER_IP</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">){</span><span class="w"></span>
+<span class="w">        </span><span class="n">bzero</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span><span class="k">sizeof</span><span class="p">(</span><span class="n">buffer</span><span class="p">));</span><span class="w"></span>
+<span class="w">        </span><span class="cm">/* 从标准输入设备获取字符串 */</span><span class="w"></span>
+<span class="w">        </span><span class="n">len</span><span class="w"> </span><span class="o">=</span><span class="n">read</span><span class="p">(</span><span class="n">STDIN_FILENO</span><span class="p">,</span><span class="n">buffer</span><span class="p">,</span><span class="k">sizeof</span><span class="p">(</span><span class="n">buffer</span><span class="p">));</span><span class="w"></span>
+<span class="w">        </span><span class="cm">/* 将字符串传送给server端 */</span><span class="w"></span>
+<span class="w">        </span><span class="n">sendto</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="n">buffer</span><span class="p">,</span><span class="n">len</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">&amp;</span><span class="n">addr</span><span class="p">,</span><span class="n">addr_len</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="cm">/* 接收server端返回的字符串 */</span><span class="w"></span>
+<span class="w">        </span><span class="n">len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">recvfrom</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="n">buffer</span><span class="p">,</span><span class="k">sizeof</span><span class="p">(</span><span class="n">buffer</span><span class="p">),</span><span class="mi">0</span><span class="p">,</span><span class="o">&amp;</span><span class="n">addr</span><span class="p">,</span><span class="o">&amp;</span><span class="n">addr_len</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;receive: %s&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">buffer</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行（先执行 udp server，再执行 udp client）</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>hello <span class="c1"># 从键盘输入字符串</span>
+receive: hello <span class="c1"># server端返回来的字符串</span>
+</pre></div>
+</div>
+</section>
+<section id="recvmsg">
+<h2>recvmsg<a class="headerlink" href="#recvmsg" title="永久链接至标题"></a></h2>
+<p>经 socket 接收数据</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/socktet.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">ssize_t</span><span class="w"> </span><span class="nf">recvmsg</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">sockfd</span><span class="p">,</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">msghdr</span><span class="w"> </span><span class="o">*</span><span class="n">msg</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">flags</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：recvmsg() 用于接收远程主机经指定的 socket 传来的数据。参数 sockfd 为已建立好连接的 socket，如果利用 UDP 协议则不需经过连接操作。参数 msg 指向欲连接的数据结构内容，参数 flags 一般设为 0，详细描述请参考 send()。关于结构 msghdr 的定义请参考 sendmsg()。</p></li>
+<li><p>返回值：成功则返回接收到的字节数，失败则返回 -1，错误原因存于 errno 中。错误代码如下：</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">EBADF</span></code> 参数 sockfd 非合法的 socket 处理代码</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EFAULT</span></code> 参数中有一指针指向无法存取的内存空间</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENOTSOCK</span></code> 参数 sockfd 为一文件描述符，非 socket</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EINTR</span></code> 被信号所中断</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EAGAIN</span></code> 此动作会令进程阻断，但参数 sockfd 为不可阻断</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENOBUFS</span></code> 系统的缓冲内存不足</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENOMEM</span></code> 系统内存不足</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EINVAL</span></code> 传给系统调用的参数不正确</p></li>
+</ul>
+</li>
+<li><p>相关函数：recv，recvfrom，send，sendto，sendmsg，socket</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<p>参考 <a class="reference external" href="#recvfrom">recvfrom()</a></p>
+</section>
+<section id="send">
+<h2>send<a class="headerlink" href="#send" title="永久链接至标题"></a></h2>
+<p>经 socket 发送数据</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/socket.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">ssize_t</span><span class="w"> </span><span class="nf">send</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">sockfd</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">buf</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">len</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">flags</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：send() 用来将数据由指定的 socket 传给对方主机。参数 sockfd 为已建立好连接的 socket，参数 buf 指向要发送的数据内容，参数 len 为数据长度，参数 flags 一般设为 0。flags 的其他含义如下：</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">MSG_OOB</span></code> 传送的数据以 out-of-band 送出；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MSG_DONTROUTE</span></code> 取消路由表查询；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MSG_DONTWAIT</span></code> 设置为不可阻断运作；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MSG_NOSIGNAL</span></code> 此动作不愿被 SIGPIPE 信号中断。</p></li>
+</ul>
+</li>
+<li><p>返回值：成功则返回实际传送出去的字节数，失败返回 -1，错误原因存于 errno。错误代码如下：</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">EBADF</span></code> 参数 sockfd 非合法的 socket 处理代码</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EFAULT</span></code> 参数中有一指针指向无法存取的内存空间</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENOTSOCK</span></code> 参数 sockfd 为一文件描述符，非 socket</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EINTR</span></code> 被信号所中断</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EAGAIN</span></code> 此动作会令进程阻断，但参数 sockfd 的 socket 为不可阻断</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENOBUFS</span></code> 系统的缓冲内存不足</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENOMEM</span></code> 系统内存不足</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EINVAL</span></code> 传给系统调用的参数不正确</p></li>
+</ul>
+</li>
+<li><p>附加说明：send() 主要用于 TCP 通信。</p></li>
+<li><p>相关函数：sendto，sendmsg，recv，recvfrom，socket</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<p>参考 <a class="reference external" href="#connect">connect()</a></p>
+</section>
+<section id="sendto">
+<h2>sendto<a class="headerlink" href="#sendto" title="永久链接至标题"></a></h2>
+<p>经 socket 传送数据</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/socket.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">ssize_t</span><span class="w"> </span><span class="nf">sendto</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">sockfd</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">buf</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">len</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">flags</span><span class="p">,</span><span class="w"></span>
+<span class="w">               </span><span class="k">const</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">sockaddr</span><span class="w"> </span><span class="o">*</span><span class="n">dest_addr</span><span class="p">,</span><span class="w"> </span><span class="kt">socklen_t</span><span class="w"> </span><span class="n">addrlen</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：sendto() 用来将数据由指定的 socket 传给对方主机。参数 sockfd 为已建立好连接的 socket，如果使用 UDP 协议则不需要经过连接操作。参数 buf 指向要发送的数据内容，参数 len 为数据长度，参数 flags 一般设为 0，详细描述请参考 send()。参数 dest_addr 用来指定欲传送的网络地址，结构体 sockaddr 请参考 bind()。参数 addrlen 为 sockaddr 的结构长度。</p></li>
+<li><p>返回值：成功则返回实际传送出去的字节数，失败返回 -1，错误原因存于 errno。错误代码如下：</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">EBADF</span></code> 参数 sockfd 非合法的 socket 处理代码</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EFAULT</span></code> 参数中有一指针指向无法存取的内存空间</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENOTSOCK</span></code> 参数 sockfd 为一文件描述符，非 socket</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EINTR</span></code> 被信号所中断</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EAGAIN</span></code> 此动作会令进程阻断，但参数 sockfd 的 socket 为不可阻断</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENOBUFS</span></code> 系统的缓冲内存不足</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENOMEM</span></code> 系统内存不足</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EINVAL</span></code> 传给系统调用的参数不正确</p></li>
+</ul>
+</li>
+<li><p>附加说明：sendto() 主要用于 UDP 通信。</p></li>
+<li><p>相关函数：send , sendmsg,recv , recvfrom , socket</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/socket.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;netinet.in.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;arpa.inet.h&gt;</span><span class="cp"></span>
+
+<span class="cp">#define PORT 2345</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">sockfd</span><span class="p">,</span><span class="n">len</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">sockaddr_in</span><span class="w"> </span><span class="n">addr</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">buffer</span><span class="p">[</span><span class="mi">256</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span>
+<span class="w">    </span><span class="cm">/* 建立 socket */</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">sockfd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">socket</span><span class="p">(</span><span class="n">AF_INET</span><span class="p">,</span><span class="w"> </span><span class="n">SOCK_DGRAM</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">))</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">perror</span><span class="p">(</span><span class="s">&quot;socket&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="cm">/* 填写 sockaddr_in 结构体 */</span><span class="w"></span>
+<span class="w">    </span><span class="n">bzero</span><span class="p">(</span><span class="o">&amp;</span><span class="n">addr</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">addr</span><span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="n">addr</span><span class="p">.</span><span class="n">sin_family</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AF_INET</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">addr</span><span class="p">.</span><span class="n">sin_port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">htons</span><span class="p">(</span><span class="n">PORT</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">addr</span><span class="p">.</span><span class="n">sin_addr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hton1</span><span class="p">(</span><span class="n">INADDR_ANY</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">bind</span><span class="p">(</span><span class="n">sockfd</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">addr</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">addr</span><span class="p">))</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">perror</span><span class="p">(</span><span class="s">&quot;connect&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">bezro</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">buffer</span><span class="p">));</span><span class="w"></span>
+<span class="w">        </span><span class="n">len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">recvfrom</span><span class="p">(</span><span class="n">socket</span><span class="p">,</span><span class="w"> </span><span class="n">buffer</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">buffer</span><span class="p">),</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">addr</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">addr_len</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="cm">/* 显示 client 端的网络地址 */</span><span class="w"></span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;receive from %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">inet_ntoa</span><span class="p">(</span><span class="n">addr</span><span class="p">.</span><span class="n">sin_addr</span><span class="p">));</span><span class="w"></span>
+<span class="w">        </span><span class="cm">/* 将字串返回给 client 端 */</span><span class="w"></span>
+<span class="w">        </span><span class="n">sendto</span><span class="p">(</span><span class="n">sockfd</span><span class="p">,</span><span class="w"> </span><span class="n">buffer</span><span class="p">,</span><span class="w"> </span><span class="n">len</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">addr</span><span class="p">,</span><span class="w"> </span><span class="n">addr_len</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="sendmsg">
+<h2>sendmsg<a class="headerlink" href="#sendmsg" title="永久链接至标题"></a></h2>
+<p>经 socket 传送数据</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/socket.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">ssize_t</span><span class="w"> </span><span class="nf">sendmsg</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">sockfd</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">msghdr</span><span class="w"> </span><span class="o">*</span><span class="n">msg</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">flags</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：sendmsg() 用来将数据由指定的 socket 传给对方主机。参数 sockfd 为已建立好连接的 socket，如果使用 UDP 协议则不需要经过连接操作。参数 msg 为要发送的数据结构内容，参数 flags 一般设为 0，详细描述请参考 send()。结构体 msghdr 的定义如下：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">msghdr</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">void</span><span class="w">         </span><span class="o">*</span><span class="n">msg_name</span><span class="p">;</span><span class="w">       </span><span class="cm">/* Optional address */</span><span class="w"></span>
+<span class="w">    </span><span class="kt">socklen_t</span><span class="w">     </span><span class="n">msg_namelen</span><span class="p">;</span><span class="w">    </span><span class="cm">/* Size of address */</span><span class="w"></span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">iovec</span><span class="w"> </span><span class="o">*</span><span class="n">msg_iov</span><span class="p">;</span><span class="w">        </span><span class="cm">/* Scatter/gather array */</span><span class="w"></span>
+<span class="w">    </span><span class="kt">size_t</span><span class="w">        </span><span class="n">msg_iovlen</span><span class="p">;</span><span class="w">     </span><span class="cm">/* # elements in msg_iov */</span><span class="w"></span>
+<span class="w">    </span><span class="kt">void</span><span class="w">         </span><span class="o">*</span><span class="n">msg_control</span><span class="p">;</span><span class="w">    </span><span class="cm">/* Ancillary data, see below */</span><span class="w"></span>
+<span class="w">    </span><span class="kt">size_t</span><span class="w">        </span><span class="n">msg_controllen</span><span class="p">;</span><span class="w"> </span><span class="cm">/* Ancillary data buffer len */</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w">           </span><span class="n">msg_flags</span><span class="p">;</span><span class="w">      </span><span class="cm">/* Flags (unused) */</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+</pre></div>
+</div>
+</li>
+<li><p>返回值：成功则返回实际传送出去的字节数，失败返回 -1，错误原因存于 errno。错误代码如下：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">EBADF</span></code> 参数 sockfd 非合法的 socket 处理代码</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EFAULT</span></code> 参数中有一指针指向无法存取的内存空间</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENOTSOCK</span></code> 参数 sockfd 为一文件描述符，非 socket</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EINTR</span></code> 被信号所中断</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EAGAIN</span></code> 此动作会令进程阻断，但参数 sockfd 的 socket 为不可阻断</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENOBUFS</span></code> 系统的缓冲内存不足</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENOMEM</span></code> 系统内存不足</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EINVAL</span></code> 传给系统调用的参数不正确</p></li>
+</ul>
+</li>
+<li><p>相关函数：send，sendto，recv，recvfrom，recvmsg，socket</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<p>参考 <a class="reference external" href="#sendto"><code class="docutils literal notranslate"><span class="pre">sendto()</span></code></a></p>
+</section>
+<section id="setprotoent">
+<h2>setprotoent<a class="headerlink" href="#setprotoent" title="永久链接至标题"></a></h2>
+<p>打开网络协议的数据文件</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;netdb.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">setprotoent</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">stayopen</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：setprotoent() 用来打开 /etc/protocols， 如果参数 stayopen 值为 1，则接下来的 getprotobyname() 或 getprotobynumber() 将不会自动关闭此文件。</p></li>
+<li><p>返回值：无</p></li>
+<li><p>相关函数：getprotobyname, getprotobynumber, endprotoent</p></li>
+</ul>
+</section>
+<section id="setservent">
+<h2>setservent<a class="headerlink" href="#setservent" title="永久链接至标题"></a></h2>
+<p>打开主机网络服务的数据文件</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;netdb.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">setservent</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">stayopen</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：setservent() 用来打开 /etc/services，如果参数 stayopen 值为1，则接下来的 getservbyname() 或 getservbyport() 将不会自动关闭文件。</p></li>
+<li><p>返回值：无</p></li>
+<li><p>相关函数：getservent, getservbyname, getservbyport, endservent</p></li>
+</ul>
+</section>
+<section id="setsockopt">
+<h2>setsockopt<a class="headerlink" href="#setsockopt" title="永久链接至标题"></a></h2>
+<p>设置 socket 状态</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/socket.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">setsockopt</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">sockfd</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">level</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">optname</span><span class="p">,</span><span class="w"></span>
+<span class="w">               </span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">optval</span><span class="p">,</span><span class="w"> </span><span class="kt">socklen_t</span><span class="w"> </span><span class="n">optlen</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：setsockopt() 用来设置参数 sockfd 所指定的 socket 状态；参数 level 代表欲设置的网络层；一般设成 <code class="docutils literal notranslate"><span class="pre">SOL_SOCKET</span></code> 以存取 socket 层；参数 optname 代表欲设置的选项；参数 optval 代表欲设置的值，参数 optlen 则为 optval 的长度。其中， optname 有下列几种数值：</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">SO_DEBUG</span></code> 打开或关闭排错模式；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SO_REUSEADDR</span></code> 允许在 bind() 过程中本地地址可重复使用；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SO_TYPE</span></code> 返回 socket 类型；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SO_ERROR</span></code> 返回 socket 已发生的错误原因；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SO_DONTROUTE</span></code> 送出的数据包不要利用路由设备来传输；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SO_BROADCAST</span></code> 使用广播方式传送；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SO_SNDBUF</span></code> 设置发送的暂存区大小；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SO_RCVBUF</span></code> 设置接收的暂存区大小；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SO_KEEPALIVE</span></code> 定期确定连线是否已终止；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SO_OOBINLINE</span></code> 当接收到 OOB 数据时会马上送至标准输入设备；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SO_LINGER</span></code> 确保数据安全且可靠地传送出去。</p></li>
+</ul>
+</li>
+<li><p>返回值：成功则返回 0，失败返回 -1，错误原因存于 errno。错误代码如下：</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">EBADF</span></code> 参数 sockfd 并非合法的 socket 处理代码；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENOTSOCK</span></code> 参数 sockfd 为一文件描述符，非 socket；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENOPROTOOPT</span></code> 参数 optname 指定的选项不正确；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EFAULT</span></code> 参数 optval 指针指向无法存取的内存空间。</p></li>
+</ul>
+</li>
+<li><p>相关函数：getsockopt</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<p>参考 <a class="reference external" href="#getsockopt">getsockopt()</a></p>
+</section>
+<section id="shutdown">
+<h2>shutdown<a class="headerlink" href="#shutdown" title="永久链接至标题"></a></h2>
+<p>终止 socket 通信</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/socket.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">shutdown</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">sockfd</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">how</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：shutdown() 用来终止参数 sockfd 所指定的 socket 连接；参数 how 有下列几种情况：</p>
+<ul>
+<li><p>how=0 终止读取操作；</p></li>
+<li><p>how=1 终止传送操作；</p></li>
+<li><p>how=2 终止读取及传送操作。</p></li>
+</ul>
+</li>
+<li><p>返回值：成功则返回 0，失败返回 -1，错误原因存于 errno。错误代码如下：</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">EBADF</span></code> 参数 sockfd 并非合法的 socket 处理代码；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENOTSOCK</span></code> 参数 sockfd 为一文件描述符，非 socket；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENOTCONN</span></code> 参数 sockfd 指定的 socket 并未连接。</p></li>
+</ul>
+</li>
+<li><p>相关函数：socket，connect</p></li>
+</ul>
+</section>
+<section id="socket">
+<h2>socket<a class="headerlink" href="#socket" title="永久链接至标题"></a></h2>
+<p>建立一个 socket 通信</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/socket.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">socket</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">domain</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">type</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">protocol</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：socket() 用来建立一个新的 socket，也就是向系统注册，通知系统建立一通信端口。参数 domain 指定使用何种地址类型，完整的定义在 /usr/include/bits/socket.h 中，下面是常见的协议：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">PF_UNIX</span></code> / <code class="docutils literal notranslate"><span class="pre">PF_LOCAL</span></code> / <code class="docutils literal notranslate"><span class="pre">AF_UNIX</span></code> / <code class="docutils literal notranslate"><span class="pre">AF_LOCAL</span></code> UNIX 进程通信协议</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PF_INET</span></code> / <code class="docutils literal notranslate"><span class="pre">AF_INET</span></code> IPv4 网络协议</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PF_INET6</span></code> / <code class="docutils literal notranslate"><span class="pre">AF_INET6</span></code> IPv6 网络协议</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PF_IPX</span></code> / <code class="docutils literal notranslate"><span class="pre">AF_IPX</span></code> IPX-Novell 协议</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PF_NETLINK</span></code> / <code class="docutils literal notranslate"><span class="pre">AF_NETLINK</span></code> 核心用户接口装置</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PF_X25</span></code> / <code class="docutils literal notranslate"><span class="pre">AF_X25</span></code> ITU-T X.25/ISO-8208 协议</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PF_AX25</span></code> / <code class="docutils literal notranslate"><span class="pre">AF_AX25</span></code> 业余无线 AX.25 协议</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PF_ATMPVC</span></code> / <code class="docutils literal notranslate"><span class="pre">AF_ATMPVC</span></code> 存取原始 ATM PVCs</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PF_APPLETALK</span></code> / <code class="docutils literal notranslate"><span class="pre">AF_APPLETALK</span></code> appletalk（DDP）协议</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PF_PACKET</span></code> / <code class="docutils literal notranslate"><span class="pre">AF_PACKET</span></code> 初级封包接口</p></li>
+</ul>
+<p>参数 type 有下列几种数值：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">SOCK_STREAM</span></code> 提供双向连续且可信赖的数据流，即 TCP。支持 OOB 机制，在所有数据传送前必须使用 connect() 来建立连接状态。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SOCK_DGRAM</span></code> 使用不连续不可信赖的数据包连接，即 UDP。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SOCK_SEQPACKET</span></code> 提供连续可信赖的数据包连接。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SOCK_RAW</span></code> 提供原始网络协议存取。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SOCK_RDM</span></code> 提供可信赖的数据包连接。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SOCK_PACKET</span></code> 提供和网络驱动程序直接通信。</p></li>
+</ul>
+<p>参数 protocol 用来指定 socket 所使用的传输协议编号，通常不用管它，设为 0 即可。</p>
+</li>
+<li><p>返回值：成功则返回 0，失败返回 -1，错误原因存于 errno。错误代码如下：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">EPROTONOSUPPORT</span></code> 参数 domain 指定的类型不支持参数 type 或 protocol 指定的协议；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENFILE</span></code> 系统内存不足，无法建立新的 socket 结构；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EMFILE</span></code> 进程文件表溢出，无法再建立新的 socket；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EACCESS</span></code> 权限不足，无法建立 type 或 protocol 指定的协议；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENOBUFS</span></code> / <code class="docutils literal notranslate"><span class="pre">ENOMEM</span></code> 内存不足；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EINVAL</span></code> 参数 domain/type/protocol 不合法。</p></li>
+</ul>
+</li>
+<li><p>相关函数：accept，bind，connect，listen</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<p>参考 <a class="reference external" href="#connect">connect()</a></p>
+</section>
+<section id="res-ninit">
+<h2>res_ninit<a class="headerlink" href="#res-ninit" title="永久链接至标题"></a></h2>
+<p>简介</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">printf</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">format</span><span class="p">,</span><span class="w"> </span><span class="p">...);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>功能：</p></li>
+<li><p>返回值：</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Hello, World!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>Hello, World!
+</pre></div>
+</div>
+</section>
+<section id="res-nclose">
+<h2>res_nclose<a class="headerlink" href="#res-nclose" title="永久链接至标题"></a></h2>
+<p>简介</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">printf</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">format</span><span class="p">,</span><span class="w"> </span><span class="p">...);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>功能：</p></li>
+<li><p>返回值：</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Hello, World!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>Hello, World!
+</pre></div>
+</div>
+</section>
+<section id="res-nquery">
+<h2>res_nquery<a class="headerlink" href="#res-nquery" title="永久链接至标题"></a></h2>
+<p>简介</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">printf</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">format</span><span class="p">,</span><span class="w"> </span><span class="p">...);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>功能：</p></li>
+<li><p>返回值：</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Hello, World!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>Hello, World!
+</pre></div>
+</div>
+</section>
+<section id="res-nsearch">
+<h2>res_nsearch<a class="headerlink" href="#res-nsearch" title="永久链接至标题"></a></h2>
+<p>简介</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">printf</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">format</span><span class="p">,</span><span class="w"> </span><span class="p">...);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>功能：</p></li>
+<li><p>返回值：</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Hello, World!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>Hello, World!
+</pre></div>
+</div>
+</section>
+<section id="res-nquerydomain">
+<h2>res_nquerydomain<a class="headerlink" href="#res-nquerydomain" title="永久链接至标题"></a></h2>
+<p>简介</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">printf</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">format</span><span class="p">,</span><span class="w"> </span><span class="p">...);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>功能：</p></li>
+<li><p>返回值：</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Hello, World!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>Hello, World!
+</pre></div>
+</div>
+</section>
+<section id="res-nmkquery">
+<h2>res_nmkquery<a class="headerlink" href="#res-nmkquery" title="永久链接至标题"></a></h2>
+<p>简介</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">printf</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">format</span><span class="p">,</span><span class="w"> </span><span class="p">...);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>功能：</p></li>
+<li><p>返回值：</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Hello, World!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>Hello, World!
+</pre></div>
+</div>
+</section>
+<section id="res-nsend">
+<h2>res_nsend<a class="headerlink" href="#res-nsend" title="永久链接至标题"></a></h2>
+<p>简介</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">printf</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">format</span><span class="p">,</span><span class="w"> </span><span class="p">...);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>功能：</p></li>
+<li><p>返回值：</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Hello, World!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>Hello, World!
+</pre></div>
+</div>
+</section>
+<section id="dn-comp">
+<h2>dn_comp<a class="headerlink" href="#dn-comp" title="永久链接至标题"></a></h2>
+<p>简介</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">printf</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">format</span><span class="p">,</span><span class="w"> </span><span class="p">...);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>功能：</p></li>
+<li><p>返回值：</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Hello, World!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>Hello, World!
+</pre></div>
+</div>
+</section>
+<section id="dn-expand">
+<h2>dn_expand<a class="headerlink" href="#dn-expand" title="永久链接至标题"></a></h2>
+<p>简介</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">printf</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">format</span><span class="p">,</span><span class="w"> </span><span class="p">...);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>功能：</p></li>
+<li><p>返回值：</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Hello, World!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>Hello, World!
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="signal.html" class="btn btn-neutral float-left" title="信号处理篇" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="io-multiplexing.html" class="btn btn-neutral float-right" title="I/O 复用篇" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2018-2023, 人人都懂物联网.</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用了 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a>开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>I/O 复用篇 &mdash; Linux 常用 C 函数参考手册 v1.0 文档</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/translations.js"></script>
+        <script src="_static/js/baidutongji.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="环境变量篇" href="env.html" />
+    <link rel="prev" title="网络接口篇" href="network.html" />
+    <link href="_static/main.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> Linux 常用 C 函数参考手册
+            <img src="_static/GetIoT_Logo_150px.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="在文档中搜索" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="char.html">字符测试篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="string-convert.html">字符串转换篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="memory.html">内存控制篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="time.html">日期时间篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="memory-string.html">内存及字符串操作篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="math.html">常用数学函数篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user-group.html">用户组篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data-structure.html">数据结构及算法篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="file.html">文件操作篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="file-content.html">文件内容操作篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="permission.html">文件权限控制篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="process.html">进程操作篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ipcs.html">进程间通信篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pthreads.html">线程管理篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="signal.html">信号处理篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="network.html">网络接口篇</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">I/O 复用篇</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#select">select</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#poll">poll</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ppoll">ppoll</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#epoll-create">epoll_create</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#epoll-create1">epoll_create1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#epoll-ctl">epoll_ctl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#epoll-wait">epoll_wait</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#epoll-pwait">epoll_pwait</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="env.html">环境变量篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tty.html">终端控制篇</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Linux 常用 C 函数参考手册</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>I/O 复用篇</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/io-multiplexing.md.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="i-o">
+<h1>I/O 复用篇<a class="headerlink" href="#i-o" title="永久链接至标题"></a></h1>
+<section id="select">
+<h2>select<a class="headerlink" href="#select" title="永久链接至标题"></a></h2>
+<p>I/O 多工机制</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* According to POSIX.1-2001, POSIX.1-2008 */</span><span class="w"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/select.h&gt;</span><span class="cp"></span>
+
+<span class="cm">/* According to earlier standards */</span><span class="w"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/time.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">select</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">nfds</span><span class="p">,</span><span class="w"> </span><span class="n">fd_set</span><span class="w"> </span><span class="o">*</span><span class="n">readfds</span><span class="p">,</span><span class="w"> </span><span class="n">fd_set</span><span class="w"> </span><span class="o">*</span><span class="n">writefds</span><span class="p">,</span><span class="w"></span>
+<span class="w">           </span><span class="n">fd_set</span><span class="w"> </span><span class="o">*</span><span class="n">exceptfds</span><span class="p">,</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">timeval</span><span class="w"> </span><span class="o">*</span><span class="n">timeout</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：select() 用来等待文件描述符状态的改变。参数 nfds 代表最大的文件描述符加 1，参数 readfds、writefds 和 exceptfds 称为描述符集，是用来回传该描述符的读、写或例外的状况。底下的宏提供了处理这三种描述符集的方式：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">FD_CLR(inr</span> <span class="pre">fd,</span> <span class="pre">fd_set*</span> <span class="pre">set);</span></code> 用来清除描述符集 set 中相关 fd 的位；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">FD_ISSET(int</span> <span class="pre">fd,</span> <span class="pre">fd_set</span> <span class="pre">*set);</span></code> 用来测试描述符集 set 中相关 fd 的位是否为真；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">FD_SET(int</span> <span class="pre">fd,</span> <span class="pre">fd_set*set);</span></code> 用来设置描述符集 set 中相关 fd 的位；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">FD_ZERO(fd_set</span> <span class="pre">*set);</span></code> 用来清除描述符集 set 的全部位。</p></li>
+</ul>
+</li>
+<li><p>参数：timeout 为结构体 timeval，用来设置 select() 的等待时间。其结构定义如下：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">timeval</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">time_t</span><span class="w"> </span><span class="n">tv_sec</span><span class="p">;</span><span class="w">     </span><span class="cm">/* seconds */</span><span class="w"></span>
+<span class="w">    </span><span class="kt">time_t</span><span class="w"> </span><span class="n">tv_usec</span><span class="p">;</span><span class="w">    </span><span class="cm">/* microseconds */</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+</pre></div>
+</div>
+<p>如果参数 timeout 设为 NULL 则表示 select() 没有 timeout。</p>
+</li>
+<li><p>返回值：执行成功则返回文件描述符状态已改变的个数，如果返回 0 代表在描述符状态改变前已超过 timeout 时间，当有错误发生时则返回 -1，错误原因存于 errno，此时参数 readfds、writefds、exceptfds 和 timeout 的值变成不可预测。错误代码说明如下</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">EBADF</span></code> 文件描述符为无效的或该文件已关闭</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EINTR</span></code> 此调用被信号所中断</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EINVAL</span></code> 参数 n 为负值</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENOMEM</span></code> 内存不足</p></li>
+</ul>
+</li>
+</ul>
+<p><strong>示例</strong></p>
+<p>常见的程序片段</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">fs_set</span><span class="w"> </span><span class="n">readset</span><span class="p">;</span><span class="w"></span>
+
+<span class="n">FD_ZERO</span><span class="p">(</span><span class="o">&amp;</span><span class="n">readset</span><span class="p">);</span><span class="w"></span>
+<span class="n">FD_SET</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">readset</span><span class="p">);</span><span class="w"></span>
+<span class="n">select</span><span class="p">(</span><span class="n">fd</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">readset</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span><span class="w"></span>
+
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">FD_ISSET</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span><span class="w"> </span><span class="n">readset</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="p">...</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="poll">
+<h2>poll<a class="headerlink" href="#poll" title="永久链接至标题"></a></h2>
+<p>获取环境变量内容</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;poll.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">poll</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">pollfd</span><span class="w"> </span><span class="o">*</span><span class="n">fds</span><span class="p">,</span><span class="w"> </span><span class="kt">nfds_t</span><span class="w"> </span><span class="n">nfds</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">timeout</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：</p></li>
+<li><p>返回值：</p></li>
+<li><p>相关函数：restart_syscall, select, select_tut, epoll, time</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</section>
+<section id="ppoll">
+<h2>ppoll<a class="headerlink" href="#ppoll" title="永久链接至标题"></a></h2>
+<p>获取环境变量内容</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#define _GNU_SOURCE         </span><span class="cm">/* See feature_test_macros(7) */</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;signal.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;poll.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">ppoll</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">pollfd</span><span class="w"> </span><span class="o">*</span><span class="n">fds</span><span class="p">,</span><span class="w"> </span><span class="kt">nfds_t</span><span class="w"> </span><span class="n">nfds</span><span class="p">,</span><span class="w"> </span>
+<span class="w">          </span><span class="k">const</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">timespec</span><span class="w"> </span><span class="o">*</span><span class="n">tmo_p</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">sigset_t</span><span class="w"> </span><span class="o">*</span><span class="n">sigmask</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：</p></li>
+<li><p>返回值：</p></li>
+<li><p>相关函数：restart_syscall, select, select_tut, epoll, time</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</section>
+<section id="epoll-create">
+<h2>epoll_create<a class="headerlink" href="#epoll-create" title="永久链接至标题"></a></h2>
+<p>创建一个新的 epoll 实例</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/epoll.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">epoll_create</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">size</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th align="left">参数</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">size</td>
+<td align="left">用来告诉内核要监听的 socket 数目一共有多少个，<br/>但从 Linux 2.6.8 开始，size 参数就被忽略，只要大于零即可。</td>
+</tr>
+<tr>
+<td align="left"><strong>返回</strong></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">≥0</td>
+<td align="left">执行成功返回一个非负整数的文件描述符，作为创建好的 epoll 句柄。</td>
+</tr>
+<tr>
+<td align="left">-1</td>
+<td align="left">执行失败，返回 -1，错误信息可以通过 errno 获得。</td>
+</tr>
+</tbody>
+</table><ul class="simple">
+<li><p>相关函数：epoll_create1, close, epoll_ctl, epoll_wait, epoll</p></li>
+</ul>
+</section>
+<section id="epoll-create1">
+<h2>epoll_create1<a class="headerlink" href="#epoll-create1" title="永久链接至标题"></a></h2>
+<p>创建一个新的 epoll 实例</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/epoll.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">epoll_create1</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">flags</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th align="left">参数</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">flags</td>
+<td align="left"><code>EPOLL_CLOEXEC</code> ：在新文件描述符上设置 close-on-exec (<code>FD_CLOEXEC</code>) 标志。</td>
+</tr>
+<tr>
+<td align="left"><strong>返回</strong></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">≥0</td>
+<td align="left">执行成功返回一个非负整数的文件描述符，作为创建好的 epoll 句柄。</td>
+</tr>
+<tr>
+<td align="left">-1</td>
+<td align="left">执行失败，返回 -1，错误信息可以通过 errno 获得。</td>
+</tr>
+</tbody>
+</table><ul class="simple">
+<li><p>说明：当其参数 flags 为 0 时，除了丢弃过时的 size 参数之外，它的效果与 <code class="docutils literal notranslate"><span class="pre">epoll_create</span></code> 一样。</p></li>
+<li><p>相关函数：epoll_create, close, epoll_ctl, epoll_wait, epoll</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">argc</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">argv</span><span class="p">[])</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">efd</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span>
+<span class="w">    </span><span class="n">efd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">epoll_create1</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">efd</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">-1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">perror</span><span class="w"> </span><span class="p">(</span><span class="s">&quot;epoll_create&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="n">abort</span><span class="w"> </span><span class="p">();</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="epoll-ctl">
+<h2>epoll_ctl<a class="headerlink" href="#epoll-ctl" title="永久链接至标题"></a></h2>
+<p>这个系统调用用于操作 epoll 函数所生成的实例（该实例由 epfd 指向），向 fd 实施 op 操作。</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/epoll.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">epoll_ctl</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">epfd</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">op</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">fd</span><span class="p">,</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">epoll_event</span><span class="w"> </span><span class="o">*</span><span class="n">event</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>epfd</td>
+<td>由 epoll 调用产生的文件描述符</td>
+</tr>
+<tr>
+<td>op</td>
+<td>操作的类型，具体包含：<br/>- <code>EPOLL_CTL_ADD</code> ：注册新的 fd 到 epfd 中；<br/>- <code>EPOLL_CTL_MOD</code> ：修改已经注册的 fd 的监听事件；<br/>- <code>EPOLL_CTL_DEL</code> ：从 epfd 中删除一个 fd。</td>
+</tr>
+<tr>
+<td>fd</td>
+<td>op 实施的对象（需要监听的 fd）</td>
+</tr>
+<tr>
+<td>event</td>
+<td>event 可以是以下几个宏的集合：<br/>- <code>EPOLLIN</code> ：表示对应的文件描述符可以读（包括对端 socket 正常关闭）；<br/>- <code>EPOLLOUT</code> ：表示对应的文件描述符可以写；<br/>- <code>EPOLLPRI</code> ：表示对应的文件描述符有紧急的数据可读（这里应该表示有带外数据到来）；<br/>- <code>EPOLLERR</code> ：表示对应的文件描述符发生错误；<br/>- <code>EPOLLHUP</code> ：表示对应的文件描述符被挂断；<br/>- <code>EPOLLET</code> ：将 epoll 设为边缘触发（ET）模式，这是相对于水平触发（LT）模式来说的；<br/>- <code>EPOLLONESHOT</code> ：只监听一次事件，当监听完这次事件之后，如果还需要继续监听这个 socket 的话，需要再次把这个 socket 加入到 epoll 队列里。</td>
+</tr>
+<tr>
+<td><strong>返回</strong></td>
+<td></td>
+</tr>
+<tr>
+<td>0</td>
+<td>成功</td>
+</tr>
+<tr>
+<td>-1</td>
+<td>失败，错误信息可以通过 errno 获得</td>
+</tr>
+</tbody>
+</table><p>epoll_event 结构体</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="k">union</span><span class="w"> </span><span class="nc">epoll_data</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">void</span><span class="w">        </span><span class="o">*</span><span class="n">ptr</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w">          </span><span class="n">fd</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">uint32_t</span><span class="w">     </span><span class="n">u32</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">uint64_t</span><span class="w">     </span><span class="n">u64</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"> </span><span class="n">epoll_data_t</span><span class="p">;</span><span class="w"></span>
+
+<span class="k">struct</span><span class="w"> </span><span class="nc">epoll_event</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">uint32_t</span><span class="w">     </span><span class="n">events</span><span class="p">;</span><span class="w">      </span><span class="cm">/* Epoll events */</span><span class="w"></span>
+<span class="w">    </span><span class="n">epoll_data_t</span><span class="w"> </span><span class="n">data</span><span class="p">;</span><span class="w">        </span><span class="cm">/* User data variable */</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>相关函数：epoll_create, epoll_wait, poll, epoll</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">example</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">sfd</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">efd</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">ret</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">epoll_event</span><span class="w"> </span><span class="n">event</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span>
+<span class="w">    </span><span class="n">event</span><span class="p">.</span><span class="n">data</span><span class="p">.</span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sfd</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">event</span><span class="p">.</span><span class="n">events</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">EPOLLIN</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">EPOLLET</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">epoll_ctl</span><span class="w"> </span><span class="p">(</span><span class="n">efd</span><span class="p">,</span><span class="w"> </span><span class="n">EPOLL_CTL_ADD</span><span class="p">,</span><span class="w"> </span><span class="n">sfd</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">event</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ret</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">-1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">perror</span><span class="w"> </span><span class="p">(</span><span class="s">&quot;epoll_ctl&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="epoll-wait">
+<h2>epoll_wait<a class="headerlink" href="#epoll-wait" title="永久链接至标题"></a></h2>
+<p>获取环境变量内容</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/epoll.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">epoll_wait</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">epfd</span><span class="p">,</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">epoll_event</span><span class="w"> </span><span class="o">*</span><span class="n">events</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">maxevents</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">timeout</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：</p></li>
+<li><p>返回值：</p></li>
+<li><p>相关函数：epoll_create, epoll_ctl, epoll</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</section>
+<section id="epoll-pwait">
+<h2>epoll_pwait<a class="headerlink" href="#epoll-pwait" title="永久链接至标题"></a></h2>
+<p>获取环境变量内容</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/epoll.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">epoll_pwait</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">epfd</span><span class="p">,</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">epoll_event</span><span class="w"> </span><span class="o">*</span><span class="n">events</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">maxevents</span><span class="p">,</span><span class="w"> </span>
+<span class="w">                </span><span class="kt">int</span><span class="w"> </span><span class="n">timeout</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">sigset_t</span><span class="w"> </span><span class="o">*</span><span class="n">sigmask</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：</p></li>
+<li><p>返回值：</p></li>
+<li><p>相关函数：epoll_create, epoll_ctl, epoll</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="network.html" class="btn btn-neutral float-left" title="网络接口篇" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="env.html" class="btn btn-neutral float-right" title="环境变量篇" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2018-2023, 人人都懂物联网.</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用了 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a>开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

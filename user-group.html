@@ -1,0 +1,1477 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>用户组篇 &mdash; Linux 常用 C 函数参考手册 v1.0 文档</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/translations.js"></script>
+        <script src="_static/js/baidutongji.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="数据结构及算法篇" href="data-structure.html" />
+    <link rel="prev" title="常用数学函数篇" href="math.html" />
+    <link href="_static/main.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> Linux 常用 C 函数参考手册
+            <img src="_static/GetIoT_Logo_150px.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="在文档中搜索" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="char.html">字符测试篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="string-convert.html">字符串转换篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="memory.html">内存控制篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="time.html">日期时间篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="memory-string.html">内存及字符串操作篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="math.html">常用数学函数篇</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">用户组篇</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#endgrent">endgrent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#endpwent">endpwent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#endutent">endutent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fgetgrent">fgetgrent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fgetpwent">fgetpwent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#getegid">getegid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#geteuid">geteuid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#getgid">getgid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#getgrent">getgrent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#getgrgid">getgrgid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#getgrnam">getgrnam</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#getgroups">getgroups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#getpw">getpw</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#getpwent">getpwent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#getpwnam">getpwnam</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#getpwuid">getpwuid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#getuid">getuid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#getutent">getutent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#getutid">getutid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#getutline">getutline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#initgroups">initgroups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pututline">pututline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#seteuid">seteuid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#setfsgid">setfsgid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#setfsuid">setfsuid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#setgid">setgid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#setgrent">setgrent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#setgroups">setgroups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#setpwent">setpwent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#setregid">setregid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#setreuid">setreuid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#setuid">setuid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#setutent">setutent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#utmpname">utmpname</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="data-structure.html">数据结构及算法篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="file.html">文件操作篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="file-content.html">文件内容操作篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="permission.html">文件权限控制篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="process.html">进程操作篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ipcs.html">进程间通信篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pthreads.html">线程管理篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="signal.html">信号处理篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="network.html">网络接口篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="io-multiplexing.html">I/O 复用篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="env.html">环境变量篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tty.html">终端控制篇</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Linux 常用 C 函数参考手册</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>用户组篇</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/user-group.md.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1>用户组篇<a class="headerlink" href="#id1" title="永久链接至标题"></a></h1>
+<section id="endgrent">
+<h2>endgrent<a class="headerlink" href="#endgrent" title="永久链接至标题"></a></h2>
+<p>关闭组文件</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;grp.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">endgrent</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：<code class="docutils literal notranslate"><span class="pre">endgrent()</span></code> 用来关闭由 <code class="docutils literal notranslate"><span class="pre">getgrent()</span></code> 所打开的密码文件。</p></li>
+<li><p>返回值：无</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：getgrent，setgrent</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<p>请参考 <code class="docutils literal notranslate"><span class="pre">getgrent()</span></code> 与 <code class="docutils literal notranslate"><span class="pre">setgrent()</span></code>。</p>
+</section>
+<section id="endpwent">
+<h2>endpwent<a class="headerlink" href="#endpwent" title="永久链接至标题"></a></h2>
+<p>关闭密码文件</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;pwd.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">endpwent</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：<code class="docutils literal notranslate"><span class="pre">endpwent()</span></code> 用来关闭由 <code class="docutils literal notranslate"><span class="pre">getpwent()</span></code> 所打开的密码文件。</p></li>
+<li><p>返回值：无</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：getpwent，setpwent</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<p>请参考 <code class="docutils literal notranslate"><span class="pre">getpwent()</span></code> 与 <code class="docutils literal notranslate"><span class="pre">setpwent()</span></code>。</p>
+</section>
+<section id="endutent">
+<h2>endutent<a class="headerlink" href="#endutent" title="永久链接至标题"></a></h2>
+<p>关闭 utmp 文件</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;utmp.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">endutent</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：<code class="docutils literal notranslate"><span class="pre">endutent()</span></code> 用来关闭由 <code class="docutils literal notranslate"><span class="pre">getutent</span></code> 所打开的 utmp 文件。</p></li>
+<li><p>返回值：无</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：getutent，setutent</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<p>请参考 <code class="docutils literal notranslate"><span class="pre">getutent()</span></code>。</p>
+</section>
+<section id="fgetgrent">
+<h2>fgetgrent<a class="headerlink" href="#fgetgrent" title="永久链接至标题"></a></h2>
+<p>从指定的文件来读取组格式</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;grp.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">group</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">getgrent</span><span class="p">(</span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">stream</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：<code class="docutils literal notranslate"><span class="pre">fgetgrent()</span></code> 会从参数 stream 指定的文件读取一行数据，然后以 group 结构将该数据返回。参数 stream 所指定的文件必须和、etc/group 相同的格式。group 结构定义请参考 <code class="docutils literal notranslate"><span class="pre">getgrent()</span></code>。</p></li>
+<li><p>返回值：返回 group 结构数据，如果返回 NULL 则表示已无数据，或有错误发生。</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：fgetpwent</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;grp.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">group</span><span class="w"> </span><span class="o">*</span><span class="n">data</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="n">stream</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">stream</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fopen</span><span class="p">(</span><span class="s">&quot;/etc/group&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;r&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">while</span><span class="p">((</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fgetgrent</span><span class="p">(</span><span class="n">stream</span><span class="p">))</span><span class="o">!=</span><span class="mi">0</span><span class="p">){</span><span class="w"></span>
+<span class="w">        </span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s :%s:%d :&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="o">-&gt;</span><span class="n">gr_name</span><span class="p">,</span><span class="n">data</span><span class="o">-&gt;</span><span class="n">gr_passwd</span><span class="p">,</span><span class="n">data</span><span class="o">-&gt;</span><span class="n">gr_gid</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">data</span><span class="o">-&gt;</span><span class="n">gr_mem</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s,&quot;</span><span class="p">,</span><span class="n">data</span><span class="o">-&gt;</span><span class="n">gr_mem</span><span class="p">[</span><span class="n">i</span><span class="o">++</span><span class="p">]);</span><span class="w"></span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="n">fclose</span><span class="p">(</span><span class="n">stream</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>root:x:0:root,
+bin:x:1:root,bin,daemon
+daemon:x:2:root,bin,daemon
+sys:x:3:root,bin,adm
+adm:x:4:root,adm,daemon
+tty:x:5
+disk:x:6:root
+lp:x:7:daemon,lp
+mem:x:8
+kmem:x:9
+wheel:x:10:root
+mail:x:12:mail
+news:x:13:news
+uucp:x:14:uucp
+man:x:15
+games:x:20
+gopher:x:30
+dip:x:40:
+ftp:x:50
+nobody:x:99:
+</pre></div>
+</div>
+</section>
+<section id="fgetpwent">
+<h2>fgetpwent<a class="headerlink" href="#fgetpwent" title="永久链接至标题"></a></h2>
+<p>从指定的文件来读取密码格式</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;pwd.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">passwd</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">fgetpwent</span><span class="p">(</span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="n">stream</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：<code class="docutils literal notranslate"><span class="pre">fgetpwent()</span></code> 会从参数 stream 指定的文件读取一行数据，然后以 passwd 结构将该数据返回。参数 stream 所指定的文件必须和 /etc/passwd 相同的格式。passwd 结构定义请参考 <code class="docutils literal notranslate"><span class="pre">getpwent()</span></code>。</p></li>
+<li><p>返回值：返回 passwd 结构数据，如果返回 <code class="docutils literal notranslate"><span class="pre">NULL</span></code> 则表示已无数据，或有错误发生。</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：fgetgrent</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;pwd.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">passwd</span><span class="w"> </span><span class="o">*</span><span class="n">user</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="n">stream</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">stream</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fopen</span><span class="p">(</span><span class="s">&quot;/etc/passwd&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;r&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">while</span><span class="p">((</span><span class="n">user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fgetpwent</span><span class="p">(</span><span class="n">stream</span><span class="p">))</span><span class="o">!=</span><span class="mi">0</span><span class="p">){</span><span class="w"></span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s:%d:%d:%s:%s:%s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">user</span><span class="o">-&gt;</span><span class="n">pw_name</span><span class="p">,</span><span class="n">user</span><span class="o">-&gt;</span><span class="n">pw_uid</span><span class="p">,</span><span class="n">user</span><span class="o">-&gt;</span><span class="n">pw_gid</span><span class="p">,</span><span class="n">user</span><span class="o">-&gt;</span><span class="n">pw_gecos</span><span class="p">,</span><span class="n">user</span><span class="o">-&gt;</span><span class="n">pw_dir</span><span class="p">,</span><span class="n">user</span><span class="o">-&gt;</span><span class="n">pw_shell</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>root:0:0:root:/root:/bin/bash
+bin:1:1:bin:/bin:
+daemon:2:2:daemon:/sbin:
+adm:3:4:adm:/var/adm:
+lp:4:7:lp:/var/spool/lpd:
+sync:5:0:sync:/sbin:/bin/sync
+shutdown:6:0:shutdown:/sbin:/sbin/shutdown
+halt:7:0:halt:/sbin:/sbin/halt
+mail:8:12:mail:/var/spool/mail:
+news:9:13:news:var/spool/news
+uucp:10:14:uucp:/var/spool/uucp:
+operator:11:0:operator :/root:
+games:12:100:games:/usr/games:
+gopher:13:30:gopher:/usr/lib/gopher-data:
+ftp:14:50:FTP User:/home/ftp:
+nobody:99:99:Nobody:/:
+xfs:100:101:X Font Server: /etc/Xll/fs:/bin/false
+gdm:42:42:/home/gdm:/bin/bash
+kids:500:500: : /home/kids:/bin/bash
+</pre></div>
+</div>
+</section>
+<section id="getegid">
+<h2>getegid<a class="headerlink" href="#getegid" title="永久链接至标题"></a></h2>
+<p>取得有效的组识别码</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">gid_t</span><span class="w"> </span><span class="nf">getegid</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：<code class="docutils literal notranslate"><span class="pre">getegid()</span></code> 用来取得执行目前进程有效组识别码。有效的组识别码用来决定进程执行时组的权限。返回值返回有效的组识别码。</p></li>
+<li><p>返回值：</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：getgid，setgid，setregid</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;egid is %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">getegid</span><span class="p">());</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>egid is <span class="m">0</span> <span class="c1"># 当使用root身份执行范例程序时</span>
+</pre></div>
+</div>
+</section>
+<section id="geteuid">
+<h2>geteuid<a class="headerlink" href="#geteuid" title="永久链接至标题"></a></h2>
+<p>取得有效的用户识别码</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">uid_t</span><span class="w"> </span><span class="n">geteuid</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：<code class="docutils literal notranslate"><span class="pre">geteuid()</span></code> 用来取得执行目前进程有效的用户识别码。有效的用户识别码用来决定进程执行的权限，借由此改变此值，进程可以获得额外的权限。倘若执行文件的 setID 位已被设置，该文件执行时，其进程的 euid 值便会设成该文件所有者的 uid。例如，执行文件 /usr/bin/passwd 的权限为 <code class="docutils literal notranslate"><span class="pre">-r-s--x--x</span></code>，其 <code class="docutils literal notranslate"><span class="pre">s</span></code> 位即为 <code class="docutils literal notranslate"><span class="pre">setID(SUID)</span></code> 位，而当任何用户在执行 passwd 时其有效的用户识别码会被设成 passwd 所有者的 uid 值，即 root 的 uid 值（0）。</p></li>
+<li><p>返回值：返回有效的用户识别码。</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：getuid，setreuid，setuid</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="w"> </span><span class="p">(</span><span class="s">&quot;euid is %d </span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">geteuid</span><span class="p">());</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>euid is <span class="m">0</span> <span class="c1"># 当使用root身份执行范例程序时</span>
+</pre></div>
+</div>
+</section>
+<section id="getgid">
+<h2>getgid<a class="headerlink" href="#getgid" title="永久链接至标题"></a></h2>
+<p>取得真实的组识别码</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">gid_t</span><span class="w"> </span><span class="nf">getgid</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：<code class="docutils literal notranslate"><span class="pre">getgid()</span></code> 用来取得执行目前进程的组识别码。</p></li>
+<li><p>返回值：返回组识别码</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：getegid，setregid，setgid</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;gid is %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">getgid</span><span class="p">());</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>gid is <span class="m">0</span> <span class="c1"># 当使用root身份执行范例程序时</span>
+</pre></div>
+</div>
+</section>
+<section id="getgrent">
+<h2>getgrent<a class="headerlink" href="#getgrent" title="永久链接至标题"></a></h2>
+<p>从组文件中取得账号的数据</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;grp.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">group</span><span class="w"> </span><span class="o">*</span><span class="n">getgrent</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：<code class="docutils literal notranslate"><span class="pre">getgrent()</span></code> 用来从组文件（/etc/group）中读取一项组数据，该数据以 group 结构返回。第一次调用时会取得第一项组数据，之后每调用一次就会返回下一项数据，直到已无任何数据时返回 <code class="docutils literal notranslate"><span class="pre">NULL</span></code>。</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">group</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">gr_name</span><span class="p">;</span><span class="w">   </span><span class="cm">/*组名称*/</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">gr_passwd</span><span class="p">;</span><span class="w"> </span><span class="cm">/*组密码*/</span><span class="w"></span>
+<span class="w">    </span><span class="kt">gid_t</span><span class="w"> </span><span class="n">gr_gid</span><span class="p">;</span><span class="w">    </span><span class="cm">/*组识别码*/</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">**</span><span class="n">gr_mem</span><span class="p">;</span><span class="w">   </span><span class="cm">/*组成员账号*/</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</li>
+<li><p>返回值：返回 group 结构数据，如果返回 <code class="docutils literal notranslate"><span class="pre">NULL</span></code> 则表示已无数据，或有错误发生。</p>
+<p>错误代码：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ENOMEM</span></code> 内存不足，无法配置 group 结构。</p></li>
+</ul>
+</li>
+<li><p>附加说明：<code class="docutils literal notranslate"><span class="pre">getgrent()</span></code> 在第一次调用时会打开组文件，读取数据完毕后可使用 <code class="docutils literal notranslate"><span class="pre">endgrent()</span></code> 来关闭该组文件。</p></li>
+<li><p>相关函数：setgrent，endgrent</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;grp.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">group</span><span class="w"> </span><span class="o">*</span><span class="n">data</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">while</span><span class="p">((</span><span class="n">data</span><span class="o">=</span><span class="w"> </span><span class="n">getgrent</span><span class="p">())</span><span class="o">!=</span><span class="mi">0</span><span class="p">){</span><span class="w"></span>
+<span class="w">        </span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s:%s:%d:&quot;</span><span class="p">,</span><span class="n">data</span><span class="o">-&gt;</span><span class="n">gr_name</span><span class="p">,</span><span class="n">data</span><span class="o">-&gt;</span><span class="n">gr_passwd</span><span class="p">,</span><span class="n">data</span><span class="o">-&gt;</span><span class="n">gr_gid</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="k">while</span><span class="p">(</span><span class="n">data</span><span class="o">-&gt;</span><span class="n">gr_mem</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="w"></span>
+<span class="w">            </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s,&quot;</span><span class="p">,</span><span class="n">data</span><span class="o">-&gt;</span><span class="n">gr_mem</span><span class="p">[</span><span class="n">i</span><span class="o">++</span><span class="p">]);</span><span class="w"></span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="n">endgrent</span><span class="p">();</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>root:x:0:root,
+bin:x:1:root,bin,daemon,
+daemon:x:2:root,bin,daemon,
+sys:x:3:root,bin,adm,
+adm:x:4:root,adm,daemon
+tty:x:5
+disk:x:6:root
+lp:x:7:daemon,lp
+mem:x:8
+kmem:x:9:
+wheel:x:10:root
+mail:x:12:mail
+news:x:13:news
+uucp:x:14:uucp
+man:x:15:
+games:x:20
+gopher:x:30
+dip:x:40
+ftp:x:50
+nobody:x:99
+</pre></div>
+</div>
+</section>
+<section id="getgrgid">
+<h2>getgrgid<a class="headerlink" href="#getgrgid" title="永久链接至标题"></a></h2>
+<p>从组文件中取得指定 gid 的数据</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;grp.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">group</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">getgrgid</span><span class="p">(</span><span class="kt">gid_t</span><span class="w"> </span><span class="n">gid</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：<code class="docutils literal notranslate"><span class="pre">getgrgid()</span></code> 用来依参数 gid 指定的组识别码逐一搜索组文件，找到时便将该组的数据以 group 结构返回。group 结构请参考 <code class="docutils literal notranslate"><span class="pre">getgrent()</span></code>。</p></li>
+<li><p>返回值：返回 group 结构数据，如果返回 <code class="docutils literal notranslate"><span class="pre">NULL</span></code> 则表示已无数据，或有错误发生。</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：fgetgrent，getgrent，getgrnam</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* 取得gid＝3的组数据*/</span><span class="w"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;grp.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">group</span><span class="w"> </span><span class="o">*</span><span class="n">data</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">getgrgid</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s:%s:%d:&quot;</span><span class="p">,</span><span class="n">data</span><span class="o">-&gt;</span><span class="n">gr_name</span><span class="p">,</span><span class="n">data</span><span class="o">-&gt;</span><span class="n">gr_passwd</span><span class="p">,</span><span class="n">data</span><span class="o">-&gt;</span><span class="n">gr_gid</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">while</span><span class="p">(</span><span class="n">data</span><span class="o">-&gt;</span><span class="n">gr_mem</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="w"></span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s ,&quot;</span><span class="p">,</span><span class="n">data</span><span class="o">-&gt;</span><span class="n">mem</span><span class="p">[</span><span class="n">i</span><span class="o">++</span><span class="p">]);</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>sys:x:3:root,bin,adm
+</pre></div>
+</div>
+</section>
+<section id="getgrnam">
+<h2>getgrnam<a class="headerlink" href="#getgrnam" title="永久链接至标题"></a></h2>
+<p>从组文件中取得指定组的数据</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;grp.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">group</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">getgrnam</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">name</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：<code class="docutils literal notranslate"><span class="pre">getgrnam()</span></code> 用来逐一搜索参数那么指定的组名称，找到时便将该组的数据以 group 结构返回。group 结构请参考 <code class="docutils literal notranslate"><span class="pre">getgrent()</span></code>。</p></li>
+<li><p>返回值：返回 group 结构数据，如果返回 <code class="docutils literal notranslate"><span class="pre">NULL</span></code> 则表示已无数据，或有错误发生。</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：fgetgrent，getrent，getgruid</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* 取得adm的组数据*/</span><span class="w"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;grp.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">group</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">data</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">getgrnam</span><span class="p">(</span><span class="s">&quot;adm&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s:%s:%d:&quot;</span><span class="p">,</span><span class="n">data</span><span class="o">-&gt;</span><span class="n">gr_name</span><span class="p">,</span><span class="n">data</span><span class="o">-&gt;</span><span class="n">gr_passwd</span><span class="p">,</span><span class="n">data</span><span class="o">-&gt;</span><span class="n">gr_gid</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">while</span><span class="p">(</span><span class="n">data</span><span class="o">-&gt;</span><span class="n">gr_mem</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="w"></span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s,&quot;</span><span class="p">,</span><span class="n">data</span><span class="o">-&gt;</span><span class="n">gr_mem</span><span class="p">[</span><span class="n">i</span><span class="o">++</span><span class="p">]);</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>adm:x:4:root,adm,daemon
+</pre></div>
+</div>
+</section>
+<section id="getgroups">
+<h2>getgroups<a class="headerlink" href="#getgroups" title="永久链接至标题"></a></h2>
+<p>取得组代码</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">getgroups</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">size</span><span class="p">,</span><span class="w"> </span><span class="kt">gid_t</span><span class="w"> </span><span class="n">list</span><span class="p">[]);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：<code class="docutils literal notranslate"><span class="pre">getgroup()</span></code> 用来取得目前用户所属的组代码。参数 size 为 <code class="docutils literal notranslate"><span class="pre">list[]</span></code> 所能容纳的 <code class="docutils literal notranslate"><span class="pre">gid_t</span></code> 数目。如果参数 <code class="docutils literal notranslate"><span class="pre">size</span></code> 值为零，此函数仅会返回用户所属的组数。</p></li>
+<li><p>返回值：返回组识别码，如有错误则返回-1。</p>
+<p>错误代码：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">EFAULT</span></code> 参数 list 数组地址不合法。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EINVAL</span></code> 参数 size 值不足以容纳所有的组。</p></li>
+</ul>
+</li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：initgroups，setgroup，getgid，setgid</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">gid_t</span><span class="w"> </span><span class="n">list</span><span class="p">[</span><span class="mi">500</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="n">i</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">getgroups</span><span class="p">(</span><span class="mf">0.l</span><span class="n">ist</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">getgroups</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">list</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">x</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d:%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="n">list</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="m">0</span>:00
+<span class="m">1</span>:01
+<span class="m">2</span>:02
+<span class="m">3</span>:03
+<span class="m">4</span>:04
+<span class="m">5</span>:06
+<span class="m">6</span>:10
+</pre></div>
+</div>
+</section>
+<section id="getpw">
+<h2>getpw<a class="headerlink" href="#getpw" title="永久链接至标题"></a></h2>
+<p>取得指定用户的密码文件数据</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;pwd.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">getpw</span><span class="p">(</span><span class="kt">uid_t</span><span class="w"> </span><span class="n">uid</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">buf</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：<code class="docutils literal notranslate"><span class="pre">getpw()</span></code> 会从 /etc/passwd 中查找符合参数 uid 所指定的用户账号数据，找不到相关数据就返回 -1。</p>
+<p>所返回的 buf 字符串格式如下：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>账号:密码:用户识别码<span class="o">(</span>uid<span class="o">)</span>:组识别码<span class="o">(</span>gid<span class="o">)</span>:全名:根目录:shell
+</pre></div>
+</div>
+</li>
+<li><p>返回值：返回 0 表示成功，有错误发生时返回 -1。</p></li>
+<li><p>附加说明：</p>
+<ol class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">getpw()</span></code> 会有潜在的安全性问题，请尽量使用别的函数取代。</p></li>
+<li><p>使用 shadow 的系统已把用户密码抽出 /etc/passwd，因此使用 <code class="docutils literal notranslate"><span class="pre">getpw()</span></code> 取得的密码将为”x”。</p></li>
+</ol>
+</li>
+<li><p>相关函数：getpwent</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;pwd.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">buffer</span><span class="p">[</span><span class="mi">80</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="n">getpw</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">buffer</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">buffer</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>root:x:0:0:root:/root:/bin/bash
+</pre></div>
+</div>
+</section>
+<section id="getpwent">
+<h2>getpwent<a class="headerlink" href="#getpwent" title="永久链接至标题"></a></h2>
+<p>从密码文件中取得账号的数据</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;pwd.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">passwd</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">getpwent</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：<code class="docutils literal notranslate"><span class="pre">getpwent()</span></code> 用来从密码文件（/etc/passwd）中读取一项用户数据，该用户的数据以 passwd 结构返回。第一次调用时会取得第一位用户数据，之后每调用一次就会返回下一项数据，直到已无任何数据时返回 <code class="docutils literal notranslate"><span class="pre">NULL</span></code>。</p>
+<p>passwd 结构定义如下：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">passwd</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">pw_name</span><span class="p">;</span><span class="w">   </span><span class="cm">/*用户账号*/</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">pw_passwd</span><span class="p">;</span><span class="w"> </span><span class="cm">/*用户密码*/</span><span class="w"></span>
+<span class="w">    </span><span class="kt">uid_t</span><span class="w">  </span><span class="n">pw_uid</span><span class="p">;</span><span class="w">    </span><span class="cm">/*用户识别码*/</span><span class="w"></span>
+<span class="w">    </span><span class="kt">gid_t</span><span class="w">  </span><span class="n">pw_gid</span><span class="p">;</span><span class="w">    </span><span class="cm">/*组识别码*/</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">pw_gecos</span><span class="p">;</span><span class="w">  </span><span class="cm">/*用户全名*/</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">pw_dir</span><span class="p">;</span><span class="w">    </span><span class="cm">/*家目录*/</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">pw_shell</span><span class="p">;</span><span class="w">  </span><span class="cm">/*所使用的shell路径*/</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+</pre></div>
+</div>
+</li>
+<li><p>返回值：返回 passwd 结构数据，如果返回 <code class="docutils literal notranslate"><span class="pre">NULL</span></code> 则表示已无数据，或有错误发生。</p></li>
+<li><p>附加说明：<code class="docutils literal notranslate"><span class="pre">getpwent()</span></code> 在第一次调用时会打开密码文件，读取数据完毕后可使用 <code class="docutils literal notranslate"><span class="pre">endpwent()</span></code> 来关闭该密码文件。错误代码 <code class="docutils literal notranslate"><span class="pre">ENOMEM</span></code> 内存不足，无法配置 passwd 结构。</p></li>
+<li><p>相关函数：getpw，fgetpwent，getpwnam，getpwuid，setpwent，endpwent</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;pwd.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">passwd</span><span class="w"> </span><span class="o">*</span><span class="n">user</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">while</span><span class="p">((</span><span class="n">user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">getpwent</span><span class="p">())</span><span class="o">!=</span><span class="mi">0</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s:%d:%d:%s:%s:%s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">               </span><span class="n">user</span><span class="o">-&gt;</span><span class="n">pw_name</span><span class="p">,</span><span class="n">user</span><span class="o">-&gt;</span><span class="n">pw_uid</span><span class="p">,</span><span class="n">user</span><span class="o">-&gt;</span><span class="n">pw_gid</span><span class="p">,</span><span class="w"></span>
+<span class="w">               </span><span class="n">user</span><span class="o">-&gt;</span><span class="n">pw_gecos</span><span class="p">,</span><span class="n">user</span><span class="o">-&gt;</span><span class="n">pw_dir</span><span class="p">,</span><span class="n">user</span><span class="o">-&gt;</span><span class="n">pw_shell</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="n">endpwent</span><span class="p">();</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>root:0:0:root:/root:/bin/bash
+bin:1:1:bin:/bin:
+daemon:2:2:daemon:/sbin:
+adm:3:4:adm:/var/adm:
+lp:4:7:lp:/var/spool/lpd:
+sync:5:0:sync:/sbin:/bin/sync
+shutdown:6:0:shutdown:/sbin:/sbin/shutdown
+halt:7:0:halt:/sbin:/sbin/halt
+mail:8:12:mail:/var/spool/mail:
+news:9:13:news:var/spool/news
+uucp:10:14:uucp:/var/spool/uucp:
+operator:11:0:operator :/root:
+games:12:100:games:/usr/games:
+gopher:13:30:gopher:/usr/lib/gopher-data:
+ftp:14:50:FTP User:/home/ftp:
+nobody:99:99:Nobody:/:
+xfs:100:101:X Font Server: /etc/Xll/fs:/bin/false
+gdm:42:42:/home/gdm:/bin/bash
+kids:500:500: : /home/kids:/bin/bash
+</pre></div>
+</div>
+</section>
+<section id="getpwnam">
+<h2>getpwnam<a class="headerlink" href="#getpwnam" title="永久链接至标题"></a></h2>
+<p>从密码文件中取得指定账号的数据</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;pwd.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">passwd</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">getpwnam</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">name</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：<code class="docutils literal notranslate"><span class="pre">getpwnam()</span></code> 用来逐一搜索参数name 指定的账号名称，找到时便将该用户的数据以 passwd 结构返回。passwd 结构请参考 <code class="docutils literal notranslate"><span class="pre">getpwent()</span></code>。</p></li>
+<li><p>返回值：返回 passwd 结构数据，如果返回 <code class="docutils literal notranslate"><span class="pre">NULL</span></code> 则表示已无数据，或有错误发生。</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：getpw，fgetpwent，getpwent，getpwuid</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/*取得root账号的识别码和根目录*/</span><span class="w"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;pwd.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">passwd</span><span class="w"> </span><span class="o">*</span><span class="n">user</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">getpwnam</span><span class="p">(</span><span class="s">&quot;root&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;name:%s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">user</span><span class="o">-&gt;</span><span class="n">pw_name</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;uid:%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">user</span><span class="o">-&gt;</span><span class="n">pw_uid</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;home:%s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">user</span><span class="o">-&gt;</span><span class="n">pw_dir</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>name:root
+uid:0
+home:/root
+</pre></div>
+</div>
+</section>
+<section id="getpwuid">
+<h2>getpwuid<a class="headerlink" href="#getpwuid" title="永久链接至标题"></a></h2>
+<p>从密码文件中取得指定 uid 的数据</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;pwd.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">passwd</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">getpwuid</span><span class="p">(</span><span class="kt">uid_t</span><span class="w"> </span><span class="n">uid</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：<code class="docutils literal notranslate"><span class="pre">getpwuid()</span></code> 用来逐一搜索参数uid 指定的用户识别码，找到时便将该用户的数据以结构返回结构请参考将该用户的数据以 passwd 结构返回。passwd 结构请参考 <code class="docutils literal notranslate"><span class="pre">getpwent()</span></code>。</p></li>
+<li><p>返回值：返回 passwd 结构数据，如果返回 <code class="docutils literal notranslate"><span class="pre">NULL</span></code> 则表示已无数据，或者有错误发生。</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：getpw，fgetpwent，getpwent，getpwnam</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;pwd.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">passwd</span><span class="w"> </span><span class="o">*</span><span class="n">user</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">user</span><span class="o">=</span><span class="w"> </span><span class="n">getpwuid</span><span class="p">(</span><span class="mi">6</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;name:%s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">user</span><span class="o">-&gt;</span><span class="n">pw_name</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;uid:%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">user</span><span class="o">-&gt;</span><span class="n">pw_uid</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;home:%s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">user</span><span class="o">-&gt;</span><span class="n">pw_dir</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>name:shutdown
+uid:6
+home:/sbin
+</pre></div>
+</div>
+</section>
+<section id="getuid">
+<h2>getuid<a class="headerlink" href="#getuid" title="永久链接至标题"></a></h2>
+<p>取得真实的用户识别码</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">uid_t</span><span class="w"> </span><span class="nf">getuid</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：<code class="docutils literal notranslate"><span class="pre">getuid()</span></code> 用来取得执行目前进程的用户识别码。</p></li>
+<li><p>返回值：用户识别码</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：geteuid，setreuid，setuid</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;uid is %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">getuid</span><span class="p">());</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>uid is <span class="m">0</span> <span class="c1"># 当使用root身份执行范例程序时</span>
+</pre></div>
+</div>
+</section>
+<section id="getutent">
+<h2>getutent<a class="headerlink" href="#getutent" title="永久链接至标题"></a></h2>
+<p>从 utmp 文件中取得账号登录数据</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;utmp.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">utmp</span><span class="w"> </span><span class="o">*</span><span class="n">getutent</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：<code class="docutils literal notranslate"><span class="pre">getutent()</span></code> 用来从 utmp 文件（/var/run/utmp）中读取一项登录数据，该数据以 utmp 结构返回。第一次调用时会取得第一位用户数据，之后每调用一次就会返回下一项数据，直到已无任何数据时返回 <code class="docutils literal notranslate"><span class="pre">NULL</span></code>。</p>
+<p>utmp 结构定义如下：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">utmp</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">short</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">ut_type</span><span class="p">;</span><span class="w">          </span><span class="cm">/*登录类型*/</span><span class="w"></span>
+<span class="w">    </span><span class="kt">pid_t</span><span class="w"> </span><span class="n">ut_pid</span><span class="p">;</span><span class="w">               </span><span class="cm">/*login进程的pid*/</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">ut_line</span><span class="p">[</span><span class="n">UT_LINESIZE</span><span class="p">];</span><span class="w">  </span><span class="cm">/*登录装置名，省略了&quot;/dev/&quot;*/</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">ut_id</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span><span class="w">              </span><span class="cm">/*Inittab ID*/</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">ut_user</span><span class="p">[</span><span class="n">UT_NAMESIZE</span><span class="p">];</span><span class="w">  </span><span class="cm">/*登录账号*/</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">ut_host</span><span class="p">[</span><span class="n">UT_HOSTSIZE</span><span class="p">];</span><span class="w">  </span><span class="cm">/*登录账号的远程主机名称*/</span><span class="w"></span>
+<span class="w">    </span><span class="n">struxt</span><span class="w"> </span><span class="n">exit_status</span><span class="w"> </span><span class="n">ut_exit</span><span class="p">;</span><span class="w"> </span><span class="cm">/*当类型为DEAD_PROCESS时进程的结束状态*/</span><span class="w"></span>
+<span class="w">    </span><span class="kt">long</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">ut_session</span><span class="p">;</span><span class="w">        </span><span class="cm">/*Sessioc ID*/</span><span class="w"></span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">timeval</span><span class="w"> </span><span class="n">ut_tv</span><span class="p">;</span><span class="w">       </span><span class="cm">/*时间记录*/</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int32_t</span><span class="w"> </span><span class="n">ut_addr_v6</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span><span class="w">      </span><span class="cm">/*远程主机的网络地址*/</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">__unused</span><span class="p">[</span><span class="mi">20</span><span class="p">];</span><span class="w">          </span><span class="cm">/*保留未使用*/</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">ut_type</span></code> 有以下几种类型：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">EMPTY</span></code> 此为空的记录。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RUN_LVL</span></code> 记录系统 run－level 的改变</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">BOOT_TIME</span></code> 记录系统开机时间</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NEW_TIME</span></code> 记录系统时间改变后的时间</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">OLD_TINE</span></code> 记录当改变系统时间时的时间。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">INIT_PROCESS</span></code> 记录一个由 init 衍生出来的进程。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LOGIN_PROCESS</span></code> 记录 login 进程。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">USER_PROCESS</span></code> 记录一般进程。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DEAD_PROCESS</span></code> 记录一结束的进程。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ACCOUNTING</span></code> 目前尚未使用。</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">exit_status</span></code> 结构定义：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">exit_status</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">short</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">e_termination</span><span class="p">;</span><span class="w"> </span><span class="cm">/*进程结束状态*/</span><span class="w"></span>
+<span class="w">    </span><span class="kt">short</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">e_exit</span><span class="p">;</span><span class="w">        </span><span class="cm">/*进程退出状态*/</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">timeval</span></code> 的结构定义请参考 <code class="docutils literal notranslate"><span class="pre">gettimeofday()</span></code>。
+相关常数定义如下：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">UT_LINESIZE</span><span class="w"> </span><span class="mi">32</span><span class="w"></span>
+<span class="n">UT_NAMESIZE</span><span class="w"> </span><span class="mi">32</span><span class="w"></span>
+<span class="n">UT_HOSTSIZE</span><span class="w"> </span><span class="mi">256</span><span class="w"></span>
+</pre></div>
+</div>
+</li>
+<li><p>返回值：返回 utmp 结构数据，如果返回 <code class="docutils literal notranslate"><span class="pre">NULL</span></code> 则表示已无数据，或有错误发生。</p></li>
+<li><p>附加说明：<code class="docutils literal notranslate"><span class="pre">getutent()</span></code> 在第一次调用时会打开 utmp 文件，读取数据完毕后可使用 <code class="docutils literal notranslate"><span class="pre">endutent()</span></code> 来关闭该 utmp 文件。</p></li>
+<li><p>相关函数：getutent，getutid，getutline，setutent，endutent，pututline，utmpname</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;utmp.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">utmp</span><span class="w"> </span><span class="o">*</span><span class="n">u</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">while</span><span class="p">((</span><span class="n">u</span><span class="o">=</span><span class="n">getutent</span><span class="p">()))</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">u</span><span class="o">-&gt;</span><span class="n">ut_type</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">USER_PROCESS</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d %s %s %s </span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                   </span><span class="n">u</span><span class="o">-&gt;</span><span class="n">ut_type</span><span class="p">,</span><span class="n">u</span><span class="o">-&gt;</span><span class="n">ut_user</span><span class="p">,</span><span class="n">u</span><span class="o">-&gt;</span><span class="n">ut_line</span><span class="p">,</span><span class="n">u</span><span class="o">-&gt;</span><span class="n">ut_host</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="n">endutent</span><span class="p">();</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1"># 表示有三个root账号分别登录/dev/pts/0，/dev/pts/1，/dev/pts/2</span>
+<span class="m">7</span> root pts/0
+<span class="m">7</span> root pts/1
+<span class="m">7</span> root pts/2
+</pre></div>
+</div>
+</section>
+<section id="getutid">
+<h2>getutid<a class="headerlink" href="#getutid" title="永久链接至标题"></a></h2>
+<p>从 utmp 文件中查找特定的记录</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;utmp.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">utmp</span><span class="w"> </span><span class="o">*</span><span class="n">getutid</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">utmp</span><span class="w"> </span><span class="o">*</span><span class="n">ut</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：<code class="docutils literal notranslate"><span class="pre">getutid()</span></code> 用来从目前 utmp 文件的读写位置逐一往后搜索参数 <code class="docutils literal notranslate"><span class="pre">ut</span></code> 指定的记录，如果 <code class="docutils literal notranslate"><span class="pre">ut-&gt;ut_type</span></code> 为<code class="docutils literal notranslate"><span class="pre">RUN_LVL</span></code>、<code class="docutils literal notranslate"><span class="pre">BOOT_TIME</span></code>、<code class="docutils literal notranslate"><span class="pre">NEW_TIME</span></code>、<code class="docutils literal notranslate"><span class="pre">OLD_TIME</span></code> 其中之一则查找与 <code class="docutils literal notranslate"><span class="pre">ut-&gt;ut_type</span></code> 相符的记录；若 <code class="docutils literal notranslate"><span class="pre">ut-&gt;ut_type</span></code> 为 <code class="docutils literal notranslate"><span class="pre">INIT_PROCESS</span></code>、<code class="docutils literal notranslate"><span class="pre">LOGIN_PROCESS</span></code>、<code class="docutils literal notranslate"><span class="pre">USER_PROCESS</span></code> 或 <code class="docutils literal notranslate"><span class="pre">DEAD_PROCESS</span></code> 其中之一，则查找与 <code class="docutils literal notranslate"><span class="pre">ut-&gt;ut_id</span></code> 相符的记录。找到相符的记录便将该数据以 utmp 结构返回。utmp 结构请参考 <code class="docutils literal notranslate"><span class="pre">getutent()</span></code>。</p></li>
+<li><p>返回值：返回 utmp 结构数据，如果返回 <code class="docutils literal notranslate"><span class="pre">NULL</span></code> 则表示已无数据，或有错误发生。</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：getutent，getutline</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;utmp.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">utmp</span><span class="w"> </span><span class="n">ut</span><span class="p">,</span><span class="o">*</span><span class="n">u</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">ut</span><span class="p">.</span><span class="n">ut_type</span><span class="o">=</span><span class="n">RUN_LVL</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">while</span><span class="p">((</span><span class="n">u</span><span class="o">=</span><span class="w"> </span><span class="n">getutid</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ut</span><span class="p">)))</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d %s %s %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">u</span><span class="o">-&gt;</span><span class="n">ut_type</span><span class="p">,</span><span class="n">u</span><span class="o">-&gt;</span><span class="n">ut_user</span><span class="p">,</span><span class="n">u</span><span class="o">-&gt;</span><span class="n">ut_line</span><span class="p">,</span><span class="n">u</span><span class="o">-&gt;</span><span class="n">ut_host</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="m">1</span> runlevel -
+</pre></div>
+</div>
+</section>
+<section id="getutline">
+<h2>getutline<a class="headerlink" href="#getutline" title="永久链接至标题"></a></h2>
+<p>从 utmp 文件中查找特定的记录</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;utmp.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">utmp</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">getutline</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">utmp</span><span class="w"> </span><span class="o">*</span><span class="n">ut</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：<code class="docutils literal notranslate"><span class="pre">getutline()</span></code> 用来从目前 utmp 文件的读写位置逐一往后搜索 <code class="docutils literal notranslate"><span class="pre">ut_type</span></code> 为 <code class="docutils literal notranslate"><span class="pre">USER_PROCESS</span></code> 或 <code class="docutils literal notranslate"><span class="pre">LOGIN_PROCESS</span></code> 的记录，而且 <code class="docutils literal notranslate"><span class="pre">ut_line</span></code> 和 <code class="docutils literal notranslate"><span class="pre">ut-&gt;ut_line</span></code> 相符。找到相符的记录便将该数据以 utmp 结构返回，utmp 结构请参考 <code class="docutils literal notranslate"><span class="pre">getutent()</span></code>。</p></li>
+<li><p>返回值：返回 <code class="docutils literal notranslate"><span class="pre">utmp</span></code> 结构数据，如果返回 <code class="docutils literal notranslate"><span class="pre">NULL</span></code> 则表示已无数据，或有错误发生。</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：getutent，getutid，pututline</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="cpf">&lt;utmp.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">utmp</span><span class="w"> </span><span class="n">ut</span><span class="p">,</span><span class="o">*</span><span class="n">u</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">strcpy</span><span class="w"> </span><span class="p">(</span><span class="n">ut</span><span class="p">.</span><span class="n">ut_line</span><span class="p">,</span><span class="s">&quot;pts/1&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">((</span><span class="n">u</span><span class="o">=</span><span class="n">getutline</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ut</span><span class="p">)))</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d %s %s %s </span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">u</span><span class="o">-&gt;</span><span class="n">ut_type</span><span class="p">,</span><span class="n">u</span><span class="o">-&gt;</span><span class="n">ut_user</span><span class="p">,</span><span class="n">u</span><span class="o">-&gt;</span><span class="n">ut_line</span><span class="p">,</span><span class="n">u</span><span class="o">-&gt;</span><span class="n">ut_host</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="m">7</span> root pts/1
+</pre></div>
+</div>
+</section>
+<section id="initgroups">
+<h2>initgroups<a class="headerlink" href="#initgroups" title="永久链接至标题"></a></h2>
+<p>该函数用于初始化进程的附属组访问列表。它通过读取系统组数据库（通常是 <code class="docutils literal notranslate"><span class="pre">/etc/group</span></code> 文件），若该组数据的成员中有参数 <code class="docutils literal notranslate"><span class="pre">user</span></code> 时，便将参数 <code class="docutils literal notranslate"><span class="pre">group</span></code> 组识别码加入到此数据中。</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;grp.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">initgroups</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">user</span><span class="p">,</span><span class="w"> </span><span class="kt">gid_t</span><span class="w"> </span><span class="n">group</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p><strong>参数</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">user</span></code>：指定用户的用户名，该用户必须存在。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">group</span></code>：一个额外的组 ID，该组 ID 也会被添加到附属组列表中。</p></li>
+</ul>
+<p><strong>返回值</strong></p>
+<ul class="simple">
+<li><p>成功时返回 <code class="docutils literal notranslate"><span class="pre">0</span></code>。</p></li>
+<li><p>失败时返回 <code class="docutils literal notranslate"><span class="pre">-1</span></code>，并设置 <code class="docutils literal notranslate"><span class="pre">errno</span></code>：</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENOMEM</span></code>：内存不足。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EPERM</span></code>：调用进程权限不足。</p></li>
+</ul>
+</li>
+</ul>
+<p><strong>使用说明</strong></p>
+<ul class="simple">
+<li><p>该函数通常用于需要切换用户权限的场景，例如在创建子进程时，需要以特定用户的身份运行。</p></li>
+<li><p>调用该函数时，需要确保当前进程有足够的权限（通常是超级用户权限），否则可能会失败。</p></li>
+<li><p>如果用户所属的组数量超过系统限制（<code class="docutils literal notranslate"><span class="pre">NGROUPS_MAX</span></code>），可能会导致部分组被丢弃。</p></li>
+</ul>
+<p>相关函数：setgrent，endgrent</p>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;grp.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">username</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;testuser&quot;</span><span class="p">;</span><span class="w"> </span><span class="c1">// 替换为实际存在的用户名</span>
+<span class="w">    </span><span class="kt">gid_t</span><span class="w"> </span><span class="n">group</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1000</span><span class="p">;</span><span class="w"> </span><span class="c1">// 替换为实际的组ID</span>
+
+<span class="w">    </span><span class="c1">// 初始化附属组列表</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">initgroups</span><span class="p">(</span><span class="n">username</span><span class="p">,</span><span class="w"> </span><span class="n">group</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">-1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">perror</span><span class="p">(</span><span class="s">&quot;initgroups failed&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">EXIT_FAILURE</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Group list initialized successfully for user: %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">username</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">EXIT_SUCCESS</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>编译并执行程序，如果用户 <code class="docutils literal notranslate"><span class="pre">testuser</span></code> 和组 ID <code class="docutils literal notranslate"><span class="pre">1000</span></code> 都有效，则输出如下：</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>Group list initialized successfully <span class="k">for</span> user: testuser
+</pre></div>
+</div>
+</section>
+<section id="pututline">
+<h2>pututline<a class="headerlink" href="#pututline" title="永久链接至标题"></a></h2>
+<p>将 utmp 记录写入文件</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;utmp.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">pututline</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">utmp</span><span class="w"> </span><span class="o">*</span><span class="n">ut</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：pututline()用来将参数ut的utmp结构记录到utmp文件中。此函数会先用getutid()来取得正确的写入位置，如果没有找到相符的记录则会加入到utmp文件尾，utmp结构请参考getutent()。</p></li>
+<li><p>返回值：无</p></li>
+<li><p>附加说明：需要有写入 /var/run/utmp 的权限</p></li>
+<li><p>相关函数：getutent，getutid，getutline</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;utmp.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">utmp</span><span class="w"> </span><span class="n">ut</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">ut</span><span class="p">.</span><span class="n">ut_type</span><span class="w"> </span><span class="o">=</span><span class="n">USER_PROCESS</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">ut</span><span class="p">.</span><span class="n">ut_pid</span><span class="o">=</span><span class="n">getpid</span><span class="p">();</span><span class="w"></span>
+<span class="w">    </span><span class="n">strcpy</span><span class="p">(</span><span class="n">ut</span><span class="p">.</span><span class="n">ut_user</span><span class="p">,</span><span class="s">&quot;kids&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">strcpy</span><span class="p">(</span><span class="n">ut</span><span class="p">.</span><span class="n">ut_line</span><span class="p">,</span><span class="s">&quot;pts/1&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">strcpy</span><span class="p">(</span><span class="n">ut</span><span class="p">.</span><span class="n">ut_host</span><span class="p">,</span><span class="s">&quot;www.gnu.org&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">pututline</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ut</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1"># 执行范例后用指令who -l 观察 </span>
+root pts/0 dec9 <span class="m">19</span>:20
+kids pts/1 dec12 <span class="m">10</span>:31<span class="o">(</span>www.gnu.org<span class="o">)</span>
+root pts/2 dec12 <span class="m">13</span>:33
+</pre></div>
+</div>
+</section>
+<section id="seteuid">
+<h2>seteuid<a class="headerlink" href="#seteuid" title="永久链接至标题"></a></h2>
+<p>设置有效的用户识别码</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">seteuid</span><span class="p">(</span><span class="kt">uid_t</span><span class="w"> </span><span class="n">euid</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：seteuid() 用来重新设置执行目前进程的有效用户识别码。在 Linux 下，seteuid(euid) 相当于 setreuid(-1,euid)。</p></li>
+<li><p>返回值：执行成功则返回0，失败则返回-1，错误代码存于errno</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：setuid，setreuid，setfsuid</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<p>请参考 setuid()。</p>
+</section>
+<section id="setfsgid">
+<h2>setfsgid<a class="headerlink" href="#setfsgid" title="永久链接至标题"></a></h2>
+<p>设置文件系统的组识别码</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">setfsgid</span><span class="p">(</span><span class="kt">uid_t</span><span class="w"> </span><span class="n">fsgid</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：setfsgid()用来重新设置目前进程的文件系统的组识别码。一般情况下，文件系统的组识别码(fsgid)与有效的组识别码(egid)是相同的。如果是超级用户调用此函数，参数fsgid 可以为任何值，否则参数fsgid必须为real/effective/saved的组识别码之一。</p></li>
+<li><p>返回值：执行成功则返回0，失败则返回-1，错误代码存于errno。</p>
+<p>错误代码：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">EPERM</span></code> 权限不够，无法完成设置。</p></li>
+</ul>
+</li>
+<li><p>附加说明：此函数为Linux特有。</p></li>
+<li><p>相关函数：setuid，setreuid，seteuid，setfsuid</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</section>
+<section id="setfsuid">
+<h2>setfsuid<a class="headerlink" href="#setfsuid" title="永久链接至标题"></a></h2>
+<p>设置文件系统的用户识别码</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">setfsuid</span><span class="p">(</span><span class="kt">uid_t</span><span class="w"> </span><span class="n">fsuid</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：setfsuid()用来重新设置目前进程的文件系统的用户识别码。一般情况下，文件系统的用户识别码(fsuid)与有效的用户识别码(euid)是相同的。如果是超级用户调用此函数，参数fsuid可以为任何值，否则参数fsuid必须为real/effective/saved的用户识别码之一。</p></li>
+<li><p>返回值：执行成功则返回0，失败则返回-1，错误代码存于errno。</p>
+<p>错误代码：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">EPERM</span></code> 权限不够，无法完成设置。</p></li>
+</ul>
+</li>
+<li><p>附加说明：此函数为Linux特有</p></li>
+<li><p>相关函数：setuid，setreuid，seteuid，setfsgid</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</section>
+<section id="setgid">
+<h2>setgid<a class="headerlink" href="#setgid" title="永久链接至标题"></a></h2>
+<p>设置真实的组识别码</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">setgid</span><span class="p">(</span><span class="kt">gid_t</span><span class="w"> </span><span class="n">gid</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：setgid()用来将目前进程的真实组识别码(real gid)设成参数gid值。如果是以超级用户身份执行此调用，则real、effective与savedgid都会设成参数gid。</p></li>
+<li><p>返回值：设置成功则返回0，失败则返回-1，错误代码存于errno中。</p>
+<p>错误代码：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">EPERM</span></code> 并非以超级用户身份调用，而且参数gid 并非进程的effective gid或saved gid值之一。</p></li>
+</ul>
+</li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：getgid，setregid，getegid，setegid</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</section>
+<section id="setgrent">
+<h2>setgrent<a class="headerlink" href="#setgrent" title="永久链接至标题"></a></h2>
+<p>从头读取组文件中的组数据</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;grp.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">setgrent</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：setgrent() 用来将 getgrent() 的读写地址指回组文件开头。</p></li>
+<li><p>返回值：无</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：getgrent，endgrent</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<p>请参考 setpwent()。</p>
+</section>
+<section id="setgroups">
+<h2>setgroups<a class="headerlink" href="#setgroups" title="永久链接至标题"></a></h2>
+<p>设置组代码</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;grp.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">setgroups</span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">size</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">gid_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">list</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：setgroups() 用来将 list 数组中所标明的组加入到目前进程的组设置中。参数size为list()的gid_t数目，最大值为 <code class="docutils literal notranslate"><span class="pre">NGROUP(32)</span></code>。</p></li>
+<li><p>返回值：设置成功则返回0，如有错误则返回-1。</p>
+<p>错误代码：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">EFAULT</span></code> 参数list数组地址不合法。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EPERM</span></code> 权限不足，必须是root权限</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EINVAL</span></code> 参数size值大于NGROUP(32)。</p></li>
+</ul>
+</li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：initgroups，getgroup，getgid，setgid</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</section>
+<section id="setpwent">
+<h2>setpwent<a class="headerlink" href="#setpwent" title="永久链接至标题"></a></h2>
+<p>从头读取密码文件中的账号数据</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;pwd.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">setpwent</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：setpwent() 用来将 getpwent() 的读写地址指回密码文件开头。</p></li>
+<li><p>返回值：无</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：getpwent，endpwent</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;pwd.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">passwd</span><span class="w"> </span><span class="o">*</span><span class="n">user</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="mi">4</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span><span class="w"></span>
+<span class="w">        </span><span class="n">user</span><span class="o">=</span><span class="n">getpwent</span><span class="p">();</span><span class="w"></span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s :%d :%d :%s:%s:%s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">               </span><span class="n">user</span><span class="o">-&gt;</span><span class="n">pw_name</span><span class="p">,</span><span class="n">user</span><span class="o">-&gt;</span><span class="n">pw_uid</span><span class="p">,</span><span class="n">user</span><span class="o">-&gt;</span><span class="n">pw_gid</span><span class="p">,</span><span class="w"></span>
+<span class="w">               </span><span class="n">user</span><span class="o">-&gt;</span><span class="n">pw_gecos</span><span class="p">,</span><span class="n">user</span><span class="o">-&gt;</span><span class="n">pw_dir</span><span class="p">,</span><span class="n">user</span><span class="o">-&gt;</span><span class="n">pw_shell</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="n">setpwent</span><span class="p">();</span><span class="w"></span>
+<span class="w">    </span><span class="n">user</span><span class="o">=</span><span class="n">getpwent</span><span class="p">();</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s :%d :%d :%s:%s:%s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">           </span><span class="n">user</span><span class="o">-&gt;</span><span class="n">pw_name</span><span class="p">,</span><span class="n">user</span><span class="o">-&gt;</span><span class="n">pw_uid</span><span class="p">,</span><span class="n">user</span><span class="o">-&gt;</span><span class="n">pw_gid</span><span class="p">,</span><span class="w"></span>
+<span class="w">           </span><span class="n">user</span><span class="o">-&gt;</span><span class="n">pw_gecos</span><span class="p">,</span><span class="n">user</span><span class="o">-&gt;</span><span class="n">pw_dir</span><span class="p">,</span><span class="n">user</span><span class="o">-&gt;</span><span class="n">pw_shell</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">endpwent</span><span class="p">();</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>root:0:0:root:/root:/bin/bash
+bin:1:1:bin:/bin
+daemon:2:2:daemon:/sbin
+adm:3:4:adm:/var/adm
+root:0:0:root:/root:/bin/bash
+</pre></div>
+</div>
+</section>
+<section id="setregid">
+<h2>setregid<a class="headerlink" href="#setregid" title="永久链接至标题"></a></h2>
+<p>设置真实及有效的组识别码</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">setregid</span><span class="p">(</span><span class="kt">gid_t</span><span class="w"> </span><span class="n">rgid</span><span class="p">,</span><span class="w"> </span><span class="kt">gid_t</span><span class="w"> </span><span class="n">egid</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：setregid() 用来将参数 rgid 设为目前进程的真实组识别码，将参数 egid 设置为目前进程的有效组识别码。如果参数 rgid 或 egid 值为 -1，则对应的识别码不会改变。</p></li>
+<li><p>返回值：执行成功则返回 0，失败则返回 -1，错误代码存于 errno。</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：setgid，setegid，setfsgid</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</section>
+<section id="setreuid">
+<h2>setreuid<a class="headerlink" href="#setreuid" title="永久链接至标题"></a></h2>
+<p>设置真实及有效的用户识别码</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">setreuid</span><span class="p">(</span><span class="kt">uid_t</span><span class="w"> </span><span class="n">ruid</span><span class="p">,</span><span class="w"> </span><span class="kt">uid_t</span><span class="w"> </span><span class="n">euid</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：setreuid()用来将参数ruid 设为目前进程的真实用户识别码，将参数euid 设置为目前进程的有效用户识别码。如果参数ruid 或euid值为-1，则对应的识别码不会改变。</p></li>
+<li><p>返回值：执行成功则返回0，失败则返回-1，错误代码存于errno。</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：setuid，seteuid，setfsuid</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<p>请参考 setuid()。</p>
+</section>
+<section id="setuid">
+<h2>setuid<a class="headerlink" href="#setuid" title="永久链接至标题"></a></h2>
+<p>设置真实的用户识别码</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">setuid</span><span class="p">(</span><span class="kt">uid_t</span><span class="w"> </span><span class="n">uid</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：setuid()用来重新设置执行目前进程的用户识别码。不过，要让此函数有作用，其有效的用户识别码必须为0(root)。在Linux下，当root使用setuid()来变换成其他用户识别码时，root权限会被抛弃，完全转换成该用户身份，也就是说，该进程往后将不再具有可setuid()的权利，如果只是向暂时抛弃root 权限，稍后想重新取回权限，则必须使用seteuid()。</p></li>
+<li><p>返回值：执行成功则返回0，失败则返回-1，错误代码存于errno。</p></li>
+<li><p>附加说明：一般在编写具setuid root的程序时，为减少此类程序带来的系统安全风险，在使用完root权限后建议马上执行setuid(getuid());来抛弃root权限。此外，进程uid和euid不一致时Linux系统将不会产生core dump。</p></li>
+<li><p>相关函数：getuid，setreuid，seteuid，setfsuid</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</section>
+<section id="setutent">
+<h2>setutent<a class="headerlink" href="#setutent" title="永久链接至标题"></a></h2>
+<p>从头读取utmp 文件中的登录数据</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;utmp.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">setutent</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：setutent()用来将getutent()的读写地址指回utmp文件开头。</p></li>
+<li><p>返回值：无</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：getutent，endutent</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<p>请参考 setpwent() 或 setgrent()。</p>
+</section>
+<section id="utmpname">
+<h2>utmpname<a class="headerlink" href="#utmpname" title="永久链接至标题"></a></h2>
+<p>设置 utmp 文件路径</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;utmp.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">utmpname</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">file</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：utmpname() 用来设置utmp文件的路径，以提供utmp相关函数的存取路径。如果没有使用utmpname()则默认utmp文件路径为/var/run/utmp。</p></li>
+<li><p>返回值：无</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：getutent，getutid，getutline，setutent，endutent，pututline</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="math.html" class="btn btn-neutral float-left" title="常用数学函数篇" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="data-structure.html" class="btn btn-neutral float-right" title="数据结构及算法篇" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2018-2023, 人人都懂物联网.</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用了 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a>开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,1527 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>文件权限控制篇 &mdash; Linux 常用 C 函数参考手册 v1.0 文档</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/translations.js"></script>
+        <script src="_static/js/baidutongji.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="进程操作篇" href="process.html" />
+    <link rel="prev" title="文件内容操作篇" href="file-content.html" />
+    <link href="_static/main.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> Linux 常用 C 函数参考手册
+            <img src="_static/GetIoT_Logo_150px.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="在文档中搜索" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="char.html">字符测试篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="string-convert.html">字符串转换篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="memory.html">内存控制篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="time.html">日期时间篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="memory-string.html">内存及字符串操作篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="math.html">常用数学函数篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user-group.html">用户组篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data-structure.html">数据结构及算法篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="file.html">文件操作篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="file-content.html">文件内容操作篇</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">文件权限控制篇</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#access">access</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#alphasort">alphasort</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#chdir">chdir</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#chmod">chmod</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#chown">chown</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#chroot">chroot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#closedir">closedir</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fchdir">fchdir</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fchmod">fchmod</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fchown">fchown</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fstat">fstat</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ftruncate">ftruncate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#getcwd">getcwd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#link">link</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#lstat">lstat</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#opendir">opendir</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#readdir">readdir</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#readlink">readlink</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#remove">remove</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#rename">rename</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#rewinddir">rewinddir</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#seekdir">seekdir</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#stat">stat</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#symlink">symlink</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#telldir">telldir</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#truncate">truncate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#umask">umask</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#unlink">unlink</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#utime">utime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#utimes">utimes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="process.html">进程操作篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ipcs.html">进程间通信篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pthreads.html">线程管理篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="signal.html">信号处理篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="network.html">网络接口篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="io-multiplexing.html">I/O 复用篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="env.html">环境变量篇</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tty.html">终端控制篇</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Linux 常用 C 函数参考手册</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>文件权限控制篇</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/permission.md.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1>文件权限控制篇<a class="headerlink" href="#id1" title="永久链接至标题"></a></h1>
+<section id="access">
+<h2>access<a class="headerlink" href="#access" title="永久链接至标题"></a></h2>
+<p>判断是否具有存取文件的权限</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">access</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">pathname</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">mode</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：access() 会检查是否可以读/写某一已存在的文件。参数 mode 有几种情况组合，<code class="docutils literal notranslate"><span class="pre">R_OK</span></code>、<code class="docutils literal notranslate"><span class="pre">W_OK</span></code>、<code class="docutils literal notranslate"><span class="pre">X_OK</span></code> 和 <code class="docutils literal notranslate"><span class="pre">F_OK</span></code>。<code class="docutils literal notranslate"><span class="pre">R_OK</span></code>、<code class="docutils literal notranslate"><span class="pre">W_OK</span></code> 与 <code class="docutils literal notranslate"><span class="pre">X_OK</span></code> 用来检查文件是否具有读取、写入和执行的权限。<code class="docutils literal notranslate"><span class="pre">F_OK</span></code> 则是用来判断该文件是否存在。由于 access() 只作权限的核查，并不理会文件形态或文件内容，因此，如果一目录表示为“可写入”，表示可以在该目录中建立新文件等操作，而非意味此目录可以被当做文件处理。例如，你会发现 DOS 的文件都具有“可执行”权限，但用 execve() 执行时则会失败。</p></li>
+<li><p>返回值：若所有欲查核的权限都通过了检查则返回 0 值，表示成功，只要有一权限被禁止则返回 -1。</p>
+<p>错误代码：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">EACCESS</span></code> 参数pathname 所指定的文件不符合所要求测试的权限。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EROFS</span></code> 欲测试写入权限的文件存在于只读文件系统内。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EFAULT</span></code> 参数pathname指针超出可存取内存空间。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EINVAL</span></code> 参数mode 不正确。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENAMETOOLONG</span></code> 参数pathname太长。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENOTDIR</span></code> 参数pathname为一目录。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENOMEM</span></code> 核心内存不足</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ELOOP</span></code> 参数pathname有过多符号连接问题。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EIO</span></code> I/O 存取错误。</p></li>
+</ul>
+</li>
+<li><p>附加说明：使用 access() 作用户认证方面的判断要特别小心，例如在 access() 后再做 open() 的空文件可能会造成系统安全上的问题。</p></li>
+<li><p>相关函数：stat，open，chmod，chown，setuid，setgid</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* 判断是否允许读取/etc/passwd */</span><span class="w"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">access</span><span class="p">(</span><span class="s">&quot;/etc/passwd&quot;</span><span class="p">,</span><span class="n">R_OK</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;/etc/passwd can be read</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>/etc/passwd can be <span class="nb">read</span>
+</pre></div>
+</div>
+</section>
+<section id="alphasort">
+<h2>alphasort<a class="headerlink" href="#alphasort" title="永久链接至标题"></a></h2>
+<p>依字母顺序排序目录结构</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;dirent.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">alphasort</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">dirent</span><span class="w"> </span><span class="o">**</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">dirent</span><span class="w"> </span><span class="o">**</span><span class="n">b</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：alphasort() 为 scandir() 最后调用 qsort() 函数时传给 qsort() 作为判断的函数，详细说明请参考 scandir() 及 qsort()。</p></li>
+<li><p>返回值：参考 qsort()。</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：scandir，qsort</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* 读取/目录下所有的目录结构，并依字母顺序排列*/</span><span class="w"></span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">	</span><span class="k">struct</span><span class="w"> </span><span class="nc">dirent</span><span class="w"> </span><span class="o">**</span><span class="n">namelist</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">total</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="n">total</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">scandir</span><span class="p">(</span><span class="s">&quot;/&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">namelist</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">alphasort</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="p">(</span><span class="n">total</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">perror</span><span class="p">(</span><span class="s">&quot;scandir&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">&lt;</span><span class="n">total</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
+<span class="w">            </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">namelist</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">d_name</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;total = %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">total</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>..
+.gnome
+.gnome_private
+ErrorLog
+Weblog
+bin
+boot
+dev
+dosc
+dosd
+etc
+home
+lib
+lost+found
+misc
+mnt
+opt
+proc
+root
+sbin
+tmp
+usr
+var
+<span class="nv">total</span> <span class="o">=</span> <span class="m">24</span>
+</pre></div>
+</div>
+</section>
+<section id="chdir">
+<h2>chdir<a class="headerlink" href="#chdir" title="永久链接至标题"></a></h2>
+<p>改变当前的工作空间（目录）</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">chdir</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">path</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：chdir() 用来将当前的工作目录改变成以参数 path 所指的目录。</p></li>
+<li><p>返回值：执行成功则返回 0，失败返回 -1，errno 为错误代码。</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：getcwd，chroot</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">chdir</span><span class="p">(</span><span class="s">&quot;/tmp&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;current working directory: %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">getcwd</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span><span class="nb">NULL</span><span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>current working directory :/tmp
+</pre></div>
+</div>
+</section>
+<section id="chmod">
+<h2>chmod<a class="headerlink" href="#chmod" title="永久链接至标题"></a></h2>
+<p>改变文件的权限</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/stat.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">chmod</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">path</span><span class="p">,</span><span class="w"> </span><span class="kt">mode_t</span><span class="w"> </span><span class="n">mode</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：chmod() 会依参数 mode 权限来更改参数 path 指定文件的权限。</p>
+<p>参数 mode 有下列数种组合：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">S_ISUID</span></code> 04000 文件的（set user-id on execution）位</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">S_ISGID</span></code> 02000 文件的（set group-id on execution）位</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">S_ISVTX</span></code> 01000 文件的sticky位</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">S_IRUSR</span></code>（S_IREAD） 00400 文件所有者具可读取权限</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">S_IWUSR</span></code>（S_IWRITE）00200 文件所有者具可写入权限</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">S_IXUSR</span></code>（S_IEXEC） 00100 文件所有者具可执行权限</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">S_IRGRP</span></code> 00040 用户组具可读取权限</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">S_IWGRP</span></code> 00020 用户组具可写入权限</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">S_IXGRP</span></code> 00010 用户组具可执行权限</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">S_IROTH</span></code> 00004 其他用户具可读取权限</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">S_IWOTH</span></code> 00002 其他用户具可写入权限</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">S_IXOTH</span></code> 00001 其他用户具可执行权限</p></li>
+</ul>
+<p>只有该文件的所有者或有效用户识别码为 0，才可以修改该文件权限。基于系统安全，如果欲将数据写入一执行文件，而该执行文件具有 <code class="docutils literal notranslate"><span class="pre">S_ISUID</span></code> 或 <code class="docutils literal notranslate"><span class="pre">S_ISGID</span></code> 权限，则这两个位会被清除。如果一目录具有 <code class="docutils literal notranslate"><span class="pre">S_ISUID</span></code> 位权限，表示在此目录下只有该文件的所有者或 root 可以删除该文件。</p>
+</li>
+<li><p>返回值：权限改变成功返回 0，失败返回 -1，错误原因存于 errno。</p>
+<p>错误代码：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">EPERM</span></code> 进程的有效用户识别码与欲修改权限的文件拥有者不同，而且也不具 root 权限。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EACCESS</span></code> 参数 path 所指定的文件无法存取。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EROFS</span></code> 欲写入权限的文件存在于只读文件系统内。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EFAULT</span></code> 参数 path 指针超出可存取内存空间。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EINVAL</span></code> 参数 mode 不正确。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENAMETOOLONG</span></code> 参数 path 太长。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENOENT</span></code> 指定的文件不存在。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENOTDIR</span></code> 参数 path 路径并非一目录。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENOMEM</span></code> 核心内存不足。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ELOOP</span></code> 参数 path 有过多符号连接问题。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EIO</span></code> I/O 存取错误。</p></li>
+</ul>
+</li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：fchmod，stat，open，chown</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* 将/etc/passwd 文件权限设成S_IRUSR|S_IWUSR|S_IRGRP|S_IROTH */</span><span class="w"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/stat.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">	</span><span class="n">chmod</span><span class="p">(</span><span class="s">&quot;/etc/passwd&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">S_IRUSR</span><span class="o">|</span><span class="n">S_IWUSR</span><span class="o">|</span><span class="n">S_IRGRP</span><span class="o">|</span><span class="n">S_IROTH</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="chown">
+<h2>chown<a class="headerlink" href="#chown" title="永久链接至标题"></a></h2>
+<p>改变文件的所有者</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">chown</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">path</span><span class="p">,</span><span class="w"> </span><span class="kt">uid_t</span><span class="w"> </span><span class="n">owner</span><span class="p">,</span><span class="w"> </span><span class="kt">gid_t</span><span class="w"> </span><span class="n">group</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：chown() 会将参数 path 指定文件的所有者变更为参数 owner 代表的用户，而将该文件的组变更为参数 group组。如果参数 owner 或 group 为 -1，对应的所有者或组不会有所改变。root 与文件所有者皆可改变文件组，但所有者必须是参数 group 组的成员。当 root 用 chown() 改变文件所有者或组时，该文件若具有 <code class="docutils literal notranslate"><span class="pre">S_ISUID</span></code> 或 <code class="docutils literal notranslate"><span class="pre">S_ISGID</span></code> 权限，则会清除此权限位，此外如果具有 <code class="docutils literal notranslate"><span class="pre">S_ISGID</span></code> 权限但不具 <code class="docutils literal notranslate"><span class="pre">S_IXGRP</span></code> 位，则该文件会被强制锁定，文件模式会保留。</p></li>
+<li><p>返回值：成功则返回 0，失败返回 -1，错误原因存于 errno。错误代码参考 chmod()。</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：fchown，lchown，chmod</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* 将/etc/passwd 的所有者和组都设为root */</span><span class="w"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">chown</span><span class="p">(</span><span class="s">&quot;/etc/passwd&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="chroot">
+<h2>chroot<a class="headerlink" href="#chroot" title="永久链接至标题"></a></h2>
+<p>改变根目录</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">chroot</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">path</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：chroot() 用来改变根目录为参数 path 所指定的目录。只有超级用户才允许改变根目录，子进程将继承新的根目录。</p></li>
+<li><p>返回值：调用成功则返回 0，失败则返 -1，错误代码存于 errno。</p>
+<p>错误代码：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">EPERM</span></code> 权限不足，无法改变根目录。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EFAULT</span></code> 参数path指针超出可存取内存空间。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENAMETOOLONG</span></code> 参数path太长。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENOTDIR</span></code> 路径中的目录存在但却非真正的目录。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EACCESS</span></code> 存取目录时被拒绝</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENOMEM</span></code> 核心内存不足。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ELOOP</span></code> 参数path有过多符号连接问题。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EIO</span></code> I/O 存取错误。</p></li>
+</ul>
+</li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：chdir</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* 将根目录改为/tmp ,并将工作目录切换至/tmp */</span><span class="w"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">chroot</span><span class="p">(</span><span class="s">&quot;/tmp&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">chdir</span><span class="p">(</span><span class="s">&quot;/&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="closedir">
+<h2>closedir<a class="headerlink" href="#closedir" title="永久链接至标题"></a></h2>
+<p>关闭目录</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;dirent.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">closedir</span><span class="p">(</span><span class="kt">DIR</span><span class="w"> </span><span class="o">*</span><span class="n">dir</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：closedir() 关闭参数 dir 所指的目录流。</p></li>
+<li><p>返回值：关闭成功则返回 0，失败返回 -1，错误原因存于 errno 中。</p>
+<p>错误代码：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">EBADF</span></code> 参数 dir 为无效的目录流</p></li>
+</ul>
+</li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：opendir</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<p>参考 readir()。</p>
+</section>
+<section id="fchdir">
+<h2>fchdir<a class="headerlink" href="#fchdir" title="永久链接至标题"></a></h2>
+<p>改变当前的工作目录</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">fchdir</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">fd</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：fchdir() 用来将当前的工作目录改变成以参数 fd 所指的文件描述词。</p></li>
+<li><p>返回值：成功则返回 0，失败返回 -1，errno 为错误代码。</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：getcwd，chroot</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/stat.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;fcntl.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">fd</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="s">&quot;/tmp&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">O_RDONLY</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">fchdir</span><span class="p">(</span><span class="n">fd</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;current working directory : %s </span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">getcwd</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="n">close</span><span class="p">(</span><span class="n">fd</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>current working directory : /tmp
+</pre></div>
+</div>
+</section>
+<section id="fchmod">
+<h2>fchmod<a class="headerlink" href="#fchmod" title="永久链接至标题"></a></h2>
+<p>改变文件的权限</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/stat.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">fchmod</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">fildes</span><span class="p">,</span><span class="w"> </span><span class="kt">mode_t</span><span class="w"> </span><span class="n">mode</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：fchmod() 会依参数 mode 权限来更改参数 fildes 所指文件的权限。参数 fildes 为已打开文件的文件描述词。参数 mode 请参考 chmod()。</p></li>
+<li><p>返回值：权限改变成功则返回 0，失败返回 -1，错误原因存于 errno。</p>
+<p>错误代码：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">EBADF</span></code> 参数 fildes 为无效的文件描述词。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EPERM</span></code> 进程的有效用户识别码与欲修改权限的文件所有者不同，而且也不具 root 权限。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EROFS</span></code> 欲写入权限的文件存在于只读文件系统内。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EIO</span></code> I/O 存取错误。</p></li>
+</ul>
+</li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：chmod，stat，open，chown</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/stat.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;fcntl.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">fd</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">open</span><span class="w"> </span><span class="p">(</span><span class="s">&quot;/etc/passwd&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">O_RDONLY</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">fchmod</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span><span class="w"> </span><span class="n">S_IRUSR</span><span class="o">|</span><span class="n">S_IWUSR</span><span class="o">|</span><span class="n">S_IRGRP</span><span class="o">|</span><span class="n">S_IROTH</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">close</span><span class="p">(</span><span class="n">fd</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="fchown">
+<h2>fchown<a class="headerlink" href="#fchown" title="永久链接至标题"></a></h2>
+<p>改变文件的所有者</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">fchown</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">fd</span><span class="p">,</span><span class="w"> </span><span class="kt">uid_t</span><span class="w"> </span><span class="n">owner</span><span class="p">,</span><span class="w"> </span><span class="kt">gid_t</span><span class="w"> </span><span class="n">group</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：fchown() 会将参数 fd 指定文件的所有者变更为参数 owner 代表的用户，而将该文件的组变更为参数 group 组。如果参数 owner 或 group 为 -1，对映的所有者或组有所改变。参数 fd 为已打开的文件描述词。当 root 用 fchown() 改变文件所有者或组时，该文件若具 S_ISUID 或 S_ISGID 权限，则会清除此权限位。</p></li>
+<li><p>返回值：成功则返回 0，失败则返回 -1，错误原因存于 errno。</p>
+<p>错误代码：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">EBADF</span></code> 参数 fd 文件描述词为无效的或该文件已关闭。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EPERM</span></code> 进程的有效用户识别码与欲修改权限的文件所有者不同，而且也不具 root 权限，或是参数 owner、group 不正确。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EROFS</span></code> 欲写入的文件存在于只读文件系统内。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENOENT</span></code> 指定的文件不存在。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EIO</span></code> I/O 存取错误。</p></li>
+</ul>
+</li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：chown，lchown，chmod</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;fcntl.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">	</span><span class="kt">int</span><span class="w"> </span><span class="n">fd</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">open</span><span class="w"> </span><span class="p">(</span><span class="s">&quot;/etc/passwd&quot;</span><span class="p">,</span><span class="n">O_RDONLY</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">chown</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">close</span><span class="p">(</span><span class="n">fd</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="fstat">
+<h2>fstat<a class="headerlink" href="#fstat" title="永久链接至标题"></a></h2>
+<p>由文件描述词取得文件状态</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/stat.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">fstat</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">fildes</span><span class="p">,</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">stat</span><span class="w"> </span><span class="o">*</span><span class="n">buf</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：fstat() 用来将参数fildes所指的文件状态，复制到参数 buf 所指的结构中 (struct stat)。fstat() 与 stat() 作用完全相同，不同处在于传入的参数为已打开的文件描述词。详细内容请参考 stat()。</p></li>
+<li><p>返回值：执行成功则返回 0，失败返回 -1，错误代码存于 errno。</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：stat，lstat，chmod，chown，readlink，utime</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/stat.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;fcntk.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">stat</span><span class="w"> </span><span class="n">buf</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">fd</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">open</span><span class="w"> </span><span class="p">(</span><span class="s">&quot;/etc/passwd&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">O_RDONLY</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">fstat</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">buf</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;/etc/passwd file size +%d</span><span class="se">\n</span><span class="s"> &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">buf</span><span class="p">.</span><span class="n">st_size</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>/etc/passwd file <span class="nv">size</span> <span class="o">=</span> <span class="m">705</span>
+</pre></div>
+</div>
+</section>
+<section id="ftruncate">
+<h2>ftruncate<a class="headerlink" href="#ftruncate" title="永久链接至标题"></a></h2>
+<p>改变文件大小</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">ftruncate</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">fd</span><span class="p">,</span><span class="w"> </span><span class="kt">off_t</span><span class="w"> </span><span class="n">length</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：ftruncate() 会将参数fd指定的文件大小改为参数 length 指定的大小。参数 fd 为已打开的文件描述词，而且必须是以写入模式打开的文件。如果原来的文件大小比参数 length 大，则超过的部分会被删去。</p></li>
+<li><p>返回值：执行成功则返回 0，失败返回 -1，错误原因存于 errno。</p>
+<p>错误代码：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">EBADF</span></code> 参数 fd 文件描述词为无效的或该文件已关闭。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EINVAL</span></code> 参数 fd 为一 socket 并非文件，或是该文件并非以写入模式打开。</p></li>
+</ul>
+</li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：open，truncate</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</section>
+<section id="getcwd">
+<h2>getcwd<a class="headerlink" href="#getcwd" title="永久链接至标题"></a></h2>
+<p>取得当前的工作目录</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nf">getcwd</span><span class="p">(</span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">buf</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">size</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：getcwd() 会将当前的工作目录绝对路径复制到参数 buf 所指的内存空间，参数 size 为 buf 的空间大小。在调用此函数时，buf 所指的内存空间要足够大，若工作目录绝对路径的字符串长度超过参数 size 大小，则回值 NULL，errno 的值则为 <code class="docutils literal notranslate"><span class="pre">ERANGE</span></code>。倘若参数 buf 为 NULL，getcwd() 会依参数 size 的大小自动配置内存（使用 <code class="docutils literal notranslate"><span class="pre">malloc()</span></code>），如果参数 size 也为 0，则 getcwd() 会依工作目录绝对路径的字符串程度来决定所配置的内存大小，进程可以在使用完此字符串后利用 free() 来释放此空间。</p></li>
+<li><p>返回值：执行成功则将结果复制到参数 buf 所指的内存空间，或是返回自动配置的字符串指针。失败返回 NULL，错误代码存于 errno。</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：get_current_dir_name，getwd，chdir</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">buf</span><span class="p">[</span><span class="mi">80</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="n">getcwd</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">buf</span><span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;current working directory : %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">buf</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>current working directory :/tmp
+</pre></div>
+</div>
+</section>
+<section id="link">
+<h2>link<a class="headerlink" href="#link" title="永久链接至标题"></a></h2>
+<p>建立文件连接</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">link</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">oldpath</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">newpath</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：link() 以参数 newpath 指定的名称来建立一个新的连接（硬连接）到参数 oldpath 所指定的已存在文件。如果参数 newpath 指定的名称为一已存在的文件则不会建立连接。</p></li>
+<li><p>返回值：成功则返回 0，失败返回 -1，错误原因存于 errno。</p>
+<p>错误代码：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">EXDEV</span></code> 参数 oldpath 与 newpath 不是建立在同一文件系统。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EPERM</span></code> 参数 oldpath 与 newpath 所指的文件系统不支持硬连接。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EROFS</span></code> 文件存在于只读文件系统内。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EFAULT</span></code> 参数 oldpath 或 newpath 指针超出可存取内存空间。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENAMETOLLONG</span></code> 参数 oldpath 或 newpath 太长。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENOMEM</span></code> 核心内存不足。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EEXIST</span></code> 参数 newpath 所指的文件名已存在。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EMLINK</span></code> 参数 oldpath 所指的文件已达最大连接数目。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ELOOP</span></code> 参数 pathname有过多符号连接问题。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENOSPC</span></code> 文件系统的剩余空间不足。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EIO</span></code> I/O 存取错误。</p></li>
+</ul>
+</li>
+<li><p>附加说明：link() 所建立的硬连接无法跨越不同文件系统，如果需要请改用 symlink()。</p></li>
+<li><p>相关函数：symlink，unlink</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* 建立/etc/passwd 的硬连接为pass */</span><span class="w"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">link</span><span class="p">(</span><span class="s">&quot;/etc/passwd&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;pass&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</section>
+<section id="lstat">
+<h2>lstat<a class="headerlink" href="#lstat" title="永久链接至标题"></a></h2>
+<p>由文件描述词取得文件状态</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/stat.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">lstat</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">file_name</span><span class="p">,</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">stat</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">buf</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：lstat() 与 stat() 作用完全相同，都是取得参数 file_name 所指的文件状态，其差别在于，当文件为符号连接时，lstat() 会返回该 link 本身的状态。详细内容请参考 stat()。</p></li>
+<li><p>返回值：执行成功则返回 0，失败返回 -1，错误代码存于 errno。</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：stat，fstat，chmod，chown，readlink，utime</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</section>
+<section id="opendir">
+<h2>opendir<a class="headerlink" href="#opendir" title="永久链接至标题"></a></h2>
+<p>打开目录</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;dirent.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">DIR</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nf">opendir</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">name</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：opendir() 用来打开参数 name 指定的目录，并返回 DIR* 形态的目录流，和 open() 类似，接下来对目录的读取和搜索都要使用此返回值。</p></li>
+<li><p>返回值：成功则返回 DIR* 型态的目录流，打开失败则返回 NULL。</p>
+<p>错误代码：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">EACCESS</span></code> 权限不足。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EMFILE</span></code> 已达到进程可同时打开的文件数上限。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENFILE</span></code> 已达到系统可同时打开的文件数上限。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENOTDIR</span></code> 参数 name 非真正的目录。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENOENT</span></code> 参数 name 指定的目录不存在，或是参数 name 为一空字符串。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENOMEM</span></code> 核心内存不足。</p></li>
+</ul>
+</li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：open，readdir，closedir，rewinddir，seekdir，telldir，scandir</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</section>
+<section id="readdir">
+<h2>readdir<a class="headerlink" href="#readdir" title="永久链接至标题"></a></h2>
+<p>读取目录</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;dirent.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">dirent</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">readdir</span><span class="p">(</span><span class="kt">DIR</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">dir</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：readdir() 返回参数 dir 目录流的下个目录进入点。</p>
+<p>结构 dirent 定义如下：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">dirent</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">ino_t</span><span class="w"> </span><span class="n">d_ino</span><span class="p">;</span><span class="w">               </span><span class="cm">/* 此目录进入点的inode */</span><span class="w"></span>
+<span class="w">    </span><span class="n">ff_t</span><span class="w">  </span><span class="n">d_off</span><span class="p">;</span><span class="w">               </span><span class="cm">/* 目录文件开头至此目录进入点的位移 */</span><span class="w"></span>
+<span class="w">    </span><span class="kt">signed</span><span class="w"> </span><span class="kt">short</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">d_reclen</span><span class="p">;</span><span class="w"> </span><span class="cm">/* d_name的长度，不包含NULL字符 */</span><span class="w"></span>
+<span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">d_type</span><span class="p">;</span><span class="w">      </span><span class="cm">/* d_name 所指的文件类型 */</span><span class="w"></span>
+<span class="w">    </span><span class="n">har</span><span class="w"> </span><span class="n">d_name</span><span class="p">[</span><span class="mi">256</span><span class="p">;</span><span class="w">            </span><span class="cm">/* 文件名 */</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+</pre></div>
+</div>
+</li>
+<li><p>返回值：成功则返回下个目录进入点。有错误发生或读取到目录文件尾则返回 NULL。</p>
+<p>错误代码：<code class="docutils literal notranslate"><span class="pre">EBADF</span></code> 参数 dir 为无效的目录流。</p>
+</li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：open，opendir，closedir，rewinddir，seekdir，telldir，scandir</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;dirent.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">DIR</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">dir</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">dirent</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">ptr</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">dir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">opendir</span><span class="p">(</span><span class="s">&quot;/etc/rc.d&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">while</span><span class="p">((</span><span class="n">ptr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">readdir</span><span class="p">(</span><span class="n">dir</span><span class="p">))</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;d_name: %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">ptr</span><span class="o">-&gt;</span><span class="n">d_name</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="n">closedir</span><span class="p">(</span><span class="n">dir</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>d_name:.
+d_name:..
+d_name:init.d
+d_name:rc0.d
+d_name:rc1.d
+d_name:rc2.d
+d_name:rc3.d
+d_name:rc4.d
+d_name:rc5.d
+d_name:rc6.d
+d_name:rc
+d_name:rc.local
+d_name:rc.sysinit
+</pre></div>
+</div>
+</section>
+<section id="readlink">
+<h2>readlink<a class="headerlink" href="#readlink" title="永久链接至标题"></a></h2>
+<p>取得符号连接所指的文件</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">readlink</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">path</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">buf</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">bufsiz</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：readlink() 会将参数 path 的符号连接内容存到参数 buf 所指的内存空间，返回的内容不是以 NULL 作字符串结尾，但会将字符串的字符数返回。若参数 bufsiz 小于符号连接的内容长度，过长的内容会被截断。</p></li>
+<li><p>返回值：执行成功则传符号连接所指的文件路径字符串，失败则返回 -1，错误代码存于 errno。</p>
+<p>错误代码：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">EACCESS</span></code> 取文件时被拒绝，权限不够。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EINVAL</span></code> 参数 bufsiz 为负数。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EIO</span></code> I/O 存取错误。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ELOOP</span></code> 欲打开的文件有过多符号连接问题。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENAMETOOLONG</span></code> 参数 path 的路径名称太长。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENOENT</span></code> 参数 path 所指定的文件不存在。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENOMEM</span></code> 核心内存不足。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENOTDIR</span></code> 参数 path 路径中的目录存在但却非真正的目录。</p></li>
+</ul>
+</li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：stat，lstat，symlink</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</section>
+<section id="remove">
+<h2>remove<a class="headerlink" href="#remove" title="永久链接至标题"></a></h2>
+<p>删除文件</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">remove</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">pathname</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：remove() 会删除参数 pathname 指定的文件。如果参数 pathname 为一文件，则调用 unlink() 处理，若参数 pathname 为一目录，则调用 rmdir() 来处理。请参考 unlink() 与 rmdir()。</p></li>
+<li><p>返回值：成功则返回 0，失败则返回 -1，错误原因存于 errno。</p>
+<p>错误代码：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">EROFS</span></code> 欲写入的文件存在于只读文件系统内。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EFAULT</span></code> 参数 pathname 指针超出可存取内存空间。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENAMETOOLONG</span></code> 参数 pathname 太长。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENOMEM</span></code> 核心内存不足。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ELOOP</span></code> 参数 pathname 有过多符号连接问题。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EIO</span></code> I/O 存取错误。</p></li>
+</ul>
+</li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：link，rename，unlink</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</section>
+<section id="rename">
+<h2>rename<a class="headerlink" href="#rename" title="永久链接至标题"></a></h2>
+<p>更改文件名称或位置</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">rename</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">oldpath</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">newpath</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：rename() 会将参数 oldpath 所指定的文件名称改为参数 newpath 所指的文件名称。若 newpath 所指定的文件已存在，则会被删除。</p></li>
+<li><p>返回值：执行成功则返回 0，失败返回 -1，错误原因存于 errno</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：link，unlink，symlink</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* 设计一个DOS下的rename指令rename 旧文件名新文件名*/</span><span class="w"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">argc</span><span class="p">,</span><span class="kt">char</span><span class="w"> </span><span class="o">**</span><span class="n">argv</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">argc</span><span class="o">&lt;</span><span class="mi">3</span><span class="p">){</span><span class="w"></span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Usage: %s old_name new_name</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span><span class="w"></span>
+<span class="w">        </span><span class="k">return</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s=&gt;%s&quot;</span><span class="p">,</span><span class="n">argc</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">]);</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">rename</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">))</span><span class="w"></span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;error!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">else</span><span class="w"></span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;ok!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">   </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</section>
+<section id="rewinddir">
+<h2>rewinddir<a class="headerlink" href="#rewinddir" title="永久链接至标题"></a></h2>
+<p>重设读取目录的位置为开头位置</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;dirent.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">rewinddir</span><span class="p">(</span><span class="kt">DIR</span><span class="w"> </span><span class="o">*</span><span class="n">dir</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：rewinddir() 用来设置参数 dir 目录流目前的读取位置为原来开头的读取位置。</p></li>
+<li><p>返回值：无</p>
+<p>错误代码：<code class="docutils literal notranslate"><span class="pre">EBADF</span></code> dir为无效的目录流</p>
+</li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：open，opendir，closedir，telldir，seekdir，readdir，scandir</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;dirent.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">DIR</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">dir</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">dirent</span><span class="w"> </span><span class="o">*</span><span class="n">ptr</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">dir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">opendir</span><span class="p">(</span><span class="s">&quot;/etc/rc.d&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">while</span><span class="p">((</span><span class="n">ptr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">readdir</span><span class="p">(</span><span class="n">dir</span><span class="p">))</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;d_name :%s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">ptr</span><span class="o">-&gt;</span><span class="n">d_name</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="n">rewinddir</span><span class="p">(</span><span class="n">dir</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;readdir again!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">while</span><span class="p">((</span><span class="n">ptr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">readdir</span><span class="p">(</span><span class="n">dir</span><span class="p">))</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;d_name: %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">ptr</span><span class="o">-&gt;</span><span class="n">d_name</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="n">closedir</span><span class="p">(</span><span class="n">dir</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>d_name:.
+d_name:..
+d_name:init.d
+d_name:rc0.d
+d_name:rc1.d
+d_name:rc2.d
+d_name:rc3.d
+d_name:rc4.d
+d_name:rc5.d
+d_name:rc6.d
+d_name:rc
+d_name:rc.local
+d_name:rc.sysinit
+readdir again!
+d_name:.
+d_name:..
+d_name:init.d
+d_name:rc0.d
+d_name:rc1.d
+d_name:rc2.d
+d_name:rc3.d
+d_name:rc4.d
+d_name:rc5.d
+d_name:rc6.d
+d_name:rc
+d_name:rc.local
+d_name:rc.sysinit
+</pre></div>
+</div>
+</section>
+<section id="seekdir">
+<h2>seekdir<a class="headerlink" href="#seekdir" title="永久链接至标题"></a></h2>
+<p>设置下回读取目录的位置</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;dirent.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">seekdir</span><span class="p">(</span><span class="kt">DIR</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">dir</span><span class="p">,</span><span class="w"> </span><span class="kt">off_t</span><span class="w"> </span><span class="n">offset</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：seekdir() 用来设置参数 dir 目录流目前的读取位置，在调用 readdir() 时便从此新位置开始读取。参数 offset 代表距离目录文件开头的偏移量。</p></li>
+<li><p>返回值：无</p>
+<p>错误代码：<code class="docutils literal notranslate"><span class="pre">EBADF</span></code> 参数dir为无效的目录流</p>
+</li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：open，opendir，closedir，rewinddir，telldir，readdir，scandir</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;dirent.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">DIR</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">dir</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">dirent</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">ptr</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">offset</span><span class="p">,</span><span class="w"> </span><span class="n">offset_5</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">dir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">opendir</span><span class="p">(</span><span class="s">&quot;/etc/rc.d&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">while</span><span class="p">((</span><span class="n">ptr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">readdir</span><span class="p">(</span><span class="n">dir</span><span class="p">))</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">offset</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">telldir</span><span class="p">(</span><span class="n">dir</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="o">++</span><span class="n">i</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">5</span><span class="p">)</span><span class="w"> </span><span class="n">offset_5</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">offset</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;d_name :%s offset :%d </span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">ptr</span><span class="o">-&gt;</span><span class="n">d_name</span><span class="p">,</span><span class="n">offset</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="n">seekdir</span><span class="p">(</span><span class="n">dir</span><span class="w"> </span><span class="n">offset_5</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Readdir again!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">while</span><span class="p">((</span><span class="n">ptr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">readdir</span><span class="p">(</span><span class="n">dir</span><span class="p">))</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">offset</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">telldir</span><span class="p">(</span><span class="n">dir</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;d_name :%s offset :%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">ptr</span><span class="o">-&gt;</span><span class="n">d_name</span><span class="p">.</span><span class="n">offset</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="n">closedir</span><span class="p">(</span><span class="n">dir</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>d_name : . offset :12
+d_name : .. offset:24
+d_name : init.d offset <span class="m">40</span>
+d_name : rc0.d offset :56
+d_name :rc1.d offset :72
+d_name:rc2.d offset :88
+d_name:rc3.d offset <span class="m">104</span>
+d_name:rc4.d offset:120
+d_name:rc5.d offset:136
+d_name:rc6.d offset:152
+d_name:rc offset <span class="m">164</span>
+d_name:rc.local offset :180
+d_name:rc.sysinit offset :4096
+readdir again!
+d_name:rc2.d offset :88
+d_name:rc3.d offset <span class="m">104</span>
+d_name:rc4.d offset:120
+d_name:rc5.d offset:136
+d_name:rc6.d offset:152
+d_name:rc offset <span class="m">164</span>
+d_name:rc.local offset :180
+d_name:rc.sysinit offset :4096
+</pre></div>
+</div>
+</section>
+<section id="stat">
+<h2>stat<a class="headerlink" href="#stat" title="永久链接至标题"></a></h2>
+<p>取得文件状态</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/stat.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">stat</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">file_name</span><span class="p">,</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">stat</span><span class="w"> </span><span class="o">*</span><span class="n">buf</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：stat() 用来将参数 file_name 所指的文件状态，复制到参数 buf 所指的结构中。</p>
+<p>下面是 struct stat 内各参数的说明：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">stat</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">dev_t</span><span class="w"> </span><span class="n">st_dev</span><span class="p">;</span><span class="w">             </span><span class="cm">/* 文件的设备编号 */</span><span class="w"></span>
+<span class="w">    </span><span class="kt">ino_t</span><span class="w"> </span><span class="n">st_ino</span><span class="p">;</span><span class="w">             </span><span class="cm">/* 文件的i-node */</span><span class="w"></span>
+<span class="w">    </span><span class="kt">mode_t</span><span class="w"> </span><span class="n">st_mode</span><span class="p">;</span><span class="w">           </span><span class="cm">/* 文件的类型和存取的权限 */</span><span class="w"></span>
+<span class="w">    </span><span class="n">nlink_t</span><span class="w"> </span><span class="n">st_nlink</span><span class="p">;</span><span class="w">         </span><span class="cm">/* 连到该文件的硬连接数目，刚建立的文件值为1 */</span><span class="w"></span>
+<span class="w">    </span><span class="kt">uid_t</span><span class="w"> </span><span class="n">st_uid</span><span class="p">;</span><span class="w">             </span><span class="cm">/* 文件所有者的用户识别码 */</span><span class="w"></span>
+<span class="w">    </span><span class="kt">gid_t</span><span class="w"> </span><span class="n">st_gid</span><span class="p">;</span><span class="w">             </span><span class="cm">/* 文件所有者的组识别码 */</span><span class="w"></span>
+<span class="w">    </span><span class="kt">dev_t</span><span class="w"> </span><span class="n">st_rdev</span><span class="p">;</span><span class="w">            </span><span class="cm">/* 若此文件为装置设备文件，则为其设备编号 */</span><span class="w"></span>
+<span class="w">    </span><span class="kt">off_t</span><span class="w"> </span><span class="n">st_size</span><span class="p">;</span><span class="w">            </span><span class="cm">/* 文件大小，以字节计算 */</span><span class="w"></span>
+<span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">st_blksize</span><span class="p">;</span><span class="w"> </span><span class="cm">/* 文件系统的I/O缓冲区大小 */</span><span class="w"></span>
+<span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">st_blocks</span><span class="p">;</span><span class="w">  </span><span class="cm">/* 占用文件区块的个数，每一区块大小为512个字节 */</span><span class="w"></span>
+<span class="w">    </span><span class="kt">time_t</span><span class="w"> </span><span class="n">st_atime</span><span class="p">;</span><span class="w">          </span><span class="cm">/* 文件最近一次被存取或被执行的时间 */</span><span class="w"></span>
+<span class="w">    </span><span class="kt">time_t</span><span class="w"> </span><span class="n">st_mtime</span><span class="p">;</span><span class="w">          </span><span class="cm">/* 文件最后一次被修改的时间 */</span><span class="w"></span>
+<span class="w">    </span><span class="kt">time_t</span><span class="w"> </span><span class="n">st_ctime</span><span class="p">;</span><span class="w">          </span><span class="cm">/* 最近一次被更改的时间 */</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+</pre></div>
+</div>
+<p>注意：st_atime 一般只有在用 mknod、utime、read、write 与 tructate 时改变；st_mtime 一般只有在用 mknod、utime 和 write 时才会改变；而 st_ctime 是最近一次被更改的时间，会在文件所有者、组、权限被更改时更新。</p>
+<p>先前所描述的 st_mode 则定义了下列数种情况：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">S_IFMT</span></code> 0170000 文件类型的位遮罩</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">S_IFSOCK</span></code> 0140000 scoket</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">S_IFLNK</span></code> 0120000 符号连接</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">S_IFREG</span></code> 0100000 一般文件</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">S_IFBLK</span></code> 0060000 区块装置</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">S_IFDIR</span></code> 0040000 目录</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">S_IFCHR</span></code> 0020000 字符装置</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">S_IFIFO</span></code> 0010000 先进先出</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">S_ISUID</span></code> 04000 文件的（set user-id on execution）位</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">S_ISGID</span></code> 02000 文件的（set group-id on execution）位</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">S_ISVTX</span></code> 01000 文件的sticky位</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">S_IRUSR</span></code>（<code class="docutils literal notranslate"><span class="pre">S_IREAD</span></code>） 00400 文件所有者具可读取权限</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">S_IWUSR</span></code>（<code class="docutils literal notranslate"><span class="pre">S_IWRITE</span></code>）00200 文件所有者具可写入权限</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">S_IXUSR</span></code>（<code class="docutils literal notranslate"><span class="pre">S_IEXEC</span></code>） 00100 文件所有者具可执行权限</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">S_IRGRP</span></code> 00040 用户组具可读取权限</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">S_IWGRP</span></code> 00020 用户组具可写入权限</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">S_IXGRP</span></code> 00010 用户组具可执行权限</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">S_IROTH</span></code> 00004 其他用户具可读取权限</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">S_IWOTH</span></code> 00002 其他用户具可写入权限</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">S_IXOTH</span></code> 00001 其他用户具可执行权限</p></li>
+</ul>
+<p>上述的文件类型在POSIX 中定义了检查这些类型的宏定义</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">S_ISLNK</span></code> （st_mode） 判断是否为符号连接</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">S_ISREG</span></code> （st_mode） 是否为一般文件</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">S_ISDIR</span></code> （st_mode）是否为目录</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">S_ISCHR</span></code> （st_mode）是否为字符装置文件</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">S_ISBLK</span></code> （s3e） 是否为先进先出</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">S_ISSOCK</span></code> （st_mode） 是否为 socket</p></li>
+</ul>
+<p>若一目录具有 sticky 位（<code class="docutils literal notranslate"><span class="pre">S_ISVTX</span></code>），则表示在此目录下的文件只能被该文件所有者、此目录所有者或 root 来删除或改名。</p>
+</li>
+<li><p>返回值：执行成功则返回 0，失败返回 -1，错误代码存于 errno。</p>
+<p>错误代码：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ENOENT</span></code> 参数 file_name 指定的文件不存在。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENOTDIR</span></code> 路径中的目录存在但却非真正的目录。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ELOOP</span></code> 欲打开的文件有过多符号连接问题，上限为 16 符号连接。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EFAULT</span></code> 参数 buf 为无效指针，指向无法存在的内存空间。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EACCESS</span></code> 存取文件时被拒绝。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENOMEM</span></code> 核心内存不足。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENAMETOOLONG</span></code> 参数 file_name 的路径名称太长。</p></li>
+</ul>
+</li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：fstat，lstat，chmod，chown，readlink，utime</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/stat.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">stat</span><span class="w"> </span><span class="n">buf</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">stat</span><span class="w"> </span><span class="p">(</span><span class="s">&quot;/etc/passwd&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">buf</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;/etc/passwd file size = %d </span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">buf</span><span class="p">.</span><span class="n">st_size</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>/etc/passwd file <span class="nv">size</span> <span class="o">=</span> <span class="m">705</span>
+</pre></div>
+</div>
+</section>
+<section id="symlink">
+<h2>symlink<a class="headerlink" href="#symlink" title="永久链接至标题"></a></h2>
+<p>建立文件符号连接</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">symlink</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">oldpath</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">newpath</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：symlink() 以参数 newpath 指定的名称来建立一个新的连接（符号连接）到参数 oldpath 所指定的已存在文件。参数 oldpath 指定的文件不一定要存在，如果参数 newpath 指定的名称为一已存在的文件则不会建立连接。</p></li>
+<li><p>返回值：成功则返回 0，失败返回 -1，错误原因存于 errno。</p>
+<p>错误代码：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">EPERM</span></code> 参数 oldpath 与 newpath 所指的文件系统不支持符号连接。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EROFS</span></code> 欲测试写入权限的文件存在于只读文件系统内。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EFAULT</span></code> 参数 oldpath 或 newpath 指针超出可存取内存空间。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENAMETOOLONG</span></code> 参数 oldpath 或 newpath 太长。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENOMEM</span></code> 核心内存不足。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EEXIST</span></code> 参数 newpath 所指的文件名已存在。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EMLINK</span></code> 参数 oldpath 所指的文件已达到最大连接数目。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ELOOP</span></code> 参数 pathname 有过多符号连接问题。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENOSPC</span></code> 文件系统的剩余空间不足。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EIO</span></code> I/O 存取错误。</p></li>
+</ul>
+</li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：link，unlink</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">symlink</span><span class="p">(</span><span class="s">&quot;/etc/passwd&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;pass&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</section>
+<section id="telldir">
+<h2>telldir<a class="headerlink" href="#telldir" title="永久链接至标题"></a></h2>
+<p>取得目录流的读取位置</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;dirent.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">long</span><span class="w"> </span><span class="nf">telldir</span><span class="p">(</span><span class="kt">DIR</span><span class="w"> </span><span class="o">*</span><span class="n">dirp</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：telldir() 返回参数 dir 目录流目前的读取位置。此返回值代表距离目录文件开头的偏移量。</p></li>
+<li><p>返回值：返回下个读取位置，有错误发生时返回 -1。</p>
+<p>错误代码：<code class="docutils literal notranslate"><span class="pre">EBADF</span></code> 参数 dir 为无效的目录流。</p>
+</li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：open，opendir，closedir，rewinddir，seekdir，readdir，scandir</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;dirent.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">DIR</span><span class="w"> </span><span class="o">*</span><span class="n">dir</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">dirent</span><span class="w"> </span><span class="o">*</span><span class="n">ptr</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">offset</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">dir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">opendir</span><span class="p">(</span><span class="s">&quot;/etc/rc.d&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">while</span><span class="p">((</span><span class="n">ptr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">readdir</span><span class="p">(</span><span class="n">dir</span><span class="p">))</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">offset</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">telldir</span><span class="w"> </span><span class="p">(</span><span class="n">dir</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;d_name : %s offset :%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">ptr</span><span class="o">-&gt;</span><span class="n">d_name</span><span class="p">,</span><span class="w"> </span><span class="n">offset</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="n">closedir</span><span class="p">(</span><span class="n">dir</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>d_name : . offset :12
+d_name : .. offset:24
+d_name : init.d offset <span class="m">40</span>
+d_name : rc0.d offset :56
+d_name :rc1.d offset :72
+d_name:rc2.d offset :88
+d_name:rc3.d offset <span class="m">104</span>
+d_name:rc4.d offset:120
+d_name:rc5.d offset:136
+d_name:rc6.d offset:152
+d_name:rc offset <span class="m">164</span>
+d_name:rc.local offset :180
+d_name:rc.sysinit offset :4096
+</pre></div>
+</div>
+</section>
+<section id="truncate">
+<h2>truncate<a class="headerlink" href="#truncate" title="永久链接至标题"></a></h2>
+<p>改变文件大小</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">truncate</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">path</span><span class="p">,</span><span class="w"> </span><span class="kt">off_t</span><span class="w"> </span><span class="n">length</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：truncate() 会将参数 path 指定的文件大小改为参数 length 指定的大小。如果原来的文件大小比参数 length 大，则超过的部分会被删去。</p></li>
+<li><p>返回值：执行成功则返回 0，失败返回 -1，错误原因存于 errno。</p>
+<p>错误代码：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">EACCESS</span></code> 参数 path 所指定的文件无法存取。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EROFS</span></code> 欲写入的文件存在于只读文件系统内</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EFAULT</span></code> 参数 path 指针超出可存取内存空间</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EINVAL</span></code> 参数 path 包含不合法字符</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENAMETOOLONG</span></code> 参数 path 太长</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENOTDIR</span></code> 参数 path 路径并非一目录</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EISDIR</span></code> 参数 path 指向一目录</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ETXTBUSY</span></code> 参数 path 所指的文件为共享程序，而且正被执行中</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ELOOP</span></code> 参数 path 有过多符号连接问题</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EIO</span></code> I/O 存取错误。</p></li>
+</ul>
+</li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：open，ftruncate</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</section>
+<section id="umask">
+<h2>umask<a class="headerlink" href="#umask" title="永久链接至标题"></a></h2>
+<p>设置建立新文件时的权限遮罩</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/stat.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">mode_t</span><span class="w"> </span><span class="nf">umask</span><span class="p">(</span><span class="kt">mode_t</span><span class="w"> </span><span class="n">mask</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>说明：umask() 会将系统 umask 值设成参数 mask&amp;0777 后的值，然后将先前的 umask 值返回。在使用 open() 建立新文件时，该参数 mode 并非真正建立文件的权限，而是 (mode&amp;~umask) 的权限值。例如，在建立文件时指定文件权限为 0666，通常 umask 值默认为 022，则该文件的真正权限则为 0666&amp;~022=0644，也就是 rw-r–r– 返回值此调用不会有错误值返回。</p></li>
+<li><p>返回值：返回值为原先系统的 umask 值。</p></li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：creat，open</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</section>
+<section id="unlink">
+<h2>unlink<a class="headerlink" href="#unlink" title="永久链接至标题"></a></h2>
+<p>删除文件</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">unlink</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">pathname</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：unlink() 会删除参数 pathname 指定的文件。如果该文件名为最后连接点，但有其他进程打开了此文件，则在所有关于此文件的文件描述词皆关闭后才会删除。如果参数 pathname 为一符号连接，则此连接会被删除。</p></li>
+<li><p>返回值：成功则返回 0，失败返回 -1，错误原因存于 errno。</p>
+<p>错误代码：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">EROFS</span></code> 文件存在于只读文件系统内。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EFAULT</span></code> 参数 pathname 指针超出可存取内存空间。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENAMETOOLONG</span></code> 参数 pathname太长。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENOMEM</span></code> 核心内存不足。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ELOOP</span></code> 参数 pathname 有过多符号连接问题。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EIO</span></code> I/O 存取错误。</p></li>
+</ul>
+</li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：link，rename，remove</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</section>
+<section id="utime">
+<h2>utime<a class="headerlink" href="#utime" title="永久链接至标题"></a></h2>
+<p>修改文件的存取时间和更改时间</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;utime.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">utime</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">filename</span><span class="p">,</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">utimbuf</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">buf</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：utime() 用来修改参数 filename 文件所属的 inode 存取时间。如果参数 buf 为空指针（NULL），则该文件的存取时间和更改时间全部会设为目前时间。</p>
+<p>结构 utimbuf 定义如下：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">utimbuf</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">time_t</span><span class="w"> </span><span class="n">actime</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">time_t</span><span class="w"> </span><span class="n">modtime</span><span class="p">;</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+</pre></div>
+</div>
+</li>
+<li><p>返回值：执行成功则返回 0，失败返回 -1，错误代码存于 errno。</p>
+<p>错误代码：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">EACCESS</span></code> 存取文件时被拒绝，权限不足。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENOENT</span></code> 指定的文件不存在。</p></li>
+</ul>
+</li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：utimes，stat</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</section>
+<section id="utimes">
+<h2>utimes<a class="headerlink" href="#utimes" title="永久链接至标题"></a></h2>
+<p>修改文件的存取时间和更改时间</p>
+<p><strong>头文件</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;utime.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>函数原型</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">utimes</span><span class="p">(</span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">filename</span><span class="p">,</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">timeval</span><span class="w"> </span><span class="o">*</span><span class="n">tvp</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ul>
+<li><p>说明：utimes() 用来修改参数 filename 文件所属的 inode 存取时间和修改时间。</p>
+<p>结构 timeval 定义如下：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">timeval</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">long</span><span class="w"> </span><span class="n">tv_sec</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">long</span><span class="w"> </span><span class="n">tv_usec</span><span class="p">;</span><span class="w"> </span><span class="cm">/* 微妙*/</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+</pre></div>
+</div>
+<p>参数 tvp 指向两个 timeval 结构空间，和 utime() 使用的 utimebuf 结构比较，tvp[0].tc_sec 则为 utimbuf.actime，tvp]1].tv_sec 为 utimbuf.modtime。</p>
+</li>
+<li><p>返回值：执行成功则返回 0。失败返回 -1，错误代码存于 errno。</p>
+<p>错误代码：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">EACCESS</span></code> 存取文件时被拒绝，权限不足。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENOENT</span></code> 指定的文件不存在。</p></li>
+</ul>
+</li>
+<li><p>附加说明：</p></li>
+<li><p>相关函数：utime，stat</p></li>
+</ul>
+<p><strong>示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>执行</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="file-content.html" class="btn btn-neutral float-left" title="文件内容操作篇" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="process.html" class="btn btn-neutral float-right" title="进程操作篇" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2018-2023, 人人都懂物联网.</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用了 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a>开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
