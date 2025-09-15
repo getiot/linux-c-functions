@@ -18,8 +18,8 @@
 # -- Project information -----------------------------------------------------
 
 project = 'Linux 常用 C 函数参考手册'
-copyright = '2018-2023, 人人都懂物联网'
-author = 'GetIoT.tech'
+copyright = '2018-2025, 人人都懂物联网 GetIoT.tech'
+author = '阿基米东'
 
 # The full version, including alpha/beta/rc tags
 release = 'v1.0'
@@ -56,7 +56,8 @@ exclude_patterns = []
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'sphinx_rtd_theme'
+# html_theme = 'sphinx_rtd_theme'
+html_theme = 'sphinx_book_theme'
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
