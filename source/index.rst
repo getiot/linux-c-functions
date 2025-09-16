@@ -100,14 +100,23 @@ Linux 常用 C 函数参考手册
    .support-section a:hover {
        text-decoration: none;
    }
+   
+   /* 统一的网格布局样式 */
+   .function-grid {
+       display: grid;
+       grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+       gap: 1rem;
+       margin: 1rem 0;
+   }
    </style>
    
-   <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin: 1rem 0;">
+   <div class="function-grid">
        <a href="char.html" class="function-card">字符测试</a>
        <a href="string-convert.html" class="function-card">字符串转换</a>
        <a href="memory.html" class="function-card">内存控制</a>
        <a href="memory-string.html" class="function-card">内存字符串</a>
        <a href="math.html" class="function-card">数学函数</a>
+       <a href="time.html" class="function-card">时间处理</a>
        <a href="data-structure.html" class="function-card">数据结构</a>
    </div>
 
@@ -116,33 +125,32 @@ Linux 常用 C 函数参考手册
 
 .. raw:: html
 
-   <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin: 1rem 0;">
+   <div class="function-grid">
        <a href="file.html" class="function-card">文件操作</a>
        <a href="file-content.html" class="function-card">文件内容</a>
        <a href="process.html" class="function-card">进程操作</a>
+       <a href="ipcs.html" class="function-card">进程通信</a>
+       <a href="pthreads.html" class="function-card">线程管理</a>
        <a href="signal.html" class="function-card">信号处理</a>
-       <a href="permission.html" class="function-card">权限控制</a>
    </div>
 
-网络与通信
+网络编程
 ---------------------------------------------
 
 .. raw:: html
 
-   <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin: 1rem 0;">
+   <div class="function-grid">
        <a href="network.html" class="function-card">网络接口</a>
        <a href="io-multiplexing.html" class="function-card">I/O复用</a>
-       <a href="ipcs.html" class="function-card">进程通信</a>
    </div>
 
-高级特性
+其他特性
 ---------------------------------------------
 
 .. raw:: html
 
-   <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin: 1rem 0;">
-       <a href="pthreads.html" class="function-card">线程管理</a>
-       <a href="time.html" class="function-card">时间处理</a>
+   <div class="function-grid">
+       <a href="permission.html" class="function-card">权限控制</a>
        <a href="user-group.html" class="function-card">用户组</a>
        <a href="env.html" class="function-card">环境变量</a>
        <a href="tty.html" class="function-card">终端控制</a>
