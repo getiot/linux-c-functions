@@ -23,34 +23,82 @@ Linux 常用 C 函数参考手册
 .. raw:: html
 
    <style>
+   /* 统一的深色风格样式 */
    .function-card {
        display: block;
        padding: 1rem;
-       background: #f8f9ff;
-       border: 1px solid #e0e6ff;
+       background: #2d2d3a;
+       border: 1px solid #4a4a5c;
        border-radius: 8px;
        text-decoration: none;
-       color: #6c5ce7;
+      ..  color: #a78bfa;
        text-align: center;
        font-weight: 500;
        transition: all 0.3s ease;
+       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
    }
    
    .function-card:hover {
-       color: white;
+      ..  background: #5a4fcf;
+      ..  color: white;
        transform: translateY(-2px);
+       box-shadow: 0 4px 8px rgba(0,0,0,0.2);
    }
    
-   @media (prefers-color-scheme: dark) {
-       .function-card {
-           background: #2d2d3a;
-           border-color: #4a4a5c;
-           color: #a78bfa;
-       }
-       
-       .function-card:hover {
-           color: white;
-       }
+   .info-card {
+       padding: 2rem;
+       border-radius: 8px;
+       margin: 2rem 0;
+       border-left: 4px solid #a78bfa;
+       background: #1a1a24;
+       color: #e0e0e0;
+       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+   }
+   
+   .info-card h2 {
+       color: #a78bfa;
+       margin-top: 0;
+   }
+
+   .info-card p {
+       color: #e0e0e0;
+   }
+   
+   .info-card a {
+       color: #a78bfa;
+       text-decoration: none;
+   }
+   
+   .info-card a:hover {
+       text-decoration: underline;
+   }
+   
+   .support-section {
+       text-align: center;
+       margin: 3rem 0;
+       padding: 2rem;
+       background: #4a4fcf;
+       color: white;
+       border-radius: 8px;
+       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+   }
+   
+   .support-section h2 {
+       color: white;
+       margin-top: 0;
+   }
+
+   .support-section p {
+       color: #e0e0e0;
+   }
+   
+   .support-section a {
+       color: white;
+       text-decoration: underline;
+   }
+   
+   .support-section a:hover {
+       text-decoration: none;
    }
    </style>
    
@@ -102,54 +150,8 @@ Linux 常用 C 函数参考手册
 
 .. raw:: html
 
-   <style>
-   .info-card {
-       padding: 2rem;
-       border-radius: 8px;
-       margin: 2rem 0;
-       border-left: 4px solid #6c5ce7;
-   }
-   
-   .info-card-light {
-       background: #f8f9ff;
-   }
-   
-   .info-card-dark {
-       background: #2d2d3a;
-   }
-   
-   .info-card h2 {
-       color: #6c5ce7;
-       margin-top: 0;
-   }
-   
-   .info-card a {
-       color: #6c5ce7;
-   }
-   
-   @media (prefers-color-scheme: dark) {
-       .info-card-light {
-           background: #2d2d3a;
-       }
-       
-       .info-card-dark {
-           background: #1a1a24;
-       }
-       
-       .info-card h2 {
-           color: #a78bfa;
-       }
-       
-       .info-card a {
-           color: #a78bfa;
-       }
-   }
-   </style>
-
-.. raw:: html
-
    <br/>
-   <div class="info-card info-card-light">
+   <div class="info-card">
        <h2>📝 参与贡献</h2>
        <p>本手册是开源项目，欢迎大家一起完善！你可以：</p>
        <ul>
@@ -161,36 +163,8 @@ Linux 常用 C 函数参考手册
        <p>项目地址：<a href="https://github.com/getiot/linux-c-functions" target="_blank">GitHub</a> | 示例代码：<a href="https://github.com/getiot/linux-c" target="_blank">linux-c</a></p>
    </div>
 
-
 .. raw:: html
 
-   <style>
-   .support-section {
-       text-align: center;
-       margin: 3rem 0;
-       padding: 2rem;
-       background: #6c5ce7;
-       color: white;
-       border-radius: 8px;
-   }
-   
-   .support-section h2 {
-       color: white;
-       margin-top: 0;
-   }
-   
-   .support-section a {
-       color: white;
-       text-decoration: underline;
-   }
-   
-   @media (prefers-color-scheme: dark) {
-       .support-section {
-           background: #5a4fcf;
-       }
-   }
-   </style>
-   
    <div class="support-section">
        <h2>🌟 支持我们</h2>
        <p style="font-size: 1.1em; margin-bottom: 1rem;">如果这份开源手册对你有帮助，请给我们一个 Star ⭐ <a href="https://github.com" target="_blank">GitHub</a></p>
