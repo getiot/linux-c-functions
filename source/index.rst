@@ -195,7 +195,7 @@ Linux 常用 C 函数参考手册
 
    <div class="support-section">
        <h2>🌟 支持我们</h2>
-       <p style="font-size: 1.1em; margin-bottom: 1rem;">如果这份开源手册对你有帮助，请给我们一个 Star ⭐ <a href="https://github.com" target="_blank">GitHub</a></p>
+       <p style="font-size: 1.1em; margin-bottom: 1rem;">如果这份开源手册对你有帮助，请给我们一个 Star ⭐ <a href="https://github.com/getiot/linux-c-functions" target="_blank">GitHub</a></p>
        <p style="margin-bottom: 0;">访问 <a href="https://getiot.tech" target="_blank">GetIoT.tech</a> 了解更多物联网相关内容</p>
    </div>
 
