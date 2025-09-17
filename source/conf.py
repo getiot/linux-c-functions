@@ -63,14 +63,12 @@ html_theme = 'sphinx_book_theme'
 html_theme_options = {
     "show_navbar_depth": 2,
     "show_toc_level": 2,
-    "navbar_footer_text": "",
     "navbar_align": "left",
     "navbar_center": False,
     "navbar_end": [],
     "navbar_persistent": [],
     "navbar_start": [],
     "primary_sidebar_end": [],
-    "primary_sidebar_start": [],
     "secondary_sidebar_items": ["page-toc"],
     "show_nav_level": 2,
     "show_prev_next": True,
@@ -80,7 +78,6 @@ html_theme_options = {
     "use_issues_button": False,
     "use_download_button": False,
     "use_fullscreen_button": True,
-    "use_secondary_sidebar": True,
     "use_sidenotes": False,
     "announcement": "",
     "icon_links": [],
@@ -88,7 +85,6 @@ html_theme_options = {
     "logo": {
         "text": "Linux C 函数手册",
     },
-    "logo_text": "Linux C 函数手册",
     # 仓库相关配置
     "repository_url": "https://github.com/getiot/linux-c-functions",
     "repository_branch": "main",
@@ -211,3 +207,16 @@ html_copy_source = False
 html_show_sourcelink = False
 html_show_sphinx = False
 html_show_copyright = True
+
+# -- 代码高亮配置 -----------------------------------------------------
+
+# 代码高亮样式 - 使用默认样式，通过 CSS 自定义
+pygments_style = 'default'
+
+# 代码块配置
+highlight_language = 'c'
+
+# 自定义 CSS 文件
+html_css_files = [
+    'css/custom.css'
+]

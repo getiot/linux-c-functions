@@ -203,9 +203,6 @@ Linux 常用 C 函数参考手册
    :maxdepth: 1
    :caption: 目录
 
-   基础功能
-   ========
-   
    char
    string-convert
    memory
@@ -213,26 +210,14 @@ Linux 常用 C 函数参考手册
    math
    time
    data-structure
-
-   系统编程
-   ========
-   
    file
    file-content
    process
    ipcs
    pthreads
    signal
-
-   网络编程
-   ========
-   
    network
    io-multiplexing
-
-   其他特性
-   ========
-   
    permission
    user-group
    env
