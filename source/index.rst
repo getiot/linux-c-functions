@@ -8,6 +8,26 @@ Linux 常用 C 函数参考手册
 
 这是一份开源的《Linux 常用 C 函数参考手册》中文版，你可以在 `GitHub <https://github.com/getiot/linux-c-functions>`_ 找到它并参与维护。文档托管在 `GetIoT.tech <https://getiot.tech>`_ 网站，示例代码均可在 `linux-c <https://github.com/getiot/linux-c>`_ 仓库找到。
 
+.. raw:: html
+
+   <div style="background: rgb(238, 237, 250); padding: 1.5rem; border-radius: 8px; margin: 1rem 0; border-left: 4px solid #6c5ce7;">
+       <h3 style="margin-top: 0; color: #6c5ce7;">📚 关于本手册</h3>
+       <p style="margin-bottom: 0.5rem; color: #333;">本手册收录了 Linux 系统中常用的 C 语言函数，涵盖 <strong>19 个分类</strong>，包括：</p>
+       <ul style="margin-bottom: 0; color: #333;">
+           <li><strong>基础功能</strong>：字符测试、字符串转换、内存管理、数学函数、时间处理、数据结构</li>
+           <li><strong>系统编程</strong>：文件操作、进程管理、线程控制、信号处理、进程间通信</li>
+           <li><strong>网络编程</strong>：网络接口、I/O 复用</li>
+           <li><strong>其他特性</strong>：权限控制、用户组管理、环境变量、终端控制</li>
+       </ul>
+   </div>
+
+.. raw:: html
+
+   <div style="background: #e8f4fd; padding: 1.5rem; border-radius: 8px; margin: 1rem 0; border-left: 4px solid #2196f3;">
+       <h3 style="margin-top: 0; color: #2196f3;">🎯 适用人群</h3>
+       <p style="margin-bottom: 0; color: #333;">本手册适合 C 语言开发者、Linux 系统程序员、嵌入式开发者、系统管理员以及计算机科学专业学生使用。每个函数都提供了详细的参数说明、返回值解释、使用示例和编译运行指导。</p>
+   </div>
+
 
 .. raw:: html
 

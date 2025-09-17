@@ -1,4 +1,90 @@
 {% extends "!layout.html" %}
+
 {% block extrahead %}
-    <link href="{{ pathto("_static/main.css", True) }}" rel="stylesheet" type="text/css">
+    {{ super() }}
+    
+    <!-- SEO 优化元标签 -->
+    <meta name="description" content="{{ html_meta_description }}">
+    <meta name="keywords" content="{{ html_meta_keywords }}">
+    <meta name="author" content="{{ html_meta_author }}">
+    <meta name="copyright" content="{{ html_meta_copyright }}">
+    <meta name="language" content="{{ html_meta_language }}">
+    <meta name="charset" content="{{ html_meta_charset }}">
+    <meta name="viewport" content="{{ html_meta_viewport }}">
+    <meta name="theme-color" content="#6c5ce7">
+    
+    <!-- 搜索引擎爬虫指令 -->
+    <meta name="robots" content="index, follow">
+    <meta name="googlebot" content="index, follow">
+    <meta name="baiduspider" content="index, follow">
+    <meta name="bingbot" content="index, follow">
+    <meta name="format-detection" content="telephone=no">
+    
+    <!-- Open Graph 元标签 (Facebook, LinkedIn 等) -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="{{ html_title }}">
+    <meta property="og:description" content="{{ html_meta_description }}">
+    <meta property="og:url" content="https://getiot.tech/linux-c-functions/">
+    <meta property="og:site_name" content="GetIoT.tech">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="og:image" content="https://getiot.tech/linux-c-functions/_static/images/GetIoT_Logo_150px.png">
+    <meta property="og:image:width" content="150">
+    <meta property="og:image:height" content="150">
+    <meta property="og:image:alt" content="Linux C 函数大全 Logo">
+    
+    <!-- Twitter Card 元标签 -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ html_title }}">
+    <meta name="twitter:description" content="{{ html_meta_description }}">
+    <meta name="twitter:image" content="https://getiot.tech/linux-c-functions/_static/images/GetIoT_Logo_150px.png">
+    <meta name="twitter:image:alt" content="Linux C 函数大全 Logo">
+    
+    <!-- 结构化数据 (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Linux C 函数大全",
+      "alternateName": "Linux C 函数参考手册",
+      "description": "{{ html_meta_description }}",
+      "url": "https://getiot.tech/linux-c-functions/",
+      "publisher": {
+        "@type": "Organization",
+        "name": "GetIoT.tech",
+        "url": "https://getiot.tech",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://getiot.tech/linux-c-functions/_static/images/GetIoT_Logo_150px.png"
+        }
+      },
+      "author": {
+        "@type": "Person",
+        "name": "阿基米东"
+      },
+      "inLanguage": "zh-CN",
+      "keywords": "{{ html_meta_keywords }}",
+      "license": "MIT",
+      "dateCreated": "2018",
+      "dateModified": "2025"
+    }
+    </script>
+    
+    <!-- 网站地图和搜索优化 -->
+    <link rel="canonical" href="https://getiot.tech/linux-c-functions/">
+    <link rel="alternate" hreflang="zh-CN" href="https://getiot.tech/linux-c-functions/">
+    <link rel="alternate" hreflang="x-default" href="https://getiot.tech/linux-c-functions/">
+    
+    <!-- 预加载关键资源 -->
+    <link rel="preload" href="{{ pathto('_static/styles/theme.css', 1) }}" as="style">
+    <link rel="preload" href="{{ pathto('_static/GetIoT_Logo_150px.png', 1) }}" as="image">
+    
+    <!-- 移动端优化 -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Linux C 函数大全">
+    
+    <!-- 性能优化 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
 {% endblock %}

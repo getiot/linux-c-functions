@@ -115,3 +115,99 @@ html_context = {
     'github_version': 'main',
     'conf_py_path': '/source/',
 }
+
+# -- SEO 优化配置 -----------------------------------------------------
+
+# 网站标题和描述
+html_title = 'Linux C 函数大全 - 中文参考手册'
+html_short_title = 'Linux C 函数大全'
+
+# 网站描述和关键词
+html_meta_description = 'Linux C 函数大全中文参考手册，包含字符测试、字符串转换、内存管理、文件操作、网络编程、进程管理、线程控制等19个分类的C语言函数详细说明和示例代码。'
+html_meta_keywords = 'C语言函数,C语言参考手册,Linux C函数,C语言教程,C语言编程,字符测试,字符串转换,内存管理,文件操作,网络编程,进程管理,线程控制,信号处理,系统编程,GetIoT'
+
+# 网站作者和版权信息
+html_meta_author = '阿基米东'
+html_meta_copyright = '2018-2025, 人人都懂物联网 GetIoT.tech'
+
+# 网站语言和编码
+html_meta_language = 'zh-CN'
+html_meta_charset = 'utf-8'
+
+# 网站图标和favicon
+html_favicon = '_static/images/GetIoT_Logo_32px.png'
+
+# 网站主题色和移动端优化
+html_meta_viewport = 'width=device-width, initial-scale=1.0'
+
+# 添加自定义元标签
+html_meta_tags = [
+    ('name', 'robots', 'index, follow'),
+    ('name', 'googlebot', 'index, follow'),
+    ('name', 'baiduspider', 'index, follow'),
+    ('name', 'bingbot', 'index, follow'),
+    ('name', 'format-detection', 'telephone=no'),
+    ('name', 'theme-color', '#6c5ce7'),
+    ('property', 'og:type', 'website'),
+    ('property', 'og:title', 'Linux C 函数大全 - 中文参考手册'),
+    ('property', 'og:description', 'Linux C 函数大全中文参考手册，包含字符测试、字符串转换、内存管理、文件操作、网络编程、进程管理、线程控制等19个分类的C语言函数详细说明和示例代码。'),
+    ('property', 'og:url', 'https://getiot.tech/linux-c-functions/'),
+    ('property', 'og:site_name', 'GetIoT.tech'),
+    ('property', 'og:locale', 'zh_CN'),
+    ('property', 'og:image', 'https://getiot.tech/linux-c-functions/_static/images/GetIoT_Logo_150px.png'),
+    ('name', 'twitter:card', 'summary_large_image'),
+    ('name', 'twitter:title', 'Linux C 函数大全 - 中文参考手册'),
+    ('name', 'twitter:description', 'Linux C 函数大全中文参考手册，包含字符测试、字符串转换、内存管理、文件操作、网络编程、进程管理、线程控制等19个分类的C语言函数详细说明和示例代码。'),
+    ('name', 'twitter:image', 'https://getiot.tech/linux-c-functions/_static/images/GetIoT_Logo_150px.png'),
+]
+
+# 网站结构化数据 (JSON-LD)
+html_structured_data = '''
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Linux C 函数大全",
+  "alternateName": "Linux C 函数参考手册",
+  "description": "Linux C 函数大全中文参考手册，包含字符测试、字符串转换、内存管理、文件操作、网络编程、进程管理、线程控制等19个分类的C语言函数详细说明和示例代码。",
+  "url": "https://getiot.tech/linux-c-functions/",
+  "publisher": {
+    "@type": "Organization",
+    "name": "GetIoT.tech",
+    "url": "https://getiot.tech",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://getiot.tech/linux-c-functions/_static/images/GetIoT_Logo_150px.png"
+    }
+  },
+  "author": {
+    "@type": "Person",
+    "name": "阿基米东"
+  },
+  "inLanguage": "zh-CN",
+  "keywords": "C语言函数,C语言参考手册,Linux C函数,C语言教程,C语言编程,字符测试,字符串转换,内存管理,文件操作,网络编程,进程管理,线程控制,信号处理,系统编程",
+  "license": "MIT",
+  "dateCreated": "2018",
+  "dateModified": "2025"
+}
+'''
+
+# 网站地图和搜索引擎优化
+html_baseurl = 'https://getiot.tech/linux-c-functions/'
+
+# 网站搜索配置
+html_search_language = 'zh'
+html_search_options = {
+    'type': 'default',
+    'lang': 'zh_CN',
+    'indexer': 'sphinx.search.zh.ChineseLanguageStemmer',
+}
+
+# 网站性能优化
+html_compressed = True
+html_use_smartypants = True
+html_use_index = True
+html_split_index = False
+html_copy_source = False
+html_show_sourcelink = False
+html_show_sphinx = False
+html_show_copyright = True
