@@ -75,8 +75,8 @@ html_theme_options = {
     "show_nav_level": 2,
     "show_prev_next": True,
     "toc_title": " 🐵",
-    "use_edit_page_button": False,
-    "use_repository_button": False,
+    "use_edit_page_button": True,
+    "use_repository_button": True,
     "use_issues_button": False,
     "use_download_button": False,
     "use_fullscreen_button": True,
@@ -89,6 +89,10 @@ html_theme_options = {
         "text": "Linux C 函数手册",
     },
     "logo_text": "Linux C 函数手册",
+    # 仓库相关配置
+    "repository_url": "https://github.com/getiot/linux-c-functions",
+    "repository_branch": "main",
+    "path_to_docs": "source",
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,
@@ -102,3 +106,12 @@ html_logo = '_static/images/GetIoT_Logo_150px.png'
 html_js_files = [
     'js/baidutongji.js'
 ]
+
+# 配置编辑页面和仓库按钮
+html_context = {
+    'display_github': True,
+    'github_user': 'getiot',
+    'github_repo': 'linux-c-functions',
+    'github_version': 'main',
+    'conf_py_path': '/source/',
+}
