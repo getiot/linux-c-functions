@@ -59,6 +59,38 @@ exclude_patterns = []
 # html_theme = 'sphinx_rtd_theme'
 html_theme = 'sphinx_book_theme'
 
+# Theme options are theme-specific and customize the look and feel of a theme
+html_theme_options = {
+    "show_navbar_depth": 2,
+    "show_toc_level": 2,
+    "navbar_footer_text": "",
+    "navbar_align": "left",
+    "navbar_center": False,
+    "navbar_end": [],
+    "navbar_persistent": [],
+    "navbar_start": [],
+    "primary_sidebar_end": [],
+    "primary_sidebar_start": [],
+    "secondary_sidebar_items": ["page-toc"],
+    "show_nav_level": 2,
+    "show_prev_next": True,
+    "toc_title": " 🐵",
+    "use_edit_page_button": False,
+    "use_repository_button": False,
+    "use_issues_button": False,
+    "use_download_button": False,
+    "use_fullscreen_button": True,
+    "use_secondary_sidebar": True,
+    "use_sidenotes": False,
+    "announcement": "",
+    "icon_links": [],
+    "icon_links_label": "Icon Links",
+    "logo": {
+        "text": "Linux C 函数手册",
+    },
+    "logo_text": "Linux C 函数手册",
+}
+
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
