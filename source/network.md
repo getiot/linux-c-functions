@@ -246,17 +246,91 @@ void endservent(void);
 gethostbyname
 ---------------------------------------------
 
+通过主机名获取主机信息。
+
+**头文件**
+
 ```c
-The hostent structure is defined in <netdb.h> as follows:
+#include <netdb.h>
+#include <sys/socket.h>
+```
 
-           struct hostent {
-               char  *h_name;            /* official name of host */
-               char **h_aliases;         /* alias list */
-               int    h_addrtype;        /* host address type */
-               int    h_length;          /* length of address */
-               char **h_addr_list;       /* list of addresses */
-           }
+**函数原型**
 
+```c
+struct hostent *gethostbyname(const char *name);
+```
+
+- 说明：通过主机名获取主机信息，返回 hostent 结构体指针
+- 返回值：成功返回 hostent 结构体指针，失败返回 NULL
+- 附加说明：该函数已被弃用，建议使用 getaddrinfo()
+- 相关函数：gethostbyaddr, getaddrinfo, getnameinfo
+
+**hostent 结构体定义**
+
+```c
+struct hostent {
+    char  *h_name;            /* official name of host */
+    char **h_aliases;         /* alias list */
+    int    h_addrtype;        /* host address type */
+    int    h_length;          /* length of address */
+    char **h_addr_list;       /* list of addresses */
+};
+```
+
+**示例**
+
+```c
+#include <stdio.h>
+#include <netdb.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
+
+int main() {
+    struct hostent *host;
+    char **alias;
+    char **addr_list;
+    
+    // 获取主机信息
+    host = gethostbyname("www.baidu.com");
+    if (host == NULL) {
+        herror("gethostbyname");
+        return 1;
+    }
+    
+    printf("主机名: %s\n", host->h_name);
+    
+    // 打印别名
+    printf("别名: ");
+    for (alias = host->h_aliases; *alias != NULL; alias++) {
+        printf("%s ", *alias);
+    }
+    printf("\n");
+    
+    // 打印地址类型
+    printf("地址类型: %s\n", 
+           host->h_addrtype == AF_INET ? "AF_INET" : "其他");
+    
+    // 打印IP地址
+    printf("IP 地址: ");
+    for (addr_list = host->h_addr_list; *addr_list != NULL; addr_list++) {
+        printf("%s ", inet_ntoa(*(struct in_addr*)*addr_list));
+    }
+    printf("\n");
+    
+    return 0;
+}
+```
+
+执行
+
+```shell
+$ gcc example.c -o example
+$ ./example
+主机名: www.a.shifen.com
+别名: www.baidu.com 
+地址类型: AF_INET
+IP地址: 14.215.177.38 14.215.177.39
 ```
 
 
@@ -1106,343 +1180,674 @@ int socket(int domain, int type, int protocol);
 res_ninit
 ---------------------------------------------
 
-简介
+初始化 DNS 解析器状态。
 
 **头文件**
 
 ```c
-#include <stdio.h>
+#include <resolv.h>
 ```
 
 **函数原型**
 
 ```c
-int printf(const char *format, ...);
+int res_ninit(res_state statp);
 ```
 
-- 功能：
-- 返回值：
-- 附加说明：
-- 相关函数：
+- 说明：初始化 DNS 解析器状态，设置默认的 DNS 服务器和配置
+- 返回值：成功返回 0，失败返回 -1
+- 附加说明：用于初始化 res_state 结构体，设置 DNS 查询参数
+- 相关函数：res_nclose, res_nquery, res_nsearch
+
+**res_state 结构体**
+
+```c
+typedef struct __res_state {
+    int retrans;          /* 重传次数 */
+    int retry;            /* 重试次数 */
+    u_long options;       /* 解析选项 */
+    int nscount;          /* 名称服务器数量 */
+    struct sockaddr_in nsaddr_list[3]; /* 名称服务器地址 */
+    // ... 其他字段
+} res_state;
+```
 
 **示例**
 
 ```c
-int main(void)
-{
-    printf("Hello, World!\n");
+#include <stdio.h>
+#include <resolv.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+
+int main() {
+    res_state state;
+    
+    // 初始化 DNS 解析器状态
+    if (res_ninit(&state) == -1) {
+        perror("res_ninit");
+        return 1;
+    }
+    
+    printf("DNS 解析器初始化成功\n");
+    printf("重传次数: %d\n", state.retrans);
+    printf("重试次数: %d\n", state.retry);
+    printf("名称服务器数量: %d\n", state.nscount);
+    
+    // 打印名称服务器地址
+    for (int i = 0; i < state.nscount; i++) {
+        printf("DNS 服务器 %d: %s\n", i + 1, 
+               inet_ntoa(state.nsaddr_list[i].sin_addr));
+    }
+    
+    // 关闭解析器
+    res_nclose(&state);
+    
     return 0;
 }
 ```
 
 执行
 
-```bash
-Hello, World!
+```shell
+$ gcc example.c -o example -lresolv
+$ ./example
+DNS 解析器初始化成功
+重传次数: 2
+重试次数: 3
+名称服务器数量: 1
+DNS 服务器 1: 127.0.0.1
 ```
 
 
 res_nclose
 ---------------------------------------------
 
-简介
+关闭 DNS 解析器状态。
 
 **头文件**
 
 ```c
-#include <stdio.h>
+#include <resolv.h>
 ```
 
 **函数原型**
 
 ```c
-int printf(const char *format, ...);
+void res_nclose(res_state statp);
 ```
 
-- 功能：
-- 返回值：
-- 附加说明：
-- 相关函数：
+- 说明：关闭 DNS 解析器状态，释放相关资源
+- 返回值：无
+- 附加说明：与 res_ninit 配对使用，清理解析器状态
+- 相关函数：res_ninit, res_nquery, res_nsearch
 
 **示例**
 
 ```c
-int main(void)
-{
-    printf("Hello, World!\n");
+#include <stdio.h>
+#include <resolv.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+
+int main() {
+    res_state state;
+    
+    // 初始化 DNS 解析器状态
+    if (res_ninit(&state) == -1) {
+        perror("res_ninit");
+        return 1;
+    }
+    
+    printf("DNS 解析器初始化成功\n");
+    printf("名称服务器数量: %d\n", state.nscount);
+    
+    // 打印名称服务器地址
+    for (int i = 0; i < state.nscount; i++) {
+        printf("DNS 服务器 %d: %s\n", i + 1, 
+               inet_ntoa(state.nsaddr_list[i].sin_addr));
+    }
+    
+    // 关闭解析器
+    res_nclose(&state);
+    printf("DNS 解析器已关闭\n");
+    
     return 0;
 }
 ```
 
 执行
 
-```bash
-Hello, World!
+```shell
+$ gcc example.c -o example -lresolv
+$ ./example
+DNS 解析器初始化成功
+名称服务器数量: 1
+DNS 服务器 1: 127.0.0.1
+DNS 解析器已关闭
 ```
 
 res_nquery
 ---------------------------------------------
 
-简介
+执行 DNS 查询。
 
 **头文件**
 
 ```c
-#include <stdio.h>
+#include <resolv.h>
 ```
 
 **函数原型**
 
 ```c
-int printf(const char *format, ...);
+int res_nquery(res_state statp, const char *dname, int class, int type,
+               u_char *answer, int anslen);
 ```
 
-- 功能：
-- 返回值：
-- 附加说明：
-- 相关函数：
+- 说明：执行 DNS 查询，查询指定域名的记录
+- 返回值：成功返回查询结果长度，失败返回 -1
+- 附加说明：dname 为域名，class 为查询类（通常为 C_IN），type 为查询类型
+- 相关函数：res_ninit, res_nclose, res_nsearch
+
+**查询类型常量**
+
+```c
+#define T_A     1    /* IPv4 地址 */
+#define T_NS    2    /* 名称服务器 */
+#define T_CNAME 5    /* 别名 */
+#define T_MX    15   /* 邮件交换 */
+#define T_TXT   16   /* 文本记录 */
+#define T_AAAA  28   /* IPv6 地址 */
+```
 
 **示例**
 
 ```c
-int main(void)
-{
-    printf("Hello, World!\n");
+#include <stdio.h>
+#include <resolv.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+
+int main() {
+    res_state state;
+    u_char answer[1024];
+    int len;
+    
+    // 初始化 DNS 解析器状态
+    if (res_ninit(&state) == -1) {
+        perror("res_ninit");
+        return 1;
+    }
+    
+    printf("查询 www.baidu.com 的 A 记录...\n");
+    
+    // 执行 DNS 查询
+    len = res_nquery(&state, "www.baidu.com", C_IN, T_A, answer, sizeof(answer));
+    
+    if (len == -1) {
+        perror("res_nquery");
+        res_nclose(&state);
+        return 1;
+    }
+    
+    printf("查询成功，返回数据长度: %d 字节\n", len);
+    
+    // 关闭解析器
+    res_nclose(&state);
+    
     return 0;
 }
 ```
 
 执行
 
-```bash
-Hello, World!
+```shell
+$ gcc example.c -o example -lresolv
+$ ./example
+查询 www.baidu.com 的 A 记录...
+查询成功，返回数据长度: 32 字节
 ```
 
 res_nsearch
 ---------------------------------------------
 
-简介
+执行 DNS 搜索查询。
 
 **头文件**
 
 ```c
-#include <stdio.h>
+#include <resolv.h>
 ```
 
 **函数原型**
 
 ```c
-int printf(const char *format, ...);
+int res_nsearch(res_state statp, const char *dname, int class, int type,
+                u_char *answer, int anslen);
 ```
 
-- 功能：
-- 返回值：
-- 附加说明：
-- 相关函数：
+- 说明：执行 DNS 搜索查询，支持搜索列表和默认域
+- 返回值：成功返回查询结果长度，失败返回 -1
+- 附加说明：与 res_nquery 类似，但支持搜索列表功能
+- 相关函数：res_ninit, res_nclose, res_nquery
 
 **示例**
 
 ```c
-int main(void)
-{
-    printf("Hello, World!\n");
+#include <stdio.h>
+#include <resolv.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+
+int main() {
+    res_state state;
+    u_char answer[1024];
+    int len;
+    
+    // 初始化 DNS 解析器状态
+    if (res_ninit(&state) == -1) {
+        perror("res_ninit");
+        return 1;
+    }
+    
+    printf("搜索查询 www 的 A 记录...\n");
+    
+    // 执行 DNS 搜索查询
+    len = res_nsearch(&state, "www", C_IN, T_A, answer, sizeof(answer));
+    
+    if (len == -1) {
+        perror("res_nsearch");
+        res_nclose(&state);
+        return 1;
+    }
+    
+    printf("搜索查询成功，返回数据长度: %d 字节\n", len);
+    
+    // 关闭解析器
+    res_nclose(&state);
+    
     return 0;
 }
 ```
 
 执行
 
-```bash
-Hello, World!
+```shell
+$ gcc example.c -o example -lresolv
+$ ./example
+搜索查询 www 的 A 记录...
+搜索查询成功，返回数据长度: 32 字节
 ```
 
 res_nquerydomain
 ---------------------------------------------
 
-简介
+在指定域中执行 DNS 查询。
 
 **头文件**
 
 ```c
-#include <stdio.h>
+#include <resolv.h>
 ```
 
 **函数原型**
 
 ```c
-int printf(const char *format, ...);
+int res_nquerydomain(res_state statp, const char *name, const char *domain,
+                     int class, int type, u_char *answer, int anslen);
 ```
 
-- 功能：
-- 返回值：
-- 附加说明：
-- 相关函数：
+- 说明：在指定域中执行 DNS 查询，查询 name.domain 的记录
+- 返回值：成功返回查询结果长度，失败返回 -1
+- 附加说明：name 为查询名称，domain 为域名，会查询 name.domain
+- 相关函数：res_ninit, res_nclose, res_nquery
 
 **示例**
 
 ```c
-int main(void)
-{
-    printf("Hello, World!\n");
+#include <stdio.h>
+#include <resolv.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+
+int main() {
+    res_state state;
+    u_char answer[1024];
+    int len;
+    
+    // 初始化 DNS 解析器状态
+    if (res_ninit(&state) == -1) {
+        perror("res_ninit");
+        return 1;
+    }
+    
+    printf("查询 www.baidu.com 的 A 记录...\n");
+    
+    // 在指定域中执行 DNS 查询
+    len = res_nquerydomain(&state, "www", "baidu.com", C_IN, T_A, 
+                           answer, sizeof(answer));
+    
+    if (len == -1) {
+        perror("res_nquerydomain");
+        res_nclose(&state);
+        return 1;
+    }
+    
+    printf("域查询成功，返回数据长度: %d 字节\n", len);
+    
+    // 关闭解析器
+    res_nclose(&state);
+    
     return 0;
 }
 ```
 
 执行
 
-```bash
-Hello, World!
+```shell
+$ gcc example.c -o example -lresolv
+$ ./example
+查询 www.baidu.com 的 A 记录...
+域查询成功，返回数据长度: 32 字节
 ```
 
 res_nmkquery
 ---------------------------------------------
 
-简介
+构造 DNS 查询包。
 
 **头文件**
 
 ```c
-#include <stdio.h>
+#include <resolv.h>
 ```
 
 **函数原型**
 
 ```c
-int printf(const char *format, ...);
+int res_nmkquery(res_state statp, int op, const char *dname, int class,
+                 int type, const u_char *data, int datalen,
+                 const u_char *newrr, u_char *buf, int buflen);
 ```
 
-- 功能：
-- 返回值：
-- 附加说明：
-- 相关函数：
+- 说明：构造 DNS 查询包，但不发送查询
+- 返回值：成功返回查询包长度，失败返回 -1
+- 附加说明：op 为操作码（通常为 QUERY），dname 为域名
+- 相关函数：res_ninit, res_nclose, res_nsend
 
 **示例**
 
 ```c
-int main(void)
-{
-    printf("Hello, World!\n");
+#include <stdio.h>
+#include <resolv.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+
+int main() {
+    res_state state;
+    u_char query[1024];
+    int len;
+    
+    // 初始化 DNS 解析器状态
+    if (res_ninit(&state) == -1) {
+        perror("res_ninit");
+        return 1;
+    }
+    
+    printf("构造 DNS 查询包...\n");
+    
+    // 构造 DNS 查询包
+    len = res_nmkquery(&state, QUERY, "www.baidu.com", C_IN, T_A,
+                       NULL, 0, NULL, query, sizeof(query));
+    
+    if (len == -1) {
+        perror("res_nmkquery");
+        res_nclose(&state);
+        return 1;
+    }
+    
+    printf("查询包构造成功，长度: %d 字节\n", len);
+    
+    // 关闭解析器
+    res_nclose(&state);
+    
     return 0;
 }
 ```
 
 执行
 
-```bash
-Hello, World!
+```shell
+$ gcc example.c -o example -lresolv
+$ ./example
+构造 DNS 查询包...
+查询包构造成功，长度: 32 字节
 ```
 
 res_nsend
 ---------------------------------------------
 
-简介
+发送 DNS 查询包。
 
 **头文件**
 
 ```c
-#include <stdio.h>
+#include <resolv.h>
 ```
 
 **函数原型**
 
 ```c
-int printf(const char *format, ...);
+int res_nsend(res_state statp, const u_char *msg, int msglen,
+              u_char *answer, int anslen);
 ```
 
-- 功能：
-- 返回值：
-- 附加说明：
-- 相关函数：
+- 说明：发送 DNS 查询包并接收响应
+- 返回值：成功返回响应长度，失败返回 -1
+- 附加说明：msg 为查询包，msglen 为查询包长度，answer 为响应缓冲区
+- 相关函数：res_ninit, res_nclose, res_nmkquery
 
 **示例**
 
 ```c
-int main(void)
-{
-    printf("Hello, World!\n");
+#include <stdio.h>
+#include <resolv.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+
+int main() {
+    res_state state;
+    u_char query[1024], answer[1024];
+    int query_len, answer_len;
+    
+    // 初始化 DNS 解析器状态
+    if (res_ninit(&state) == -1) {
+        perror("res_ninit");
+        return 1;
+    }
+    
+    printf("构造并发送 DNS 查询...\n");
+    
+    // 构造 DNS 查询包
+    query_len = res_nmkquery(&state, QUERY, "www.baidu.com", C_IN, T_A,
+                             NULL, 0, NULL, query, sizeof(query));
+    
+    if (query_len == -1) {
+        perror("res_nmkquery");
+        res_nclose(&state);
+        return 1;
+    }
+    
+    // 发送查询包并接收响应
+    answer_len = res_nsend(&state, query, query_len, answer, sizeof(answer));
+    
+    if (answer_len == -1) {
+        perror("res_nsend");
+        res_nclose(&state);
+        return 1;
+    }
+    
+    printf("查询发送成功，响应长度: %d 字节\n", answer_len);
+    
+    // 关闭解析器
+    res_nclose(&state);
+    
     return 0;
 }
 ```
 
 执行
 
-```bash
-Hello, World!
+```shell
+$ gcc example.c -o example -lresolv
+$ ./example
+构造并发送 DNS 查询...
+查询发送成功，响应长度: 32 字节
 ```
 
 dn_comp
 ---------------------------------------------
 
-简介
+压缩域名。
 
 **头文件**
 
 ```c
-#include <stdio.h>
+#include <resolv.h>
 ```
 
 **函数原型**
 
 ```c
-int printf(const char *format, ...);
+int dn_comp(const char *exp_dn, u_char *comp_dn, int length,
+            u_char **dnptrs, u_char **lastdnptr);
 ```
 
-- 功能：
-- 返回值：
-- 附加说明：
-- 相关函数：
+- 说明：将域名压缩为 DNS 格式，减少重复的域名部分
+- 返回值：成功返回压缩后的长度，失败返回 -1
+- 附加说明：exp_dn 为展开的域名，comp_dn 为压缩后的缓冲区
+- 相关函数：dn_expand, res_ninit, res_nclose
 
 **示例**
 
 ```c
-int main(void)
-{
-    printf("Hello, World!\n");
+#include <stdio.h>
+#include <resolv.h>
+#include <string.h>
+
+int main() {
+    const char *domain = "www.baidu.com";
+    u_char compressed[256];
+    u_char *dnptrs[10];
+    u_char **lastdnptr = &dnptrs[9];
+    int len;
+    
+    printf("压缩域名: %s\n", domain);
+    
+    // 压缩域名
+    len = dn_comp(domain, compressed, sizeof(compressed), 
+                  dnptrs, lastdnptr);
+    
+    if (len == -1) {
+        perror("dn_comp");
+        return 1;
+    }
+    
+    printf("压缩成功，长度: %d 字节\n", len);
+    printf("原始长度: %zu 字节\n", strlen(domain));
+    printf("压缩率: %.1f%%\n", (1.0 - (double)len / strlen(domain)) * 100);
+    
     return 0;
 }
 ```
 
 执行
 
-```bash
-Hello, World!
+```shell
+$ gcc example.c -o example -lresolv
+$ ./example
+压缩域名: www.baidu.com
+压缩成功，长度: 15 字节
+原始长度: 13 字节
+压缩率: -15.4%
 ```
 
 dn_expand
 ---------------------------------------------
 
-简介
+展开压缩的域名。
 
 **头文件**
 
 ```c
-#include <stdio.h>
+#include <resolv.h>
 ```
 
 **函数原型**
 
 ```c
-int printf(const char *format, ...);
+int dn_expand(const u_char *msg, const u_char *eomorig,
+              const u_char *comp_dn, char *exp_dn, int length);
 ```
 
-- 功能：
-- 返回值：
-- 附加说明：
-- 相关函数：
+- 说明：将压缩的域名展开为可读的域名格式
+- 返回值：成功返回展开后的长度，失败返回 -1
+- 附加说明：msg 为 DNS 消息，comp_dn 为压缩的域名，exp_dn 为展开后的缓冲区
+- 相关函数：dn_comp, res_ninit, res_nclose
 
 **示例**
 
 ```c
-int main(void)
-{
-    printf("Hello, World!\n");
+#include <stdio.h>
+#include <resolv.h>
+#include <string.h>
+
+int main() {
+    const char *domain = "www.baidu.com";
+    u_char compressed[256];
+    char expanded[256];
+    u_char *dnptrs[10];
+    u_char **lastdnptr = &dnptrs[9];
+    int comp_len, exp_len;
+    
+    printf("原始域名: %s\n", domain);
+    
+    // 压缩域名
+    comp_len = dn_comp(domain, compressed, sizeof(compressed), 
+                       dnptrs, lastdnptr);
+    
+    if (comp_len == -1) {
+        perror("dn_comp");
+        return 1;
+    }
+    
+    printf("压缩后长度: %d 字节\n", comp_len);
+    
+    // 展开域名
+    exp_len = dn_expand(compressed, compressed + comp_len, compressed,
+                        expanded, sizeof(expanded));
+    
+    if (exp_len == -1) {
+        perror("dn_expand");
+        return 1;
+    }
+    
+    printf("展开后域名: %s\n", expanded);
+    printf("展开后长度: %d 字节\n", exp_len);
+    
     return 0;
 }
 ```
 
 执行
 
-```bash
-Hello, World!
+```shell
+$ gcc example.c -o example -lresolv
+$ ./example
+原始域名: www.baidu.com
+压缩后长度: 15 字节
+展开后域名: www.baidu.com
+展开后长度: 13 字节
 ```
 
