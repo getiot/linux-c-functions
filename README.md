@@ -129,7 +129,7 @@ pip3 install sphinx_markdown_tables
 sphinx-apidoc    sphinx-autobuild    sphinx-autogen    sphinx-build    sphinx-quickstart
 ```
 
-在工程目录下执行下面命令，生成 HTML 网页并启动本地测试 Web Server，默认端口为 8000。
+在工程目录下执行下面命令，生成 HTML 网页并启动本地测试 Web Server，默认端口为 8000。（推荐开发环境使用）
 
 ```bash
 sphinx-autobuild source build/html
@@ -138,4 +138,10 @@ sphinx-autobuild source build/html
 或者直接执行 `make html` 构建。
 
 现在，在浏览器输入 `127.0.0.1:8000` 即可访问。
+
+发布版本推荐使用如下命令构建：
+
+```bash
+sphinx-build -b html source build/html
+```
 
