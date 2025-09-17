@@ -1,10 +1,14 @@
 I/O 复用篇
 =============================================
 
+> I/O 复用（I/O Multiplexing）是一种通过单个线程同时监控多个文件描述符（如套接字）的I/O 事件的技术，以提高服务器处理大量并发连接的效率。它允许一个进程在不创建大量线程或进程的情况下，同时处理多个I/O 操作。
+>
+> 常见的 I/O 复用模型包括 `select`、`poll` 和 `epoll`，其中 `epoll` 是 Linux 系统中一种更高效、基于事件驱动的实现。
+
 select
 ---------------------------------------------
 
-I/O 多工机制
+I/O 多工机制。
 
 **头文件**
 
@@ -64,7 +68,7 @@ if (FD_ISSET(fd, readset) {
 poll
 ---------------------------------------------
 
-获取环境变量内容
+等待文件描述符上的事件。
 
 **头文件**
 
@@ -78,14 +82,132 @@ poll
 int poll(struct pollfd *fds, nfds_t nfds, int timeout);
 ```
 
-- 说明：
-- 返回值：
-- 相关函数：restart_syscall, select, select_tut, epoll, time
+- 说明：等待文件描述符上的事件，比select更高效，没有文件描述符数量限制
+- 返回值：成功返回就绪的文件描述符数量，超时返回0，失败返回-1
+- 相关函数：select, epoll, ppoll
+
+**pollfd 结构体**
+
+```c
+struct pollfd {
+    int   fd;         /* 文件描述符 */
+    short events;     /* 要监听的事件 */
+    short revents;    /* 实际发生的事件 */
+};
+```
+
+**事件标志**
+
+- `POLLIN`: 有数据可读
+- `POLLOUT`: 可以写入数据
+- `POLLERR`: 发生错误
+- `POLLHUP`: 连接被挂起
+- `POLLNVAL`: 文件描述符无效
 
 **示例**
 
 ```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <unistd.h>
+#include <poll.h>
 
+int main() {
+    int server_fd, client_fd;
+    struct sockaddr_in server_addr, client_addr;
+    socklen_t client_len = sizeof(client_addr);
+    struct pollfd fds[2];
+    char buffer[1024];
+    int nfds = 1;
+    
+    // 创建socket
+    server_fd = socket(AF_INET, SOCK_STREAM, 0);
+    if (server_fd == -1) {
+        perror("socket");
+        return 1;
+    }
+    
+    // 设置服务器地址
+    memset(&server_addr, 0, sizeof(server_addr));
+    server_addr.sin_family = AF_INET;
+    server_addr.sin_addr.s_addr = INADDR_ANY;
+    server_addr.sin_port = htons(8080);
+    
+    // 绑定地址
+    if (bind(server_fd, (struct sockaddr*)&server_addr, sizeof(server_addr)) == -1) {
+        perror("bind");
+        close(server_fd);
+        return 1;
+    }
+    
+    // 监听连接
+    if (listen(server_fd, 5) == -1) {
+        perror("listen");
+        close(server_fd);
+        return 1;
+    }
+    
+    printf("服务器启动，监听端口 8080...\n");
+    
+    // 设置poll文件描述符
+    fds[0].fd = server_fd;
+    fds[0].events = POLLIN;
+    
+    while (1) {
+        // 等待事件
+        int ret = poll(fds, nfds, 5000); // 5秒超时
+        
+        if (ret == -1) {
+            perror("poll");
+            break;
+        } else if (ret == 0) {
+            printf("等待连接中...\n");
+            continue;
+        }
+        
+        // 检查服务器socket
+        if (fds[0].revents & POLLIN) {
+            client_fd = accept(server_fd, (struct sockaddr*)&client_addr, &client_len);
+            if (client_fd == -1) {
+                perror("accept");
+                continue;
+            }
+            
+            printf("客户端连接: %s:%d\n", 
+                   inet_ntoa(client_addr.sin_addr), 
+                   ntohs(client_addr.sin_port));
+            
+            // 添加客户端socket到poll
+            fds[1].fd = client_fd;
+            fds[1].events = POLLIN;
+            nfds = 2;
+        }
+        
+        // 检查客户端socket
+        if (nfds > 1 && fds[1].revents & POLLIN) {
+            memset(buffer, 0, sizeof(buffer));
+            int bytes = recv(client_fd, buffer, sizeof(buffer), 0);
+            if (bytes > 0) {
+                printf("收到消息: %s\n", buffer);
+                
+                // 发送响应
+                const char *response = "Hello from server!";
+                send(client_fd, response, strlen(response), 0);
+            } else {
+                printf("客户端断开连接\n");
+                close(client_fd);
+                nfds = 1;
+            }
+        }
+    }
+    
+    close(server_fd);
+    return 0;
+}
 ```
 
 执行
@@ -98,7 +220,7 @@ int poll(struct pollfd *fds, nfds_t nfds, int timeout);
 ppoll
 ---------------------------------------------
 
-获取环境变量内容
+等待文件描述符上的事件（支持信号掩码）。
 
 **头文件**
 
@@ -115,20 +237,159 @@ int ppoll(struct pollfd *fds, nfds_t nfds,
           const struct timespec *tmo_p, const sigset_t *sigmask);
 ```
 
-- 说明：
-- 返回值：
-- 相关函数：restart_syscall, select, select_tut, epoll, time
+- 说明：类似于 poll，但允许指定信号掩码，在等待期间临时屏蔽指定信号
+- 返回值：成功返回就绪的文件描述符数量，超时返回0，失败返回-1
+- 附加说明：tmo_p 为 timespec 结构体，指定超时时间；sigmask 为信号掩码
+- 相关函数：poll, select, epoll_pwait, sigprocmask
+
+**timespec 结构体**
+
+```c
+struct timespec {
+    time_t tv_sec;   /* 秒 */
+    long   tv_nsec;  /* 纳秒 */
+};
+```
 
 **示例**
 
 ```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <unistd.h>
+#include <poll.h>
+#include <signal.h>
+#include <time.h>
 
+#define _GNU_SOURCE
+
+void signal_handler(int sig) {
+    printf("收到信号 %d，但被 ppoll 屏蔽\n", sig);
+}
+
+int main() {
+    int server_fd, client_fd;
+    struct sockaddr_in server_addr, client_addr;
+    socklen_t client_len = sizeof(client_addr);
+    struct pollfd fds[2];
+    struct timespec timeout;
+    sigset_t sigmask;
+    char buffer[1024];
+    int nfds = 1;
+    
+    // 设置信号处理
+    signal(SIGUSR1, signal_handler);
+    
+    // 设置信号掩码，屏蔽 SIGUSR1
+    sigemptyset(&sigmask);
+    sigaddset(&sigmask, SIGUSR1);
+    
+    // 创建socket
+    server_fd = socket(AF_INET, SOCK_STREAM, 0);
+    if (server_fd == -1) {
+        perror("socket");
+        return 1;
+    }
+    
+    // 设置服务器地址
+    memset(&server_addr, 0, sizeof(server_addr));
+    server_addr.sin_family = AF_INET;
+    server_addr.sin_addr.s_addr = INADDR_ANY;
+    server_addr.sin_port = htons(8080);
+    
+    // 绑定地址
+    if (bind(server_fd, (struct sockaddr*)&server_addr, sizeof(server_addr)) == -1) {
+        perror("bind");
+        close(server_fd);
+        return 1;
+    }
+    
+    // 监听连接
+    if (listen(server_fd, 5) == -1) {
+        perror("listen");
+        close(server_fd);
+        return 1;
+    }
+    
+    printf("服务器启动，监听端口 8080...\n");
+    printf("发送 SIGUSR1 信号测试 ppoll 的信号屏蔽功能\n");
+    
+    // 设置poll文件描述符
+    fds[0].fd = server_fd;
+    fds[0].events = POLLIN;
+    
+    while (1) {
+        // 设置超时时间为3秒
+        timeout.tv_sec = 3;
+        timeout.tv_nsec = 0;
+        
+        // 使用 ppoll 等待事件，屏蔽 SIGUSR1 信号
+        int ret = ppoll(fds, nfds, &timeout, &sigmask);
+        
+        if (ret == -1) {
+            perror("ppoll");
+            break;
+        } else if (ret == 0) {
+            printf("等待连接中... (ppoll 超时)\n");
+            continue;
+        }
+        
+        // 检查服务器socket
+        if (fds[0].revents & POLLIN) {
+            client_fd = accept(server_fd, (struct sockaddr*)&client_addr, &client_len);
+            if (client_fd == -1) {
+                perror("accept");
+                continue;
+            }
+            
+            printf("客户端连接: %s:%d\n", 
+                   inet_ntoa(client_addr.sin_addr), 
+                   ntohs(client_addr.sin_port));
+            
+            // 添加客户端socket到poll
+            fds[1].fd = client_fd;
+            fds[1].events = POLLIN;
+            nfds = 2;
+        }
+        
+        // 检查客户端socket
+        if (nfds > 1 && fds[1].revents & POLLIN) {
+            memset(buffer, 0, sizeof(buffer));
+            int bytes = recv(client_fd, buffer, sizeof(buffer), 0);
+            if (bytes > 0) {
+                printf("收到消息: %s\n", buffer);
+                
+                // 发送响应
+                const char *response = "Hello from ppoll server!";
+                send(client_fd, response, strlen(response), 0);
+            } else {
+                printf("客户端断开连接\n");
+                close(client_fd);
+                nfds = 1;
+            }
+        }
+    }
+    
+    close(server_fd);
+    return 0;
+}
 ```
 
 执行
 
 ```shell
-
+$ gcc -D_GNU_SOURCE example.c -o example
+$ ./example &
+$ kill -USR1 %1
+$ ./example
+服务器启动，监听端口 8080...
+发送 SIGUSR1 信号测试 ppoll 的信号屏蔽功能
+等待连接中... (ppoll 超时)
+等待连接中... (ppoll 超时)
 ```
 
 
@@ -164,7 +425,7 @@ int epoll_create(int size);
 epoll_create1
 ---------------------------------------------
 
-创建一个新的 epoll 实例
+创建一个新的 epoll 实例。
 
 **头文件**
 
@@ -276,7 +537,7 @@ int example(int sfd, int efd)
 epoll_wait
 ---------------------------------------------
 
-获取环境变量内容
+等待 epoll 实例上的事件。
 
 **头文件**
 
@@ -290,14 +551,137 @@ epoll_wait
 int epoll_wait(int epfd, struct epoll_event *events, int maxevents, int timeout);
 ```
 
-- 说明：
-- 返回值：
-- 相关函数：epoll_create, epoll_ctl, epoll
+- 说明：等待epoll实例上的事件，返回就绪的文件描述符
+- 返回值：成功返回就绪的文件描述符数量，超时返回0，失败返回-1
+- 相关函数：epoll_create, epoll_ctl, epoll_pwait
 
 **示例**
 
 ```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <unistd.h>
+#include <sys/epoll.h>
 
+#define MAX_EVENTS 10
+
+int main() {
+    int server_fd, client_fd, epfd;
+    struct sockaddr_in server_addr, client_addr;
+    socklen_t client_len = sizeof(client_addr);
+    struct epoll_event event, events[MAX_EVENTS];
+    char buffer[1024];
+    
+    // 创建epoll实例
+    epfd = epoll_create1(0);
+    if (epfd == -1) {
+        perror("epoll_create1");
+        return 1;
+    }
+    
+    // 创建socket
+    server_fd = socket(AF_INET, SOCK_STREAM, 0);
+    if (server_fd == -1) {
+        perror("socket");
+        close(epfd);
+        return 1;
+    }
+    
+    // 设置服务器地址
+    memset(&server_addr, 0, sizeof(server_addr));
+    server_addr.sin_family = AF_INET;
+    server_addr.sin_addr.s_addr = INADDR_ANY;
+    server_addr.sin_port = htons(8080);
+    
+    // 绑定地址
+    if (bind(server_fd, (struct sockaddr*)&server_addr, sizeof(server_addr)) == -1) {
+        perror("bind");
+        close(server_fd);
+        close(epfd);
+        return 1;
+    }
+    
+    // 监听连接
+    if (listen(server_fd, 5) == -1) {
+        perror("listen");
+        close(server_fd);
+        close(epfd);
+        return 1;
+    }
+    
+    // 添加服务器socket到epoll
+    event.events = EPOLLIN;
+    event.data.fd = server_fd;
+    if (epoll_ctl(epfd, EPOLL_CTL_ADD, server_fd, &event) == -1) {
+        perror("epoll_ctl");
+        close(server_fd);
+        close(epfd);
+        return 1;
+    }
+    
+    printf("服务器启动，监听端口 8080...\n");
+    
+    while (1) {
+        // 等待事件
+        int nfds = epoll_wait(epfd, events, MAX_EVENTS, 5000); // 5秒超时
+        
+        if (nfds == -1) {
+            perror("epoll_wait");
+            break;
+        } else if (nfds == 0) {
+            printf("等待连接中...\n");
+            continue;
+        }
+        
+        for (int i = 0; i < nfds; i++) {
+            if (events[i].data.fd == server_fd) {
+                // 新连接
+                client_fd = accept(server_fd, (struct sockaddr*)&client_addr, &client_len);
+                if (client_fd == -1) {
+                    perror("accept");
+                    continue;
+                }
+                
+                printf("客户端连接: %s:%d\n", 
+                       inet_ntoa(client_addr.sin_addr), 
+                       ntohs(client_addr.sin_port));
+                
+                // 添加客户端socket到epoll
+                event.events = EPOLLIN;
+                event.data.fd = client_fd;
+                if (epoll_ctl(epfd, EPOLL_CTL_ADD, client_fd, &event) == -1) {
+                    perror("epoll_ctl");
+                    close(client_fd);
+                }
+            } else {
+                // 客户端数据
+                client_fd = events[i].data.fd;
+                memset(buffer, 0, sizeof(buffer));
+                int bytes = recv(client_fd, buffer, sizeof(buffer), 0);
+                
+                if (bytes > 0) {
+                    printf("收到消息: %s\n", buffer);
+                    
+                    // 发送响应
+                    const char *response = "Hello from server!";
+                    send(client_fd, response, strlen(response), 0);
+                } else {
+                    printf("客户端断开连接\n");
+                    epoll_ctl(epfd, EPOLL_CTL_DEL, client_fd, NULL);
+                    close(client_fd);
+                }
+            }
+        }
+    }
+    
+    close(server_fd);
+    close(epfd);
+    return 0;
+}
 ```
 
 执行
@@ -311,12 +695,14 @@ int epoll_wait(int epfd, struct epoll_event *events, int maxevents, int timeout)
 epoll_pwait
 ---------------------------------------------
 
-获取环境变量内容
+等待 epoll 实例上的事件（支持信号掩码）。
 
 **头文件**
 
 ```c
+#define _GNU_SOURCE         /* See feature_test_macros(7) */
 #include <sys/epoll.h>
+#include <signal.h>
 ```
 
 **函数原型**
@@ -326,19 +712,165 @@ int epoll_pwait(int epfd, struct epoll_event *events, int maxevents,
                 int timeout, const sigset_t *sigmask);
 ```
 
-- 说明：
-- 返回值：
-- 相关函数：epoll_create, epoll_ctl, epoll
+- 说明：类似于 epoll_wait，但允许指定信号掩码，在等待期间临时屏蔽指定信号
+- 返回值：成功返回就绪的文件描述符数量，超时返回0，失败返回-1
+- 附加说明：timeout 为超时时间（毫秒），-1 表示无限等待，0 表示立即返回
+- 相关函数：epoll_wait, epoll_create, epoll_ctl, sigprocmask
 
 **示例**
 
 ```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <unistd.h>
+#include <sys/epoll.h>
+#include <signal.h>
 
+#define _GNU_SOURCE
+#define MAX_EVENTS 10
+
+void signal_handler(int sig) {
+    printf("收到信号 %d，但被 epoll_pwait 屏蔽\n", sig);
+}
+
+int main() {
+    int server_fd, client_fd, epfd;
+    struct sockaddr_in server_addr, client_addr;
+    socklen_t client_len = sizeof(client_addr);
+    struct epoll_event event, events[MAX_EVENTS];
+    sigset_t sigmask;
+    char buffer[1024];
+    
+    // 设置信号处理
+    signal(SIGUSR1, signal_handler);
+    
+    // 设置信号掩码，屏蔽 SIGUSR1
+    sigemptyset(&sigmask);
+    sigaddset(&sigmask, SIGUSR1);
+    
+    // 创建epoll实例
+    epfd = epoll_create1(0);
+    if (epfd == -1) {
+        perror("epoll_create1");
+        return 1;
+    }
+    
+    // 创建socket
+    server_fd = socket(AF_INET, SOCK_STREAM, 0);
+    if (server_fd == -1) {
+        perror("socket");
+        close(epfd);
+        return 1;
+    }
+    
+    // 设置服务器地址
+    memset(&server_addr, 0, sizeof(server_addr));
+    server_addr.sin_family = AF_INET;
+    server_addr.sin_addr.s_addr = INADDR_ANY;
+    server_addr.sin_port = htons(8080);
+    
+    // 绑定地址
+    if (bind(server_fd, (struct sockaddr*)&server_addr, sizeof(server_addr)) == -1) {
+        perror("bind");
+        close(server_fd);
+        close(epfd);
+        return 1;
+    }
+    
+    // 监听连接
+    if (listen(server_fd, 5) == -1) {
+        perror("listen");
+        close(server_fd);
+        close(epfd);
+        return 1;
+    }
+    
+    // 添加服务器socket到epoll
+    event.events = EPOLLIN;
+    event.data.fd = server_fd;
+    if (epoll_ctl(epfd, EPOLL_CTL_ADD, server_fd, &event) == -1) {
+        perror("epoll_ctl");
+        close(server_fd);
+        close(epfd);
+        return 1;
+    }
+    
+    printf("服务器启动，监听端口 8080...\n");
+    printf("发送 SIGUSR1 信号测试 epoll_pwait 的信号屏蔽功能\n");
+    
+    while (1) {
+        // 使用 epoll_pwait 等待事件，屏蔽 SIGUSR1 信号
+        int nfds = epoll_pwait(epfd, events, MAX_EVENTS, 3000, &sigmask); // 3秒超时
+        
+        if (nfds == -1) {
+            perror("epoll_pwait");
+            break;
+        } else if (nfds == 0) {
+            printf("等待连接中... (epoll_pwait 超时)\n");
+            continue;
+        }
+        
+        for (int i = 0; i < nfds; i++) {
+            if (events[i].data.fd == server_fd) {
+                // 新连接
+                client_fd = accept(server_fd, (struct sockaddr*)&client_addr, &client_len);
+                if (client_fd == -1) {
+                    perror("accept");
+                    continue;
+                }
+                
+                printf("客户端连接: %s:%d\n", 
+                       inet_ntoa(client_addr.sin_addr), 
+                       ntohs(client_addr.sin_port));
+                
+                // 添加客户端socket到epoll
+                event.events = EPOLLIN;
+                event.data.fd = client_fd;
+                if (epoll_ctl(epfd, EPOLL_CTL_ADD, client_fd, &event) == -1) {
+                    perror("epoll_ctl");
+                    close(client_fd);
+                }
+            } else {
+                // 客户端数据
+                client_fd = events[i].data.fd;
+                memset(buffer, 0, sizeof(buffer));
+                int bytes = recv(client_fd, buffer, sizeof(buffer), 0);
+                
+                if (bytes > 0) {
+                    printf("收到消息: %s\n", buffer);
+                    
+                    // 发送响应
+                    const char *response = "Hello from epoll_pwait server!";
+                    send(client_fd, response, strlen(response), 0);
+                } else {
+                    printf("客户端断开连接\n");
+                    epoll_ctl(epfd, EPOLL_CTL_DEL, client_fd, NULL);
+                    close(client_fd);
+                }
+            }
+        }
+    }
+    
+    close(server_fd);
+    close(epfd);
+    return 0;
+}
 ```
 
 执行
 
 ```shell
-
+$ gcc -D_GNU_SOURCE example.c -o example
+$ ./example &
+$ kill -USR1 %1
+$ ./example
+服务器启动，监听端口 8080...
+发送 SIGUSR1 信号测试 epoll_pwait 的信号屏蔽功能
+等待连接中... (epoll_pwait 超时)
+等待连接中... (epoll_pwait 超时)
 ```
 
